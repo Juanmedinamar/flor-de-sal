@@ -1,0 +1,58 @@
+{
+  "producto": "Canasta Cream",
+  "ean": "8410028030903",
+  "product_id": "B001018720300344",
+  "url": "https://www.elcorteingles.es/supermercado/B001018720300344-canasta-vino-oloroso-dulce-do-jerez-xeres-sherry-botella-75-cl/",
+  "precio_producto": 7.89,
+  "precio_litro": null,
+  "apis_capturadas": 4,
+  "respuestas_objetivo": 2,
+  "jsonld": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "/supermercado/",
+            "name": "Supermercado"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "/supermercado/bebidas/",
+            "name": "Bebidas"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@id": "/supermercado/bebidas/vinos/",
+            "name": "Vinos"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@id": "/supermercado/bebidas/vinos/vinos-generosos/",
+            "name": "Vinos generosos"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@id": "/supermercado/bebidas/vinos/vinos-generosos/olorosos/",
+            "name": "Olorosos"
+          }
+        }
+      ]
+    }
+  ]
+}
