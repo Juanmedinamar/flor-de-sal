@@ -1,3 +1,8 @@
+import sys
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 # ============================================================
 # 🍷 VINO TRACKER - SCRAPER MAKRO
 # ============================================================
@@ -804,7 +809,7 @@ class MakroScraper:
 
     def __init__(
         self,
-        headless=False
+        headless=True
     ):
 
         self.headless = headless
@@ -1673,7 +1678,7 @@ def obtener_makro(
 ):
 
     scraper = MakroScraper(
-        headless=False
+        headless=True
     )
 
     try:
@@ -1733,7 +1738,7 @@ if __name__ == "__main__":
 
 
     scraper = MakroScraper(
-        headless=False
+        headless=True
     )
 
 

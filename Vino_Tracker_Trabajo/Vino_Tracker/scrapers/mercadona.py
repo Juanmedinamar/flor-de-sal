@@ -1,4 +1,9 @@
 import sys
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
+import sys
 import re
 from pathlib import Path
 
@@ -137,7 +142,7 @@ def obtener_mercadona(producto_config=None):
     with sync_playwright() as p:
 
         browser = p.chromium.launch(
-            headless=False
+            headless=True
         )
 
         context = browser.new_context(
@@ -322,7 +327,7 @@ def obtener_mercadona(producto_config=None):
         # 4. ESPERAR REDIRECCIÓN
         # ====================================================
 
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(2000)
 
         print("\n🌐 URL después del CP:")
         print(page.url)
@@ -391,7 +396,7 @@ def obtener_mercadona(producto_config=None):
                 full_page=True
             )
 
-            page.wait_for_timeout(5000)
+            page.wait_for_timeout(2000)
 
             browser.close()
 
@@ -418,7 +423,7 @@ def obtener_mercadona(producto_config=None):
         except Exception:
             pass
 
-        page.wait_for_timeout(4000)
+        page.wait_for_timeout(2000)
 
         print("\n🌐 URL después de buscar:")
         print(page.url)
@@ -540,7 +545,7 @@ def obtener_mercadona(producto_config=None):
                 "\n" + texto[:5000]
             )
 
-            page.wait_for_timeout(5000)
+            page.wait_for_timeout(2000)
 
             browser.close()
 
@@ -716,7 +721,7 @@ def obtener_mercadona(producto_config=None):
             "\n⏸️ Navegador abierto 10 segundos..."
         )
 
-        page.wait_for_timeout(10000)
+        page.wait_for_timeout(3000)
 
         browser.close()
 

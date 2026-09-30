@@ -1,3 +1,8 @@
+import sys
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 # scrapers/corte_ingles.py
 
 from dataclasses import dataclass
@@ -291,7 +296,7 @@ def obtener_corte_ingles(
     with sync_playwright() as p:
 
         browser = p.chromium.launch(
-            headless=False,
+            headless=True,
             args=[
                 "--start-maximized",
                 "--disable-blink-features=AutomationControlled"
