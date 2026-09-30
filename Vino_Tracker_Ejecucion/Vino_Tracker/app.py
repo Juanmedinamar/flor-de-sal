@@ -276,7 +276,7 @@ if actualizar:
 
                 errors="replace",
 
-                timeout=600
+                timeout=1800
             )
 
             st.session_state[
