@@ -1,0 +1,86 @@
+VINO TRACKER
+============
+
+Aplicacion para consultar y comparar precios de vinos y bebidas
+en supermercados y tiendas online.
+
+REQUISITOS
+==========
+
+- Windows 10 o Windows 11
+- Python 3.11 o superior
+- Conexion a Internet
+
+IMPORTANTE
+==========
+
+No es necesario instalar Anaconda, Miniconda, Visual Studio Code
+ni ninguna libreria de Python manualmente.
+
+
+INSTALACION
+===========
+
+1. Descomprime el archivo Vino_Tracker.zip en una carpeta.
+
+2. Entra en la carpeta descomprimida.
+
+3. Haz doble clic en:
+
+   instalar.bat
+
+El instalador creara automaticamente el entorno de Python,
+instalara todas las dependencias necesarias y descargara
+Chromium para Playwright.
+
+La instalacion solo es necesaria la primera vez.
+
+
+EJECUTAR VINO TRACKER
+=====================
+
+Una vez terminada la instalacion, haz doble clic en:
+
+   iniciar.bat
+
+Se abrira Vino Tracker en el navegador.
+
+
+ACTUALIZACIONES
+===============
+
+Para volver a utilizar Vino Tracker en el futuro, solo hay que
+ejecutar:
+
+   iniciar.bat
+
+
+BASE DE DATOS
+=============
+
+Los precios se almacenan localmente en:
+
+   data\precios.db
+
+La base de datos forma parte de la instalacion.
+
+
+SOLUCION DE PROBLEMAS
+=====================
+
+Si Windows indica que Python no esta instalado:
+
+1. Instala Python 3.11 o superior.
+2. Cierra y vuelve a abrir la carpeta de Vino Tracker.
+3. Ejecuta de nuevo instalar.bat.
+
+Si una tienda concreta muestra un error, puede deberse a que
+la propia web bloquea temporalmente las consultas, que el
+producto no esta disponible o que la tienda no tiene una URL
+configurada para ese producto.
+
+Esto no significa necesariamente que Vino Tracker este mal
+instalado.
+
+
+VINO TRACKER
