@@ -1,0 +1,68 @@
+# Flor de Sal — .dockerignore
+# Excluye archivos innecesarios del contexto de build de Docker
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# Git
+.git/
+.gitignore
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Datos locales (la DB es la fuente del PC, no se versiona ni se copia en la imagen)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# Backups (se generan en runtime, no en build)
+backups/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Logs
+*.log
+logs/
+
+# Documentación local (opcional, para imagen más ligera)
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# Archivos de configuración de CI/CD (no necesarios en runtime)
+.github/
+.gitlab/
+
+# Tests (no necesarios en imagen de producción)
+tests/
+
+# Makefile, CHANGELOG, README (opcional, para imagen más ligera)
+Makefile
+CHANGELOG.md
+README.md
+AGENTS.md

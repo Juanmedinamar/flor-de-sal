@@ -21,6 +21,10 @@ from src import assimilation, markov, montecarlo, weather
 from src.alerts import descripcion_fase, evaluar_riesgos
 from src.config import Config, load_config
 from src.db import Database
+from src.log_config import get_logger
+
+# Logger para este módulo
+log = get_logger(__name__)
 
 
 def _ensure_forecast(db: Database, date: str, cfg: Config):
@@ -45,6 +49,9 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
     # Un único n_iter para MC y Márkov (auditoría M4: coherencia por construcción).
     if n_iter is None:
         n_iter = int(cfg.montecarlo.iterations)
+
+    log.info("run_daily start", extra={"date": date, "n_iter": n_iter})
+
     forecast = _ensure_forecast(db, date, cfg)
     readings = db.get_readings(date)
     bias = (assimilation.compute_bias(
@@ -59,6 +66,7 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
     # capas se derivan del mismo EnsembleResult (mismo seed → mismos números).
     ens = montecarlo.simulate_ensemble(ajuste, cfg, n_iter=n_iter,
                                        seed=cfg.montecarlo.seed)
+    log.info("run_daily ensemble done", extra={"date": date, "ensemble_n": n_iter})
     r = montecarlo.simulate_day_desde_ensemble(ens)
 
     # Curva de estados de Márkov (semáforo probabilístico hora a hora),
@@ -90,6 +98,16 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
         "hora_veredicto": hora_actual,
     }
     db.save_prediction(date, veredicto["computed_at"], veredicto)
+
+    log.info("run_daily end", extra={
+        "date": date,
+        "fase_actual": fase_actual,
+        "ventana_inicio": veredicto["ventana_inicio"],
+        "ventana_fin": veredicto["ventana_fin"],
+        "hora_optima": veredicto["hora_optima"],
+        "prob_ventana": veredicto["prob_ventana"],
+        "prob_riesgo": veredicto["prob_riesgo"],
+    })
     return veredicto
 
 

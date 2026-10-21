@@ -47,6 +47,7 @@ import pandas as pd
 from src import historical, montecarlo
 from src.config import Config, load_config
 from src.db import Database
+from src.log_config import get_logger, setup_logging
 from src.pipeline import _hhmm
 
 # Pre-importa los módulos pesados en el servidor "forkserver" (una sola vez por
@@ -54,6 +55,9 @@ from src.pipeline import _hhmm
 # en un proceso mono-hilo — rápido y sin el DeprecationWarning de Python 3.13
 # ("multi-threaded, use of fork()") que daría el "fork" directo.
 set_forkserver_preload(["pandas", "numpy"])
+
+# Logger para este script
+log = get_logger(__name__)
 
 
 def _calidad_dia(dia) -> str:
@@ -172,6 +176,8 @@ def run_season(start_date: str, end_date: str, n_iter: int,
     db = db or Database()
     db.init_schema()
 
+    log.info("season_simulation start", extra={"start_date": start_date, "end_date": end_date, "n_iter": n_iter})
+
     t0 = time.perf_counter()
     df = historical.fetch_archive(
         start_date, end_date,
@@ -182,6 +188,7 @@ def run_season(start_date: str, end_date: str, n_iter: int,
 
     n_workers = _resuelve_workers(workers, cfg)
     dias = list(historical.iter_days(df, start_date, end_date))
+    log.info("season_simulation days loaded", extra={"n_days": len(dias), "workers": n_workers})
     resultados = _simular_dias(dias, cfg, n_iter, n_workers)
 
     filas = [fila for fila, _prob, _optima in resultados]
@@ -192,8 +199,17 @@ def run_season(start_date: str, end_date: str, n_iter: int,
     n_guardadas = db.save_season_runs(start_date, end_date, filas)
     segundos = time.perf_counter() - t0
 
-    return _resumen(start_date, end_date, n_iter, filas, optimas, probs,
-                    calidad_rango, n_guardadas, segundos, db.path, n_workers)
+    resumen = _resumen(start_date, end_date, n_iter, filas, optimas, probs,
+                       calidad_rango, n_guardadas, segundos, db.path, n_workers)
+    log.info("season_simulation end", extra={
+        "n_dias": resumen["n_dias"],
+        "n_con_ventana": resumen["n_con_ventana"],
+        "prob_media": resumen["prob_media"],
+        "optima_mediana": resumen["optima_mediana"],
+        "segundos": segundos,
+        "workers": n_workers,
+    })
+    return resumen
 
 
 def _resumen(start_date: str, end_date: str, n_iter: int, filas: list[dict],
@@ -274,6 +290,9 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> dict:
     """CLI: resuelve el rango (opciones o config), simula la temporada e imprime el resumen."""
+    # Configura logging para CLI (stdout JSON, sin fichero)
+    setup_logging(level="INFO", json=True)
+
     args = _parse_args(argv)
     cfg = load_config()
 

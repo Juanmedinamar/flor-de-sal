@@ -1,0 +1,181 @@
+# Flor de Sal — CI Pipeline
+# Ejecuta en push y PR: lint, type-check, tests (cobertura ≥80%), smoke test de la app
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  PYTHON_VERSION: "3.13"
+  PIP_CACHE_DIR: ~/.cache/pip
+  RUFF_CACHE_DIR: ~/.cache/ruff
+  MYPY_CACHE_DIR: ~/.cache/mypy
+
+jobs:
+  # ----------------------------------------------------------------------
+  # Lint estático con ruff
+  # ----------------------------------------------------------------------
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            pyproject.toml
+
+      - name: Install ruff
+        run: pip install ruff==0.5.7
+
+      - name: Run ruff check
+        run: ruff check src/ tests/ scripts/ app/
+
+  # ----------------------------------------------------------------------
+  # Comprobación de tipos con mypy
+  # ----------------------------------------------------------------------
+  type:
+    name: Type-check (mypy)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            pyproject.toml
+
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]"
+          pip install mypy==1.10.0 types-requests types-pyyaml
+
+      - name: Run mypy
+        run: mypy src/
+
+  # ----------------------------------------------------------------------
+  # Tests unitarios + cobertura (excluye integración)
+  # ----------------------------------------------------------------------
+  test:
+    name: Tests (unit, coverage ≥80%)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            pyproject.toml
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run tests with coverage
+        run: |
+          pytest -m "not integration" \
+            --cov=src \
+            --cov-report=xml:coverage.xml \
+            --cov-report=term-missing \
+            --cov-fail-under=80 \
+            --junitxml=test-results.xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+          retention-days: 7
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results.xml
+          retention-days: 7
+
+  # ----------------------------------------------------------------------
+  # Smoke test de la app Streamlit (AppTest, 30 s timeout)
+  # ----------------------------------------------------------------------
+  app-smoke:
+    name: App smoke test (Streamlit AppTest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            pyproject.toml
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Init DB (schema)
+        run: python3 scripts/init_db.py
+
+      - name: Run AppTest smoke test
+        run: |
+          timeout 30 python3 -c "
+          from streamlit.testing.v1 import AppTest
+          at = AppTest.from_file('app/streamlit_app.py').run()
+          assert not at.exception, f'App raised exception: {at.exception}'
+          print('✅ AppTest smoke test passed: no exceptions')
+          "
+
+  # ----------------------------------------------------------------------
+  # Resumen final (opcional: gate que requiere todos los jobs verdes)
+  # ----------------------------------------------------------------------
+  summary:
+    name: CI Summary
+    needs: [lint, type, test, app-smoke]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check job statuses
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ]; then
+            echo "❌ Lint failed"
+            exit 1
+          fi
+          if [ "${{ needs.type.result }}" != "success" ]; then
+            echo "❌ Type-check failed"
+            exit 1
+          fi
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+          if [ "${{ needs.app-smoke.result }}" != "success" ]; then
+            echo "❌ App smoke test failed"
+            exit 1
+          fi
+          echo "✅ All CI checks passed"

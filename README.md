@@ -1,5 +1,11 @@
 # 🧂 Flor de Sal — Predictor de la hora óptima de recolección
 
+![CI](https://github.com/USER/REPO/workflows/CI/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)
+![Python](https://img.shields.io/badge/python-3.13-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Docker](https://img.shields.io/badge/docker-ready-blue)
+
 ![Salinas de Dueñas](app/assets/logo.png)
 
 App Python (Streamlit) que estima **con probabilidad** la ventana óptima de recolección de
@@ -241,6 +247,88 @@ móvil todo se apila a una columna y se lee cómodamente.
 > Consejo: el formulario guarda la hora del momento; ajústala con `time_input` si
 > transcribes lecturas al final del día. Cada guardado recalcula el veredicto.
 
+## Desarrollo — Makefile
+
+Todos los comandos habituales están en `Makefile`:
+
+```bash
+make init          # instala en modo editable con deps de dev (pytest, ruff, mypy…)
+make test          # tests rápidos (sin integración)
+make test-all      # todos los tests
+make cov           # cobertura ≥80% (excluye integración)
+make lint          # ruff check src/ tests/ scripts/ app/
+make fmt           # ruff fix + unsafe-fixes (idempotente)
+make type          # mypy src/ (Ola 3: strict progresivo)
+make run           # streamlit run app/streamlit_app.py
+make season        # python3 scripts/season_simulation.py (opcional START= END= ITERS= WORKERS=)
+make ingest        # python3 scripts/ingest_forecast.py (opcional DATE=YYYY-MM-DD)
+make db-init       # python3 scripts/init_db.py
+make health        # python3 scripts/healthcheck.py
+make backup        # python3 scripts/backup_db.py (opcional KEEP=N)
+make docker-build  # docker build -t flor-de-sal .
+make docker-up     # docker compose up -d
+make docker-down   # docker compose down
+make help          # lista todos los targets
+```
+
+## Docker (producción)
+
+```bash
+# Build multi-stage (builder → runtime, usuario no-root, healthcheck)
+docker build -t flor-de-sal .
+
+# Run con persistencia de BD y backups
+docker run -d \
+  -p 8501:8501 \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/backups:/app/backups \
+  --env-file .env \
+  --restart unless-stopped \
+  flor-de-sal
+
+# O con docker-compose (dev + prod override)
+docker compose up -d
+docker compose logs -f app
+```
+
+**Healthcheck** incluido: `GET /_stcore/health` cada 30s (timeout 10s). Ver `scripts/healthcheck.py`.
+
+## Logging estructurado
+
+- `src/log_config.py`: JSON lines en stdout + opcional `RotatingFileHandler` (5 MB, 3 backups).
+- Campos: `timestamp` (ISO UTC), `level`, `logger`, `message`, `module`, `funcName`, `lineno`, `extra...`.
+- Integrado en `scripts/season_simulation.py`, `scripts/ingest_forecast.py`, `src/pipeline.py`.
+- NO en UI (Streamlit gestiona su propio logging).
+
+```python
+from src.log_config import setup_logging, get_logger
+setup_logging(level="INFO", json=True, log_file="logs/app.log")
+log = get_logger(__name__)
+log.info("run_daily start", extra={"date": "2026-07-15", "n_iter": 1000})
+```
+
+## Backup de la BD
+
+```bash
+# Backup único
+python3 scripts/backup_db.py
+# → backups/flor_desal_20261021_061234.db
+
+# Conserva solo los 10 más recientes (ideal para cron)
+python3 scripts/backup_db.py --keep 10
+```
+
+Cron sugerido (diario 02:00, conserva 30 días):
+```
+0 2 * * * /usr/bin/python3 /ruta/proyecto/scripts/backup_db.py --keep 30
+```
+
+## CI/CD (GitHub Actions)
+
+- **Lint** (ruff), **Type-check** (mypy), **Tests** (pytest + coverage ≥80%), **App smoke test** (AppTest 30s).
+- Artefactos: `coverage.xml`, `test-results.xml`.
+- **Dependabot** semanal (pip + github-actions), PRs agrupados por `dev-tools` / `runtime`.
+
 ## Tests
 
 ```bash
@@ -261,44 +349,59 @@ python3 -m pytest tests/ -m "not integration"   # sin pruebas que piden red
 
 ```
 flor-de-sal/
-├── AGENTS.md               # memoria del proyecto (modelo, decisiones, convenciones)
-├── README.md               # este archivo
-├── config.yaml             # constantes de la salina y del modelo (calibrables)
-│                           #   sección season: rango e iteraciones de la temporada
+├── AGENTS.md                    # memoria del proyecto (modelo, decisiones, convenciones)
+├── README.md                    # este archivo
+├── CHANGELOG.md                 # Keep a Changelog + semver
+├── config.yaml                  # constantes de la salina y del modelo (calibrables)
+│                                #   sección season: rango e iteraciones de la temporada
 ├── requirements.txt
-├── .streamlit/config.toml  # tema (verde/teal #00695C) y servidor
+├── pyproject.toml               # build, deps, ruff, mypy, pytest config
+├── Makefile                     # targets: init, test, lint, fmt, type, run, season, ingest, docker…
+├── .pre-commit-config.yaml      # ruff, mypy, pytest (staged), yaml, whitespace
+├── .dockerignore
+├── Dockerfile                   # multi-stage builder → runtime, healthcheck, non-root
+├── docker-compose.yml           # dev + prod override, volumes data/ backups/
+├── .github/
+│   ├── workflows/ci.yml         # lint, type, test (cov≥80%), app-smoke
+│   └── dependabot.yml           # weekly pip + github-actions
+├── .streamlit/config.toml       # tema (verde/teal #00695C) y servidor
 ├── app/
-│   ├── streamlit_app.py    # punto de entrada delgado: set_page_config + main()
-│   │                       #   (sigue siendo el fichero de `streamlit run`)
-│   ├── assets/logo.png     # logo de la salina (favicon de la pestaña y cabecera)
-│   └── ui/                 # paquete con toda la interfaz:
-│       ├── constantes.py   #   colores, estados de Márkov, calibración, layout plotly
-│       ├── textos.py       #   textos compartidos en español (pie, leyenda, avisos)
-│       ├── helpers.py      #   formatos, estilos de tabla, gráficos y zona horaria
-│       ├── state.py        #   caché (Monte Carlo del día / season_runs) + session_state
-│       ├── sidebar.py      #   menú lateral: navegación, fecha, descarga, simulación
-│       ├── panel_hoy.py    #   sección 🌞 Hoy (veredicto, semáforo, campana, tabla…)
-│       ├── panel_temporada.py  # sección 📆 Temporada (KPIs y gráficas)
-│       └── main.py         #   cabecera, sección elegida y pie de fuentes
+│   ├── streamlit_app.py         # punto de entrada delgado: set_page_config + main()
+│   │                            #   (sigue siendo el fichero de `streamlit run`)
+│   ├── assets/logo.png          # logo de la salina (favicon de la pestaña y cabecera)
+│   └── ui/                      # paquete con toda la interfaz:
+│       ├── constantes.py        #   colores, estados de Márkov, calibración, layout plotly
+│       ├── textos.py            #   textos compartidos en español (pie, leyenda, avisos)
+│       ├── helpers.py           #   formatos, estilos de tabla, gráficos y zona horaria
+│       ├── state.py             #   caché (Monte Carlo del día / season_runs) + session_state
+│       ├── sidebar.py           #   menú lateral: navegación, fecha, descarga, simulación
+│       ├── panel_hoy.py         #   sección 🌞 Hoy (veredicto, semáforo, campana, tabla…)
+│       ├── panel_temporada.py   #   sección 📆 Temporada (KPIs y gráficas)
+│       └── main.py              #   cabecera, sección elegida y pie de fuentes
 ├── src/
-│   ├── config.py           # carga de config.yaml
-│   ├── weather.py          # previsión horaria (Open-Meteo)
-│   ├── historical.py       # meteorología observada (Open-Meteo Archive / ERA5)
-│   ├── db.py               # SQLite local (previsión, lecturas, predicciones,
-│   │                       #   season_runs)
-│   ├── physics.py          # evaporación, T del agua, concentración y fases
-│   ├── montecarlo.py       # 1000 escenarios → distribución de la hora óptima
-│   ├── markov.py           # cadena de Márkov → curva de estados por hora
-│   ├── assimilation.py     # corrección por sesgo (real − previsto)
-│   ├── alerts.py           # semáforo de fases y alertas
-│   └── pipeline.py         # run_daily / recalc_with_field_data → veredicto
+│   ├── config.py                # carga de config.yaml
+│   ├── weather.py               # previsión horaria (Open-Meteo)
+│   ├── historical.py            # meteorología observada (Open-Meteo Archive / ERA5)
+│   ├── db.py                    # SQLite local (previsión, lecturas, predicciones,
+│   │                            #   season_runs)
+│   ├── physics.py               # evaporación, T del agua, concentración y fases
+│   ├── montecarlo.py            # 1000 escenarios → distribución de la hora óptima
+│   ├── markov.py                # cadena de Márkov → curva de estados por hora
+│   ├── assimilation.py          # corrección por sesgo (real − previsto)
+│   ├── alerts.py                # semáforo de fases y alertas
+│   ├── pipeline.py              # run_daily / recalc_with_field_data → veredicto
+│   ├── log_config.py            # logging JSON + rotación (sin deps externas)
+│   └── errors.py                # jerarquía de excepciones
 ├── scripts/
-│   ├── init_db.py          # crea el esquema de la DB
-│   ├── ingest_forecast.py  # descarga y guarda la previsión del día
-│   └── season_simulation.py# simula la temporada y guarda en season_runs
-├── tests/                  # pytest (física, Monte Carlo, DB, temporada y
-│                           #   humo de la UI con streamlit AppTest)
-└── data/flor_desal.db      # SQLite local (se crea sola; no se versiona)
+│   ├── init_db.py               # crea el esquema de la DB
+│   ├── ingest_forecast.py       # descarga y guarda la previsión del día
+│   ├── season_simulation.py     # simula la temporada y guarda en season_runs
+│   ├── healthcheck.py           # HTTP GET /_stcore/health (Docker HEALTHCHECK)
+│   └── backup_db.py             # sqlite3 backup → backups/flor_desal_YYYYMMDD_HHMMSS.db
+├── tests/                       # pytest (física, Monte Carlo, DB, temporada y
+│                                #   humo de la UI con streamlit AppTest)
+├── data/flor_desal.db           # SQLite local (se crea sola; no se versiona)
+└── backups/                     # backups de la BD (no se versionan; .gitignore)
 ```
 
 ## Notas

@@ -10,10 +10,32 @@ data/*.db-journal
 data/*.db-wal
 data/*.db-shm
 
+# Backups de BD (generados por scripts/backup_db.py)
+backups/
+
+# Logs
+logs/
+*.log
+
 # Streamlit
 .streamlit/secrets.toml
 
 # Cachés de herramientas
 .ruff_cache/
+.mypy_cache/
 .coverage
 htmlcov/
+*.egg-info/
+dist/
+build/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

@@ -132,3 +132,37 @@ def test_seccion_temporada_sin_excepciones() -> None:
     assert "Días con ventana por mes" in visibles
     assert "Top-10 mejores días" in visibles
     assert "Fuente del modelo" in visibles            # pie
+
+
+def test_panel_calibracion_cambia_dalton_session_state() -> None:
+    """Cambia dalton_a/b en el panel de calibración y verifica session_state.
+
+    Los sliders están accesibles aunque el expander esté colapsado (Streamlit
+    renderiza los widgets internos), así que no hace falta abrirlo explícitamente.
+    """
+    at = _abrir().run()
+    assert at.exception == [], f"excepción al abrir: {at.exception}"
+
+    # Valores por defecto iniciales (de config.yaml)
+    dalton_a_default = at.session_state.get("calib_dalton_a")
+    dalton_b_default = at.session_state.get("calib_dalton_b")
+    assert dalton_a_default is not None, "calib_dalton_a no inicializado"
+    assert dalton_b_default is not None, "calib_dalton_b no inicializado"
+
+    # Cambiar dalton_a (slider key="calib_dalton_a")
+    nuevo_a = round(dalton_a_default + 0.1, 2)
+    at.slider(key="calib_dalton_a").set_value(nuevo_a).run()
+    assert at.exception == [], f"excepción al cambiar dalton_a: {at.exception}"
+    assert at.session_state.get("calib_dalton_a") == nuevo_a, \
+        f"session_state dalton_a no actualizado: {at.session_state.get('calib_dalton_a')} != {nuevo_a}"
+
+    # Cambiar dalton_b (slider key="calib_dalton_b")
+    nuevo_b = round(dalton_b_default + 0.1, 2)
+    at.slider(key="calib_dalton_b").set_value(nuevo_b).run()
+    assert at.exception == [], f"excepción al cambiar dalton_b: {at.exception}"
+    assert at.session_state.get("calib_dalton_b") == nuevo_b, \
+        f"session_state dalton_b no actualizado: {at.session_state.get('calib_dalton_b')} != {nuevo_b}"
+
+    # Verificar que ambos cambios persisten en session_state
+    assert at.session_state.get("calib_dalton_a") == nuevo_a
+    assert at.session_state.get("calib_dalton_b") == nuevo_b
