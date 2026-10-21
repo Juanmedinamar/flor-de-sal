@@ -75,7 +75,7 @@ def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
     """Núcleo vectorizado: muestrea el día n veces y devuelve matrices crudas."""
     rng = np.random.default_rng(seed)
     m = cfg.montecarlo
-    h0, h1 = float(cfg.simulation.hora_inicio), float(cfg.simulation.hora_fin)
+    _h0, h1 = float(cfg.simulation.hora_inicio), float(cfg.simulation.hora_fin)
 
     # Muestreo: T, HR y V con ruido gausiano truncado (corrigido por sesgo si hay)
     t_air = (base["temp_c"].to_numpy(float)[None, :]

@@ -69,7 +69,7 @@ ESTADOS: tuple[str, ...] = ("inactivo", "concentracion_critica", "nucleacion",
 _N_ESTADOS = 5
 
 
-def estados_por_escenario(ens: "EnsembleResult", cfg: Config) -> np.ndarray:
+def estados_por_escenario(ens: EnsembleResult, cfg: Config) -> np.ndarray:
     """Convierte las fases del ensemble en ids de estado de la cadena (0-4).
 
     Reglas (una por fase de alerts.evaluar_fase):

@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flor-de-sal"
+version = "0.2.0"
+description = "Predictor probabilístico (Monte Carlo + Márkov) de la hora óptima de recolección de flor de sal"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "streamlit>=1.38",
+    "requests>=2.31",
+    "pandas>=2.0",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pyyaml>=6.0",
+    "plotly>=5.20",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "types-pyyaml",
+    "types-requests",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*", "app*", "scripts*"]
+
+# --------------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["__pycache__", ".ruff_cache"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle (errores)
+    "W",    # pycodestyle (avisos)
+    "F",    # pyflakes
+    "I",    # orden de imports
+    "UP",   # modernizaciones de Python
+    "B",    # bugs comunes (flake8-bugbear)
+    "SIM",  # simplificaciones
+    "C4",   # comprehensions
+    "RUF",  # reglas propias de ruff
+    "PTH",  # pathlib en vez de os.path
+    "T20",  # print() prohibido en src/ y app/ (scripts lo permiten vía noqa)
+    "PIE",  # errores misceláneos de estilo
+    "RET",  # return innecesarios
+    "TID",  # imports relativos prohibidos
+]
+ignore = [
+    "E501",    # líneas largas: lo decide el formatter, no un error
+    "B008",    # llamadas en defaults de Streamlit (st.* en parámetros) — patrón framework
+    "SIM108",  # ternarias: a menudo menos legibles que el if explícito
+    "RUF012",  # ClassVar en atributos de clase (no usamos mutables de clase tipados)
+    "RUF002",  # docstrings en español: tipografía (−, ×, –) correcta e intencionada
+    "RUF003",  # comentarios en español: misma razón que RUF002
+    "RUF001",  # strings en español/UI: misma razón que RUF002 (σ, −, –)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# scripts/ es CLI: print() es su salida legítima
+"scripts/**" = ["T20"]
+# app/ es UI Streamlit: print ocasional en diagnósticos + noqa legacy heredado
+"app/**" = ["T20"]
+# tests pueden usar prints de depuración y imports directos
+"tests/**" = ["T20", "E402", "TID"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "app", "scripts"]
+
+# --------------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+no_implicit_optional = true
+check_untyped_defs = true
+disallow_untyped_defs = false        # progresivo: subir a true módulo a módulo
+ignore_missing_imports = false
+show_error_codes = true
+exclude = [
+    "^(build/|dist/|\\.venv/|__pycache__/)",
+]
+
+[[tool.mypy.overrides]]
+module = ["plotly.*", "streamlit.testing.*"]
+ignore_missing_imports = true
+
+# -------------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "integration: prueba que necesita red real (saltar con -m 'not integration')",
+]

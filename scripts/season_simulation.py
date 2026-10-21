@@ -30,10 +30,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src import historical, montecarlo  # noqa: E402
-from src.config import Config, load_config  # noqa: E402
-from src.db import Database  # noqa: E402
-from src.pipeline import _hhmm  # noqa: E402
+from src import historical, montecarlo
+from src.config import Config, load_config
+from src.db import Database
+from src.pipeline import _hhmm
 
 
 def _calidad_dia(dia) -> str:

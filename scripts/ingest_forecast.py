@@ -17,9 +17,9 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.config import load_config  # noqa: E402
-from src.db import Database  # noqa: E402
-from src.weather import fetch_forecast  # noqa: E402
+from src.config import load_config
+from src.db import Database
+from src.weather import fetch_forecast
 
 
 def main() -> None:

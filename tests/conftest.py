@@ -13,7 +13,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.config import load_config  # noqa: E402
+from src.config import load_config
 
 
 def pytest_configure(config):
@@ -27,7 +27,7 @@ def cfg():
 
 
 def _day(rows: list[tuple]) -> pd.DataFrame:
-    hours, t, hr, v, rad = zip(*rows)
+    hours, t, hr, v, rad = zip(*rows, strict=False)
     return pd.DataFrame({
         "hour": list(hours),
         "temp_c": list(t),

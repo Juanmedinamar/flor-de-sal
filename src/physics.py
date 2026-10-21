@@ -32,7 +32,7 @@ def psat_hpa(t_c: float) -> float:
     return 6.1078 * math.exp(17.27 * t_c / (t_c + 237.3))
 
 
-def psat_hpa_arr(t_c: "np.ndarray") -> "np.ndarray":
+def psat_hpa_arr(t_c: np.ndarray) -> np.ndarray:
     """Versión vectorizada de psat_hpa (misma fórmula) para el Monte Carlo."""
     return 6.1078 * np.exp(17.27 * t_c / (t_c + 237.3))
 

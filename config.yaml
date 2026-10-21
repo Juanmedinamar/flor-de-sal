@@ -56,6 +56,11 @@ limits:
   hr_peligro_pct: 65.0          # película se rehidrata / disuelve
   temp_activacion_c: 28.0       # temperatura mínima para que "arranque" el proceso
 
+assimilation:
+  # Corrección por sesgo (rolling forecast): media de (real − previsto) de las
+  # últimas `max_hours_back` horas con lecturas (auditoría M3: era 6 hardcodeado).
+  max_hours_back: 6
+
 season:
   # Simulación histórica de temporada (Open-Meteo Archive / ERA5)
   start_date: "2026-04-01"
@@ -67,4 +72,7 @@ markov:
   # Cadenas de Márkov de los estados de la balsa (PDF pág. 8, §2)
   estados: ["inactivo", "concentracion_critica", "nucleacion", "ventana", "degradacion"]
   margen_critico_g_l: 15.0      # "concentración crítica" = a <15 g/l del umbral
-  iterations: 1000              # ensemble con el que se estiman las transiciones
+  # NOTA (auditoría M4): en el pipeline la coherencia MC↔Márkov se garantiza
+  # resolviendo UN solo n_iter (montecarlo.iterations) y pasándolo a ambas capas;
+  # este valor solo se usa al llamar a markov.* directamente sin n_iter.
+  iterations: 1000              # debe coincidir con montecarlo.iterations

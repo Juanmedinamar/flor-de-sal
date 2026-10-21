@@ -43,8 +43,8 @@ Notas de implementación (temporada):
 """
 from __future__ import annotations
 
+from collections.abc import Iterator
 from datetime import date, datetime, timedelta
-from typing import Iterator
 
 import pandas as pd
 import requests

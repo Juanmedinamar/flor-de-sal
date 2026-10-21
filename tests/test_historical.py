@@ -12,8 +12,7 @@ import pandas as pd
 import pytest
 import requests
 
-from src.historical import (API_URL, COLUMNAS, COLUMNAS_DIA, calidad_datos,
-                            fetch_archive, iter_days)
+from src.historical import API_URL, COLUMNAS, COLUMNAS_DIA, calidad_datos, fetch_archive, iter_days
 
 INICIO = "2026-06-01"
 FIN = "2026-06-07"
@@ -106,7 +105,7 @@ def test_parseo_columnas_exactas_tipos_y_multi_dia(mock_get: MagicMock) -> None:
     assert primera["wind_dir_deg"] == pytest.approx(180.0)
     assert primera["radiation_w_m2"] == pytest.approx(0.0)
     # el orden cronológico global se respeta
-    claves = list(zip(df["date"], df["hour"]))
+    claves = list(zip(df["date"], df["hour"], strict=False))
     assert claves == sorted(claves)
 
 
@@ -164,7 +163,7 @@ def test_tramos_concatenados_sin_duplicados_ni_desorden(mock_get: MagicMock) -> 
 
     df = fetch_archive("2026-04-15", "2026-05-10", 37.8882, -4.7794)
 
-    claves = list(zip(df["date"], df["hour"]))
+    claves = list(zip(df["date"], df["hour"], strict=False))
     assert len(claves) == len(set(claves)), "hay filas duplicadas (date, hour)"
     assert claves == sorted(claves), "las filas no están ordenadas por (date, hour)"
     assert df["date"].min() >= "2026-04-15" and df["date"].max() <= "2026-05-10"
@@ -247,7 +246,7 @@ def test_iter_days_contrato_de_un_dia() -> None:
     dias = list(iter_days(_df_tres_dias()))
 
     assert [f for f, _ in dias] == ["2026-06-01", "2026-06-02", "2026-06-04"]
-    for fecha, dia in dias:
+    for _fecha, dia in dias:
         assert list(dia.columns) == COLUMNAS_DIA
         assert "date" not in dia.columns
         assert len(dia) <= 24

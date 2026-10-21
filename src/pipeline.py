@@ -32,9 +32,15 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
     AGENTS.md) y lo persiste con db.save_prediction.
     """
     cfg = cfg or load_config()
+    # Un único n_iter para MC y Márkov (auditoría M4: coherencia por construcción).
+    if n_iter is None:
+        n_iter = int(cfg.montecarlo.iterations)
     forecast = _ensure_forecast(db, date, cfg)
     readings = db.get_readings(date)
-    bias = assimilation.compute_bias(forecast, readings) if len(readings) else {}
+    bias = (assimilation.compute_bias(
+        forecast, readings,
+        max_hours_back=int(cfg.assimilation.max_hours_back))
+        if len(readings) else {})
     ajuste = assimilation.apply_bias(forecast, bias) if bias else forecast
     r = montecarlo.simulate_day(ajuste, cfg, n_iter=n_iter)
 
@@ -83,7 +89,7 @@ def _hhmm(x: float | None) -> str | None:
     if x is None or (isinstance(x, float) and math.isnan(x)):
         return None
     h = int(x)
-    m = int(round((x - h) * 60))
+    m = round((x - h) * 60)
     if m == 60:
         h, m = h + 1, 0
     return f"{h:02d}:{m:02d}"

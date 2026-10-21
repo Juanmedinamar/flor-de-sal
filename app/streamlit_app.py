@@ -33,21 +33,22 @@ import os
 import re
 import subprocess
 import sys
-from datetime import date, datetime, time as Hora
+from datetime import date, datetime
+from datetime import time as Hora
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-import numpy as np  # noqa: E402
-import pandas as pd  # noqa: E402
-import plotly.graph_objects as go  # noqa: E402
-import streamlit as st  # noqa: E402
-from plotly.colors import sequential as _SEQUENTIAL  # noqa: E402
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+import streamlit as st
+from plotly.colors import sequential as _SEQUENTIAL
 
-from src import assimilation, montecarlo, physics, weather  # noqa: E402
-from src.config import DB_PATH, Config, load_config  # noqa: E402
-from src.db import Database  # noqa: E402
-from src.pipeline import _hhmm, run_daily  # noqa: E402
+from src import assimilation, montecarlo, physics, weather
+from src.config import DB_PATH, Config, load_config
+from src.db import Database
+from src.pipeline import _hhmm, run_daily
 
 # Logo de la salina (app/assets/logo.png): favicon de la pestaña y cabecera.
 # Si no existe, se usa el emoji 🧂 como marca de agua (no debe romper el arranque).
@@ -226,7 +227,7 @@ def _calcular(fecha: str, n_lecturas: int, calibracion: tuple,
     incrementa al descargar previsión o guardar lecturas, y la hora del sistema
     (cambio de fase a mitad de día).
     """
-    cfg = _cfg_calibrado(dict(zip([s["key"] for s in CALIB], calibracion)))
+    cfg = _cfg_calibrado(dict(zip([s["key"] for s in CALIB], calibracion, strict=False)))
     db = Database(db_ruta)
     veredicto = run_daily(db, fecha, cfg=cfg)
     datos: dict = {"veredicto": veredicto, "tabla": None, "forecast": None,
@@ -324,7 +325,7 @@ def _ejecutar_simulacion_temporada() -> None:
     st.session_state["salida_temporada"] = salida.strip()
     st.session_state["rev_temporada"] = _rev_temporada() + 1
     if r.returncode == 0:
-        resumen = next((l for l in salida.splitlines() if l.startswith("Días simulados")),
+        resumen = next((ln for ln in salida.splitlines() if ln.startswith("Días simulados")),
                        "temporada guardada en la tabla season_runs")
         st.session_state["aviso"] = ("ok", f"✅ Temporada simulada: {resumen}.")
     else:
@@ -532,7 +533,7 @@ def _panel_campana(datos: dict) -> None:
                       annotation_position="top", annotation_font_size=11)
     fig.add_trace(go.Bar(
         x=horas, y=probs, name="Densidad",
-        marker=dict(color=TEAL, line=dict(width=0)), opacity=0.9,
+        marker={"color": TEAL, "line": {"width": 0}}, opacity=0.9,
         customdata=[_hhmm(float(h)) for h in horas],
         hovertemplate="Hora %{customdata}<br>densidad %{y:.3f}<extra></extra>",
     ))
@@ -548,10 +549,10 @@ def _panel_campana(datos: dict) -> None:
                      zeroline=False)
     fig.update_layout(
         barmode="overlay", height=380, bargap=0.05,
-        margin=dict(l=10, r=10, t=45, b=10),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+        margin={"l": 10, "r": 10, "t": 45, "b": 10},
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "x": 0},
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#212121"),
+        font={"color": "#212121"},
     )
     st.plotly_chart(fig, width="stretch", theme="streamlit",
                     config={"displayModeBar": False})
@@ -576,7 +577,7 @@ def _panel_semaforo(datos: dict) -> None:
         fig.add_trace(go.Scatter(
             x=horas, y=vals, name=nombre, mode="lines", stackgroup="one",
             customdata=[_hhmm(h) for h in horas],
-            line=dict(color=color, width=1),
+            line={"color": color, "width": 1},
             fillcolor=color,
             hovertemplate="Hora %{customdata}<br>%{y:.0f} % · " + nombre +
                           "<extra></extra>",
@@ -608,11 +609,11 @@ def _panel_semaforo(datos: dict) -> None:
     fig.update_yaxes(title="Probabilidad (%)", range=[0, 100], dtick=25,
                      gridcolor="#E0E0E0", zeroline=False)
     fig.update_layout(
-        height=380, margin=dict(l=10, r=10, t=45, b=10),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+        height=380, margin={"l": 10, "r": 10, "t": 45, "b": 10},
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "x": 0},
         hovermode="x unified",
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#212121"),
+        font={"color": "#212121"},
     )
     st.plotly_chart(fig, width="stretch", theme="streamlit",
                     config={"displayModeBar": False})
@@ -663,42 +664,42 @@ def _panel_prevision_lecturas(datos: dict, db: Database, fecha_s: str) -> None:
         ("💧 HR (%)", "rh_pct", "rh_pct", "%"),
         ("🍃 Viento (m/s)", "wind_ms", "wind_ms", "m/s"),
     ]
-    for col, (titulo, c_prev, c_lec, unidad) in zip(st.columns(3), specs):
+    for col, (titulo, c_prev, c_lec, unidad) in zip(st.columns(3), specs, strict=False):
         with col:
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=prev["hour"].astype(float), y=prev[c_prev].astype(float),
-                mode="lines", name="Previsión", line=dict(color=TEAL, width=2.5),
+                mode="lines", name="Previsión", line={"color": TEAL, "width": 2.5},
                 hovertemplate="%{x:.0f}:00 · %{y:.1f} " + unidad +
                               "<extra>Previsión</extra>",
             ))
             lec = lecturas.dropna(subset=[c_lec])
             xs = [_hhmm_decimal(t) for t in lec["reading_time"]]
             ys = pd.to_numeric(lec[c_lec], errors="coerce")
-            con_datos = [(x, float(y)) for x, y in zip(xs, ys)
+            con_datos = [(x, float(y)) for x, y in zip(xs, ys, strict=False)
                          if x is not None and pd.notna(y)]
             if con_datos:
                 fig.add_trace(go.Scatter(
                     x=[c[0] for c in con_datos], y=[c[1] for c in con_datos],
                     mode="markers", name="Lecturas",
-                    marker=dict(color=ROJO, size=8, line=dict(width=1, color="#FFFFFF")),
+                    marker={"color": ROJO, "size": 8, "line": {"width": 1, "color": "#FFFFFF"}},
                     customdata=[_hhmm(c[0]) for c in con_datos],
                     hovertemplate="%{customdata} · %{y:.1f} " + unidad +
                                   "<extra>Lectura real</extra>",
                 ))
             fig.update_layout(
-                height=250, margin=dict(l=5, r=5, t=34, b=5), title=titulo,
+                height=250, margin={"l": 5, "r": 5, "t": 34, "b": 5}, title=titulo,
                 title_font_size=13, showlegend=False,
                 paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(color="#212121", size=11),
+                font={"color": "#212121", "size": 11},
                 hovermode="closest",
             )
-            eje_x = dict(range=[0, 24], dtick=6, tickvals=list(range(0, 25, 6)),
-                         ticktext=[f"{t:02d}:00" for t in range(0, 25, 6)],
-                         gridcolor="#E0E0E0", zeroline=False)
-            eje_y = dict(range=[0, 100], dtick=50, gridcolor="#E0E0E0",
-                         zeroline=False) if c_prev == "rh_pct" else \
-                    dict(gridcolor="#E0E0E0", zeroline=False)
+            eje_x = {"range": [0, 24], "dtick": 6, "tickvals": list(range(0, 25, 6)),
+                         "ticktext": [f"{t:02d}:00" for t in range(0, 25, 6)],
+                         "gridcolor": "#E0E0E0", "zeroline": False}
+            eje_y = {"range": [0, 100], "dtick": 50, "gridcolor": "#E0E0E0",
+                         "zeroline": False} if c_prev == "rh_pct" else \
+                    {"gridcolor": "#E0E0E0", "zeroline": False}
             fig.update_xaxes(**eje_x)
             fig.update_yaxes(**eje_y)
             st.plotly_chart(fig, width="stretch", theme="streamlit",
@@ -751,14 +752,14 @@ def _panel_evolucion(db: Database, fecha_s: str) -> None:
     sup = [f["ci1"] if f["ci1"] is not None else f["opt"] for f in con]
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=xs, y=sup, mode="lines", name="IC 95 %",
-                             line=dict(width=0), hoverinfo="skip", showlegend=False))
+                             line={"width": 0}, hoverinfo="skip", showlegend=False))
     fig.add_trace(go.Scatter(x=xs, y=inf, mode="lines", name="IC 95 %",
-                             line=dict(width=0), fill="tonexty",
+                             line={"width": 0}, fill="tonexty",
                              fillcolor="rgba(0,105,92,0.20)",
                              hoverinfo="skip", showlegend=False))
     fig.add_trace(go.Scatter(
         x=xs, y=[f["opt"] for f in con], mode="lines+markers", name="Hora óptima",
-        line=dict(color=TEAL, width=2.5), marker=dict(color=TEAL, size=8),
+        line={"color": TEAL, "width": 2.5}, marker={"color": TEAL, "size": 8},
         customdata=[(f["hora"], _hhmm(f["opt"]) or "—", f"{f['pv']:.0%}",
                      _hhmm(f["ci0"]) or "—", _hhmm(f["ci1"]) or "—") for f in con],
         hovertemplate="cálculo %{customdata[0]}<br>óptima %{customdata[1]} "
@@ -780,10 +781,10 @@ def _panel_evolucion(db: Database, fecha_s: str) -> None:
                      title="Hora óptima", range=[ymin - 0.5, ymax + 0.5],
                      gridcolor="#E0E0E0", zeroline=False)
     fig.update_layout(
-        height=340, margin=dict(l=10, r=10, t=40, b=10),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+        height=340, margin={"l": 10, "r": 10, "t": 40, "b": 10},
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "x": 0},
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#212121"),
+        font={"color": "#212121"},
     )
     st.plotly_chart(fig, width="stretch", theme="streamlit",
                     config={"displayModeBar": False})
@@ -1005,19 +1006,19 @@ def _mapa_calor_temporada(df: pd.DataFrame) -> None:
         z=z, x=list(range(1, 32)), y=[MESES_CORTO[m - 1] for m in meses],
         text=texto, colorscale=escala, zmin=zmin, zmax=zmax,
         xgap=1, ygap=1, hovertemplate="%{text}<extra></extra>",
-        colorbar=dict(title="Hora", title_font_size=11, thickness=14, len=0.9,
-                      tickvals=ticks_hora,
-                      ticktext=[_hhmm(t) or "" for t in ticks_hora],
-                      tickfont_size=10),
+        colorbar={"title": "Hora", "title_font_size": 11, "thickness": 14, "len": 0.9,
+                      "tickvals": ticks_hora,
+                      "ticktext": [_hhmm(t) or "" for t in ticks_hora],
+                      "tickfont_size": 10},
     ))
     fig.update_xaxes(dtick=2, tickfont_size=10, title="Día del mes",
                      gridcolor="#FFFFFF", zeroline=False)
     fig.update_yaxes(autorange="reversed", tickfont_size=11, title="Mes",
                      gridcolor="#FFFFFF", zeroline=False)
     fig.update_layout(
-        height=400, margin=dict(l=10, r=10, t=45, b=10),
+        height=400, margin={"l": 10, "r": 10, "t": 45, "b": 10},
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#212121"),
+        font={"color": "#212121"},
     )
     st.plotly_chart(fig, width="stretch", theme="streamlit",
                     config={"displayModeBar": False})
@@ -1032,9 +1033,9 @@ def _serie_prob_temporada(df: pd.DataFrame) -> None:
     y = df["prob_ventana"].astype(float).fillna(0.0)   # día sin ventana → 0
     fig = go.Figure(go.Scatter(
         x=df["fecha"], y=y, mode="lines", name="Probabilidad",
-        line=dict(color=TEAL, width=2), fill="tozeroy",
+        line={"color": TEAL, "width": 2}, fill="tozeroy",
         fillcolor="rgba(0,105,92,0.25)",
-        customdata=[f"{d} · {p:.0%}" for d, p in zip(df["date"], y)],
+        customdata=[f"{d} · {p:.0%}" for d, p in zip(df["date"], y, strict=False)],
         hovertemplate="%{customdata}<extra></extra>",
     ))
     fig.add_hline(y=0.5, line_dash="dot", line_color=ROJO, line_width=2,
@@ -1043,9 +1044,9 @@ def _serie_prob_temporada(df: pd.DataFrame) -> None:
     fig.update_yaxes(title="Probabilidad de ventana", range=[0, 1], dtick=0.25,
                      tickformat=".0%", gridcolor="#E0E0E0", zeroline=False)
     fig.update_layout(
-        height=320, margin=dict(l=10, r=10, t=40, b=10), showlegend=False,
+        height=320, margin={"l": 10, "r": 10, "t": 40, "b": 10}, showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#212121"),
+        font={"color": "#212121"},
     )
     st.plotly_chart(fig, width="stretch", theme="streamlit",
                     config={"displayModeBar": False})
@@ -1068,14 +1069,14 @@ def _hist_cobertura_temporada(df: pd.DataFrame) -> None:
         conteo = pd.Series(bins).value_counts().sort_index()
         fig = go.Figure(go.Bar(
             x=[float(i) for i in conteo.index], y=[int(v) for v in conteo.values],
-            width=0.45, marker=dict(color=TEAL, line=dict(width=1, color="#FFFFFF")),
+            width=0.45, marker={"color": TEAL, "line": {"width": 1, "color": "#FFFFFF"}},
             customdata=[_hhmm(float(i)) for i in conteo.index],
             hovertemplate="Óptima %{customdata}<br>%{y} día(s)<extra></extra>",
         ))
         _ejes_horas(fig, titulo_y="Días")
-        fig.update_layout(height=320, margin=dict(l=10, r=10, t=10, b=10),
+        fig.update_layout(height=320, margin={"l": 10, "r": 10, "t": 10, "b": 10},
                           paper_bgcolor="rgba(0,0,0,0)",
-                          plot_bgcolor="rgba(0,0,0,0)", font=dict(color="#212121"))
+                          plot_bgcolor="rgba(0,0,0,0)", font={"color": "#212121"})
         st.plotly_chart(fig, width="stretch", theme="streamlit",
                         config={"displayModeBar": False})
         st.caption(f"Bines de 30 min sobre los {len(con)} días con ventana.")
@@ -1090,7 +1091,7 @@ def _hist_cobertura_temporada(df: pd.DataFrame) -> None:
                for h in horas]
         fig2 = go.Figure(go.Scatter(
             x=horas, y=cob, mode="lines", name="Cobertura",
-            line=dict(color="#2E7D32", width=2.5), fill="tozeroy",
+            line={"color": "#2E7D32", "width": 2.5}, fill="tozeroy",
             fillcolor="rgba(46,125,50,0.20)",
             customdata=[_hhmm(h) for h in horas],
             hovertemplate="%{customdata} · %{y:.0f} % de días<extra></extra>",
@@ -1099,16 +1100,16 @@ def _hist_cobertura_temporada(df: pd.DataFrame) -> None:
         if cob[i_pico] > 0:
             fig2.add_trace(go.Scatter(
                 x=[horas[i_pico]], y=[cob[i_pico]], mode="markers+text",
-                marker=dict(color=ROJO, size=8),
+                marker={"color": ROJO, "size": 8},
                 text=[f"{_hhmm(horas[i_pico])} · {cob[i_pico]:.0f} %"],
-                textposition="top center", textfont=dict(color=ROJO, size=11),
+                textposition="top center", textfont={"color": ROJO, "size": 11},
                 showlegend=False, hoverinfo="skip",
             ))
         _ejes_horas(fig2, titulo_y="% de días", rango_y=[0, 100])
         fig2.update_yaxes(dtick=25)
-        fig2.update_layout(height=320, margin=dict(l=10, r=10, t=10, b=10),
+        fig2.update_layout(height=320, margin={"l": 10, "r": 10, "t": 10, "b": 10},
                            paper_bgcolor="rgba(0,0,0,0)",
-                           plot_bgcolor="rgba(0,0,0,0)", font=dict(color="#212121"))
+                           plot_bgcolor="rgba(0,0,0,0)", font={"color": "#212121"})
         st.plotly_chart(fig2, width="stretch", theme="streamlit",
                         config={"displayModeBar": False})
         st.caption(f"Cálculo sobre los {len(df)} días simulados: recuento de días "
@@ -1120,7 +1121,7 @@ def _ejes_horas(fig: go.Figure, titulo_y: str = "", rango_y: list | None = None)
     ticks = list(range(6, 22, 2))
     fig.update_xaxes(tickvals=ticks, ticktext=[f"{t:02d}:00" for t in ticks],
                      gridcolor="#E0E0E0", zeroline=False)
-    ejey: dict = dict(title=titulo_y, gridcolor="#E0E0E0", zeroline=False)
+    ejey: dict = {"title": titulo_y, "gridcolor": "#E0E0E0", "zeroline": False}
     if rango_y:
         ejey["range"] = rango_y
     fig.update_yaxes(**ejey)
@@ -1139,8 +1140,8 @@ def _box_temporada(df: pd.DataFrame) -> None:
         fig.add_trace(go.Box(
             y=sub["hora_dec"].to_numpy(), name=MESES_CORTO[m - 1],
             boxpoints="all", jitter=0.35, pointpos=0,   # todos los puntos, dispersados
-            marker=dict(color=TEAL, size=4, opacity=0.55),
-            line=dict(color=TEAL, width=2), fillcolor="rgba(0,105,92,0.15)",
+            marker={"color": TEAL, "size": 4, "opacity": 0.55},
+            line={"color": TEAL, "width": 2}, fillcolor="rgba(0,105,92,0.15)",
             customdata=[_hhmm(float(v)) for v in sub["hora_dec"]],
             hovertemplate="%{customdata}<extra></extra>",
             showlegend=False,
@@ -1153,9 +1154,9 @@ def _box_temporada(df: pd.DataFrame) -> None:
                      title="Hora óptima", range=[ymin - 0.5, ymax + 0.5],
                      gridcolor="#E0E0E0", zeroline=False)
     fig.update_layout(
-        height=340, margin=dict(l=10, r=10, t=10, b=10), showlegend=False,
+        height=340, margin={"l": 10, "r": 10, "t": 10, "b": 10}, showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#212121"),
+        font={"color": "#212121"},
     )
     st.plotly_chart(fig, width="stretch", theme="streamlit",
                     config={"displayModeBar": False})
@@ -1173,26 +1174,26 @@ def _barras_temporada(df: pd.DataFrame) -> None:
     tot = [int(totales.get(m, 0)) for m in meses]
     con = [int(con_ventana.get(m, 0)) for m in meses]
     etiquetas = [f"{c}/{t} · {100.0 * c / t:.0f} %" if t else ""
-                 for c, t in zip(con, tot)]
+                 for c, t in zip(con, tot, strict=False)]
     nombres = [MESES_CORTO[m - 1] for m in meses]
 
     fig = go.Figure()
     fig.add_trace(go.Bar(
-        x=nombres, y=con, name="Con ventana", marker=dict(color=TEAL),
-        text=etiquetas, textposition="inside", textfont=dict(color="#FFFFFF", size=11),
+        x=nombres, y=con, name="Con ventana", marker={"color": TEAL},
+        text=etiquetas, textposition="inside", textfont={"color": "#FFFFFF", "size": 11},
         customdata=[f"{MESES[m - 1]}" for m in meses],
         hovertemplate="%{customdata}<br>%{y} días con ventana<extra></extra>",
     ))
     fig.add_trace(go.Bar(
-        x=nombres, y=[t - c for t, c in zip(tot, con)], name="Sin ventana",
-        marker=dict(color=GRIS_CELDA, line=dict(color="#BDBDBD", width=1)),
+        x=nombres, y=[t - c for t, c in zip(tot, con, strict=False)], name="Sin ventana",
+        marker={"color": GRIS_CELDA, "line": {"color": "#BDBDBD", "width": 1}},
         hovertemplate="%{x}<br>%{y} días sin ventana<extra></extra>",
     ))
     fig.update_layout(barmode="stack", height=340,
-                      margin=dict(l=10, r=10, t=10, b=10),
-                      legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+                      margin={"l": 10, "r": 10, "t": 10, "b": 10},
+                      legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "x": 0},
                       paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                      font=dict(color="#212121"))
+                      font={"color": "#212121"})
     fig.update_xaxes(gridcolor="#E0E0E0", zeroline=False, title="Mes")
     fig.update_yaxes(title="Días", gridcolor="#E0E0E0", zeroline=False)
     st.plotly_chart(fig, width="stretch", theme="streamlit",
@@ -1212,7 +1213,7 @@ def _tabla_top10(df: pd.DataFrame) -> None:
     tabla = pd.DataFrame({
         "Fecha": [str(d) for d in top["date"]],
         "Hora óptima": [str(h) for h in top["hora_optima"]],
-        "Ventana": [f"{a} – {b}" for a, b in zip(top["window_start"], top["window_end"])],
+        "Ventana": [f"{a} – {b}" for a, b in zip(top["window_start"], top["window_end"], strict=False)],
         "Prob. ventana": [f"{float(p):.0%}" for p in top["prob_ventana"]],
     })
     st.dataframe(tabla, width="stretch", hide_index=True, row_height=34)
