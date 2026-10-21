@@ -1,0 +1,44 @@
+[
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/offers_icon.Whii8SZV.js"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/global-cart-watcher.composable.DdMljqWd.js"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://apps.bazaarvoice.com/deployments/elcorteingles/main_site/production/es_ES/bv.js"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://apps.bazaarvoice.com/deployments/elcorteingles/main_site/production/es_ES/api-config.js"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://apps.bazaarvoice.com/apps/api/api-0.8.2.js"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://network-eu-a.bazaarvoice.com/a.gif?loadId=c16eb3d253350c194a2f&BVBRANDID=cb515494-c045-4688-bf69-825d1571ed35&BVBRANDSID=013597b6-4855-47de-9ba5-b6574a557735&tz=-120&sourceVersion=3.18.4&magpieJsVersion=3.18.4&source=bv-loader&environment=prod&client=ElCorteIngles&dc=4572&host=www.hipercor.es&r_batch=!((bvProduct:bv-loader,bvProductVersion:%2713.34.3%27,cl:Diagnostic,deploymentZone:main_site,elapsedMs:%271.3000%27,endTime:%271666.8000%27,locale:es_ES,name:timeToRunScout,startTime:%271665.5000%27,type:Performance))&_=nidvla"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1h1z89104845587za20gzb9104845587zd9104845587&_p=1788254875508&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=1201892226&_eu=AAAAAAQ&_fplc=0&are=1&cid=482125556.1788254828&ec_mode=c&frm=0&pscdl=denied&rcb=19&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1154889731.1788254828&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788254875508&sst.lpc=70429321&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=2&tag_exp=115616985~115938465~115938468~118897920~118897930~119259606~120385423&sid=1788254828&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry%2Fbotella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=floodlight_page_view&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry%2Fbotella-75-cl%2F8410028030903%2Fp&ep.platform=WEB&ep.tx_id=No%20value%20read&ep.page_committed=false&ep.business_unit=hiper_super&ep.products_price_discount=&ep.ga_tracking_code=UA-42384899-11&_et=3&ep.user_data._tag_mode=MANUAL&tfd=3012&richsstsse"
+  }
+]

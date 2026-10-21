@@ -1,0 +1,402 @@
+[
+  {
+    "method": "GET",
+    "type": "document",
+    "url": "https://www.hipercor.es/supermercado/"
+  },
+  {
+    "method": "GET",
+    "type": "document",
+    "url": "https://www.hipercor.es/akam/challenge/interstitial.html"
+  },
+  {
+    "method": "POST",
+    "type": "xhr",
+    "url": "https://www.hipercor.es/_sec/verify?provider=interstitial"
+  },
+  {
+    "method": "GET",
+    "type": "document",
+    "url": "https://www.hipercor.es/supermercado/"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/default_layout.DHIgY0w_.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/base_layout.C0ZVG9Bk.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PlacementRender.Bt3Th0nj.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Toast.Bz2QJt_Q.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/pick_up_delivery_small_icon.DpjIU6Ew.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/base_button.BggDXpxS.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/SuperSectionArrowRight.CVq5I1-B.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/offers_icon.Whii8SZV.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PageFooter.BnYToJSO.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/EciIcon.VwHPxpVa.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/oidc.DuufzO5y.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/iframe.CVxHOg1Z.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/loading.CE1aHEHD.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modals_container.zha-jAKb.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Band.DUCxy9DB.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/ArtworkLink.WiCvjXC6.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Separator.Dd8oOJf7.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Multipurpose.CnVaHBk9.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/SrcsetPicture.BnojUwG6.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Display.CeFTTevj.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/RetailMediaDisplay.DAjE9GxD.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Product.CShFaqy_.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/ProductPreview.J17dn97m.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PdpMediaInfo.kwWWcIyG.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/promotion_types.D22sBIgU.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/OptionModal.vue_vue_type_script_setup_true_lang.Cn8qvz3U.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Prices.BLwI_xB4.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Showcase.CWXVv1nm.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/pages/Static.vue.-rbmI73W.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/translations.DPrOTbVe.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/static.store.BTMKahp-.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/MyLists.store.CQXrb4VK.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/status_favorites.composable.D_r1zZhD.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/adobeAlloyIds.BuD8-U_W.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/cookie_names.store.DgHVuiQ7.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/global-cart-watcher.composable.DdMljqWd.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/cross_icon.D_tq3edI.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/_plugin-vue_export-helper.DlAUqK2U.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/loading_modal.B5YCcuWR.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/retail_media.store.BKV6otIM.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/index.CNr97dLu.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/slots_passthrough.BXx0PRz3.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modal.D9aZHRYB.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/arrow_left_icon.e8-qa-Yf.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/supermarket_icon.B8oTxI-U.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/chevron_down_icon.DQU-lfgJ.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/promotional.action.composable.B_ZDlDH2.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://www.hipercor.es/akam/13/58d53334"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/H20/4bF8SUCEZ?v=8512e91c-a7c6-1ce9-f92c-d132787c1738"
+  },
+  {
+    "method": "GET",
+    "type": "media",
+    "url": "https://dam.elcorteingles.es/media/www/Supermercado/66164_%20ECI%20PROMO20_AGO26_SPOT_08_ES_2794X500.mp4"
+  },
+  {
+    "method": "GET",
+    "type": "media",
+    "url": "https://dam.elcorteingles.es/media/www/Supermercado/66164_%20ECI%20PROMO20_AGO26_SPOT_08_ES_1574X1000.mp4"
+  },
+  {
+    "method": "GET",
+    "type": "document",
+    "url": "https://cuenta.elcorteingles.es/oidc/check-session?origin=https%3A%2F%2Fwww.hipercor.es"
+  },
+  {
+    "method": "POST",
+    "type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/es.langs-BGLGsROT.CFQFpC0i.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/useArtworkUrlTarget.CfeequaN.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/RetailMediaPreviewBadge.BzURn3H8.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/AdditionalInfoModal.vue_vue_type_style_index_0_lang.BKfvAcIl.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/edit_icon.DswALQax.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modal_header.DsiJFaDv.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PrimaryButton.BJKTbqxh.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Button.BLGZLQYq.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Button.vue_vue_type_style_index_0_lang.l0sNRNKZ.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PrimaryButton.vue_vue_type_style_index_0_lang.l0sNRNKZ.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Sidebar.B4o_VvNZ.js"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/info_icon.BJpQ85F3.js"
+  },
+  {
+    "method": "POST",
+    "type": "xhr",
+    "url": "https://www.hipercor.es/akam/13/pixel_58d53334"
+  },
+  {
+    "method": "POST",
+    "type": "xhr",
+    "url": "https://www.hipercor.es/api/food-firefly/retail-media/ads"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "blob:https://www.hipercor.es/8d1aa999-e085-48b6-8d0d-1a674cf1c15f"
+  },
+  {
+    "method": "GET",
+    "type": "document",
+    "url": "https://gtms.food.hipercor.es/_/service_worker/68j0/sw_iframe.html?origin=https%3A%2F%2Fwww.hipercor.es&1p=1"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "blob:https://www.hipercor.es/c46a1c78-4e6e-4349-8bc0-32ca86a21d23"
+  },
+  {
+    "method": "GET",
+    "type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/Arial.DHXpgMHe.ttf"
+  },
+  {
+    "method": "POST",
+    "type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "method": "GET",
+    "type": "other",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets//stylesheets/public/favicon.ico?_MDE6MDktMDY6MjI6MzQ"
+  },
+  {
+    "method": "GET",
+    "type": "script",
+    "url": "blob:https://www.hipercor.es/f5488efb-4af1-41ca-b405-3dffcc999fbc"
+  },
+  {
+    "method": "POST",
+    "type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/H20/4bF8SUCEZ"
+  }
+]

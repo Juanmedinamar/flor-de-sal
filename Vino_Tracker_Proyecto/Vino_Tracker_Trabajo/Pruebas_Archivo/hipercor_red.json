@@ -1,0 +1,14 @@
+[
+  {
+    "method": "GET",
+    "status": 410,
+    "type": "document",
+    "url": "https://www.hipercor.es/supermercado/marcas/canasta/supermercado/bebidas/vinos/vinos-generosos/olorosos/canasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry/botella-75-cl/8410028030903/p"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/global-cart-watcher.composable.DdMljqWd.js"
+  }
+]

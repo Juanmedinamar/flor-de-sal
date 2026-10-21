@@ -1,0 +1,2690 @@
+[
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/_sec/verify?provider=interstitial",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/_sec/verify?provider=interstitial",
+    "json_error": "Response.json: Protocol error (Network.getResponseBody): No resource with given identifier found\nResponse body is not available for a response that was navigated away from. Read response.body() before triggering any navigation."
+  },
+  {
+    "tipo": "request",
+    "resource_type": "script",
+    "url": "https://apps.bazaarvoice.com/apps/api/api-0.8.2.js",
+    "method": "GET"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://apps.bazaarvoice.com/apps/api/api-0.8.2.js"
+  },
+  {
+    "tipo": "response",
+    "status": 201,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB",
+    "content_type": "application/json",
+    "json": {
+      "success": true
+    }
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://adobedc.demdex.net/ee/v1/interact?configId=e5a48137-dc6b-4bf6-a7f3-6ed7558f46ba&requestId=33477a00-adc9-426a-86db-5d10a5be2b6a",
+    "method": "POST"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://pagead2.googlesyndication.com/ccm/collect?rcb=9&frm=0&apvc=1&ae=g&en=page_view&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&scrsrc=www.googletagmanager.com&rnd=1096990630.1788269772&navt=n&npa=1&ep.ads_data_redaction=0&_tu=CA&gtm=45He68s1v9104845587za200zd9104845587xea&gcs=G101&gcd=13q3v3q2q5l1&dma_cps=-&dma=1&tag_exp=115938466~115938468~118897920~118897930~120385423&tft=1788269771822&tfd=1500&fmt=8",
+    "method": "POST"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://config.trackingplan.com/config-TP5388340.json",
+    "method": "GET"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://edge.adobedc.net/ee/v1/interact?configId=e5a48137-dc6b-4bf6-a7f3-6ed7558f46ba&requestId=33477a00-adc9-426a-86db-5d10a5be2b6a",
+    "method": "POST"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://cdn.cookielaw.org/consent/9d154c3e-fd29-438d-894e-822bacc22bb4/9d154c3e-fd29-438d-894e-822bacc22bb4.json",
+    "method": "GET"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "fetch",
+    "url": "https://pagead2.googlesyndication.com/ccm/collect?rcb=9&frm=0&apvc=1&ae=g&en=page_view&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&scrsrc=www.googletagmanager.com&rnd=1096990630.1788269772&navt=n&npa=1&ep.ads_data_redaction=0&_tu=CA&gtm=45He68s1v9104845587za200zd9104845587xea&gcs=G101&gcd=13q3v3q2q5l1&dma_cps=-&dma=1&tag_exp=115938466~115938468~118897920~118897930~120385423&tft=1788269771822&tfd=1500&fmt=8"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1z89104845587za20gzb9104845587zd9104845587&_p=1788269819512&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=258832716&_fplc=0&are=1&cid=1710620733.1788269772&ec_mode=c&frm=0&pscdl=denied&rcb=1&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=10.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1096990630.1788269772&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788269819512&sst.lpc=140865579&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=1&tag_exp=115938466~115938468~118897920~118897930~120385422~120469146~120469154&sid=1788269772&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=adwords_page_view&_fv=1&_nsi=1&_ss=1&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&ep.user_data._tag_mode=MANUAL&tfd=1698&richsstsse",
+    "method": "GET"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1z89104845587za20gzb9104845587zd9104845587&_p=1788269819512&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=258832716&_eu=AAAAAAQ&_fplc=0&are=1&cid=1710620733.1788269772&ec_mode=c&frm=0&pscdl=denied&rcb=1&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=10.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1096990630.1788269772&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788269819512&sst.lpc=140865579&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=2&tag_exp=115938466~115938468~118897920~118897930~120385422~120469146~120469154&sid=1788269772&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=floodlight_page_view&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&ep.platform=WEB&ep.tx_id=No%20value%20read&ep.page_committed=false&ep.business_unit=hiper_super&ep.products_price_discount=&ep.ga_tracking_code=UA-42384899-11&_et=3&ep.user_data._tag_mode=MANUAL&tfd=1704&richsstsse",
+    "method": "GET"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/akam/13/pixel_58d53329",
+    "method": "POST"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/measurement/conversion?random=1788269772118&cv=11&tid=G-XG9L1L3E0D&fst=1788269772118&fmt=8&en=session_start&gtm=45je68s1v890883988z89104845587za20gzb9104845587zd9104845587xec&gcs=G101&gcd=13q3vPq2q5l1&dma_cps=-&dma=1&tag_exp=115616985~115938466~115938469~118869188~118897920~118897930~120213116~120385423&u_w=1440&u_h=900&url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&gacid=1710620733.1788269772&frm=0&npa=1&pscdl=denied&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&_tu=CA&rcb=8",
+    "method": "POST"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-XG9L1L3E0D&gtm=45je68s1v890883988z89104845587za20gzb9104845587zd9104845587&_p=1788269819512&gcs=G101&gcd=13q3vPq2q5l1&npa=1&dma_cps=-&dma=1&_eu=AAAAAGAC&_platinum_request_status=ok&are=1&cid=1710620733.1788269772&frm=0&pscdl=denied&rcb=8&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=10.0&uaw=0&ul=es-es&gaf=2&_s=1&tag_exp=115616985~115938466~115938469~118869188~118897920~118897930~120213116~120385423&sid=1788269772&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=CA&en=page_view&_fv=1&_ss=2&ep.platform=WEB&ep.business_unit=hiper_super&ep.page_hierarchy_0=unknown&ep.page_hierarchy=unknown&ep.page_brand=Multi%20Brand&ep.page_system=&ep.cdp_all_segments=&ep.app_version=WEB&ep.market=espa%C3%B1a&tfd=1836",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/akam/13/pixel_58d53329"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://config.trackingplan.com/config-TP5388340.json",
+    "content_type": "application/json",
+    "json": {
+      "sample_rate": 1,
+      "environment_rates": {
+        "PRODUCTION": 129,
+        "Production": 129,
+        "production": 129,
+        "PRODUCCION": 129,
+        "Produccion": 129,
+        "produccion": 129,
+        "PRODUCCIÓN": 129,
+        "Producción": 129,
+        "producción": 129,
+        "PRODU": 129,
+        "Produ": 129,
+        "produ": 129,
+        "PROD": 129,
+        "Prod": 129,
+        "prod": 129,
+        "PRO": 129,
+        "Pro": 129,
+        "pro": 129
+      },
+      "options": {
+        "useSmartSampling": false,
+        "useAdaptiveSampling": true,
+        "adaptiveSamplingPatterns": [
+          {
+            "provider": "facebook",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "id": "704740749670756"
+                },
+                {
+                  "or": [
+                    {
+                      "ev": "Purchase"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "add_to_cart_multi"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "add_to_cart_multi"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "add_to_cart_rr"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "add_to_cart_rr"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "add_to_wishlist"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "add_to_wishlist"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "add_to_wishlist"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "advertising.clicks"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "floodlight",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "src=4896746;",
+                    "src=4896746?",
+                    "src=4896746&",
+                    "src=4896746 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "type=audie0;",
+                    "type=audie0?",
+                    "type=audie0&",
+                    "type=audie0 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "cat=hiper0;",
+                    "cat=hiper0?",
+                    "cat=hiper0&",
+                    "cat=hiper0 "
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "begin_checkout"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "checkout"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "checkout_first"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "checkout_modifications"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "click"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "commerce.checkouts"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "commerce.productListViews"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "commerce.purchases"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "consent_update"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "consent_update"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "continuar modos pago"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "google_ads",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "@TP_ENDPOINT_PATH@CONTAINS": "/pagead/conversion/1035342500"
+                    },
+                    {
+                      "@TP_ENDPOINT_PATH@CONTAINS": "/pagead/viewthroughconversion/1035342500"
+                    }
+                  ]
+                },
+                {
+                  "or": [
+                    {
+                      "label": "UYvDCICUgAUQpKXY7QM"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "google_ads",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "@TP_ENDPOINT_PATH@CONTAINS": "/pagead/conversion/1068105840"
+                    },
+                    {
+                      "@TP_ENDPOINT_PATH@CONTAINS": "/pagead/viewthroughconversion/1068105840"
+                    }
+                  ]
+                },
+                {
+                  "or": [
+                    {
+                      "label": "xivqCKSbkwUQ8ICo_QM"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "floodlight",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "src=4896746;",
+                    "src=4896746?",
+                    "src=4896746&",
+                    "src=4896746 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "type=ecm2015;",
+                    "type=ecm2015?",
+                    "type=ecm2015&",
+                    "type=ecm2015 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "cat=ecm_t0;",
+                    "cat=ecm_t0?",
+                    "cat=ecm_t0&",
+                    "cat=ecm_t0 "
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-12345"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "fb_purchase"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "fb_purchase"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "fb_purchase"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "feedback_search"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "form_submit"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "megadrop"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "pagar compra y finalizar"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "pageOrderConfirmation"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "purchase"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "remove_from_cart_product_module"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "remove_from_cart_product_module"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "remove_from_wishlist"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "remove_from_wishlist"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "reorder"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "serps_add_to_wishlist"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "serps_add_to_wishlist"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "floodlight",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "src=4968091;",
+                    "src=4968091?",
+                    "src=4968091&",
+                    "src=4968091 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "type=superven;",
+                    "type=superven?",
+                    "type=superven&",
+                    "type=superven "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "cat=ecm_c0;",
+                    "cat=ecm_c0?",
+                    "cat=ecm_c0&",
+                    "cat=ecm_c0 "
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "undefined debug"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "user_push"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "user_push"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "user_push"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "view_search_results"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 1,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "wishlist"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 2,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "add_to_cart_product_module"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "add_to_cart_product_module"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 2,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "calendar"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 2,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "continuar a resumen"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 2,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "remove from cart debug"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 2,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "show_feedback_search"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "facebook",
+            "sample_rate": 3,
+            "match": {
+              "and": [
+                {
+                  "id": "704740749670756"
+                },
+                {
+                  "or": [
+                    {
+                      "ev": "AddToCart"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "facebook",
+            "sample_rate": 3,
+            "match": {
+              "and": [
+                {
+                  "id": "704740749670756"
+                },
+                {
+                  "or": [
+                    {
+                      "ev": "ViewContent"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 3,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "product_module_click"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "product_module_click"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 3,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "select_promotion"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 4,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "cart_show"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "cart_show"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 4,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "commerce.productViews"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 5,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "product_click"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "product_click"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 5,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "remove_from_cart"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 5,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "view_cart"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 5,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "web.webpagedetails.pageViews"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 6,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "promotion_click"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "promotion_click"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 6,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "serps_product_click"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "serps_product_click"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 7,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "reload"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "reload"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 8,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "window_cookies"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 9,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-12345"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "fb_add_to_cart"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 9,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "fb_add_to_cart"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "fb_add_to_cart"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 9,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-12345"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "fb_view_content"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 9,
+            "match": {
+              "event_name": "pixels"
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 9,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "remove_from_cart"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "remove_from_cart"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 9,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "select_item"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 9,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "setConsentEF"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 10,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "fb_view_content"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "fb_view_content"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 11,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "commerce.productListAdds"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 12,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "form_start"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 12,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "page_view"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "page_view"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 12,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-12345"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "undefined"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "floodlight",
+            "sample_rate": 15,
+            "match": {
+              "and": [
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "src=4896746;",
+                    "src=4896746?",
+                    "src=4896746&",
+                    "src=4896746 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "type=hiper0;",
+                    "type=hiper0?",
+                    "type=hiper0&",
+                    "type=hiper0 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "cat=hpg_p0;",
+                    "cat=hpg_p0?",
+                    "cat=hpg_p0&",
+                    "cat=hpg_p0 "
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 17,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "serps add to cart debug"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 18,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "serps_add_to_cart"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "serps_add_to_cart"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 19,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "new_user"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 19,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "scroll"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 21,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "new_dau"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 22,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "view_item"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 24,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "pdp_push"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "pdp_push"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 25,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "new_session"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 28,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "add to cart debug"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 30,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "serps_view"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "serps_view"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 31,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "add_to_cart"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 33,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "add_to_cart"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "add_to_cart"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 38,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "product_module_push_rr"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "product_module_push_rr"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "facebook",
+            "sample_rate": 41,
+            "match": {
+              "and": [
+                {
+                  "id": "704740749670756"
+                },
+                {
+                  "or": [
+                    {
+                      "ev": "SubscribedButtonClick"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 41,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "open_serps"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "open_serps"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 43,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "user_engagement"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "adobexdm",
+            "sample_rate": 47,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "eventType": "decisioning.propositionDisplay"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 50,
+            "match": {
+              "or": [
+                {
+                  "or": [
+                    {
+                      "event_name": "add_to_cart"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "add_to_cart"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "or": [
+                    {
+                      "event_name": "serps_add_to_cart"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "serps_add_to_cart"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 54,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-12345"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "user_engagement"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "floodlight",
+            "sample_rate": 62,
+            "match": {
+              "and": [
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "src=4896746;",
+                    "src=4896746?",
+                    "src=4896746&",
+                    "src=4896746 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "type=hiper0;",
+                    "type=hiper0?",
+                    "type=hiper0&",
+                    "type=hiper0 "
+                  ]
+                },
+                {
+                  "@TP_ENDPOINT_OR_PAYLOAD@CONTAINS": [
+                    "cat=prd_p0;",
+                    "cat=prd_p0?",
+                    "cat=prd_p0&",
+                    "cat=prd_p0 "
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 64,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "serps_products_push"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "serps_products_push"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 71,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "OneTrustGroupsUpdated"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "OneTrustGroupsUpdated"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 74,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "custom_event"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "custom_event"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 77,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "session_data"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "google_ads",
+            "sample_rate": 79,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "@TP_ENDPOINT_PATH@CONTAINS": "/pagead/conversion/1035342500"
+                    },
+                    {
+                      "@TP_ENDPOINT_PATH@CONTAINS": "/pagead/viewthroughconversion/1035342500"
+                    }
+                  ]
+                },
+                {
+                  "or": [
+                    {
+                      "label": "remarketing"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "googleanalytics",
+            "sample_rate": 84,
+            "match": {
+              "and": [
+                {
+                  "tid": "G-XG9L1L3E0D"
+                },
+                {
+                  "not": {
+                    "tid": [
+                      "G-6V6V4N23GF"
+                    ]
+                  }
+                },
+                {
+                  "or": [
+                    {
+                      "en": "page_view"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 86,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "page_unload"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 96,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "session_push"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "session_push"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 105,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "3_seconds"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 107,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "Push without event"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "Push without event"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 110,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "page_load"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "trackingplan",
+            "sample_rate": 119,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "dom_content_loaded"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 125,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "target_activity_push"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "target_activity_push"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "provider": "datalayer_push",
+            "sample_rate": 127,
+            "match": {
+              "and": [
+                {
+                  "or": [
+                    {
+                      "event_name": "OptanonLoaded"
+                    },
+                    {
+                      "and": [
+                        {
+                          "event": "OptanonLoaded"
+                        },
+                        {
+                          "is_missing": "event_name"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "a": "Hipercor Alimentación - Web",
+      "last_updated": "2026-09-01T13:01:00.612191+00:00"
+    }
+  },
+  {
+    "tipo": "response",
+    "status": 204,
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-XG9L1L3E0D&gtm=45je68s1v890883988z89104845587za20gzb9104845587zd9104845587&_p=1788269819512&gcs=G101&gcd=13q3vPq2q5l1&npa=1&dma_cps=-&dma=1&_eu=AAAAAGAC&_platinum_request_status=ok&are=1&cid=1710620733.1788269772&frm=0&pscdl=denied&rcb=8&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=10.0&uaw=0&ul=es-es&gaf=2&_s=1&tag_exp=115616985~115938466~115938469~118869188~118897920~118897930~120213116~120385423&sid=1788269772&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=CA&en=page_view&_fv=1&_ss=2&ep.platform=WEB&ep.business_unit=hiper_super&ep.page_hierarchy_0=unknown&ep.page_hierarchy=unknown&ep.page_brand=Multi%20Brand&ep.page_system=&ep.cdp_all_segments=&ep.app_version=WEB&ep.market=espa%C3%B1a&tfd=1836"
+  },
+  {
+    "tipo": "response",
+    "status": 204,
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/measurement/conversion?random=1788269772118&cv=11&tid=G-XG9L1L3E0D&fst=1788269772118&fmt=8&en=session_start&gtm=45je68s1v890883988z89104845587za20gzb9104845587zd9104845587xec&gcs=G101&gcd=13q3vPq2q5l1&dma_cps=-&dma=1&tag_exp=115616985~115938466~115938469~118869188~118897920~118897930~120213116~120385423&u_w=1440&u_h=900&url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&gacid=1710620733.1788269772&frm=0&npa=1&pscdl=denied&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&_tu=CA&rcb=8"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/akam/13/pixel_a13ac0",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/akam/13/pixel_a13ac0"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB",
+    "method": "POST"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/HFh/4AnVROh4Z",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 201,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB",
+    "content_type": "application/json",
+    "json": {
+      "success": true
+    }
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/GLCAk5ULxfWVApkAwg/GpY7pJ3D3V/A1YtCSofPw/ESRdVlp/UKEAY",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/HFh/4AnVROh4Z",
+    "json_error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/GLCAk5ULxfWVApkAwg/GpY7pJ3D3V/A1YtCSofPw/ESRdVlp/UKEAY",
+    "json_error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/HFh/4AnVROh4Z",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/HFh/4AnVROh4Z",
+    "json_error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB",
+    "method": "POST"
+  },
+  {
+    "tipo": "response",
+    "status": 201,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB",
+    "content_type": "application/json",
+    "json": {
+      "success": true
+    }
+  },
+  {
+    "tipo": "request",
+    "resource_type": "xhr",
+    "url": "https://eu-tracks.trackingplan.com/v1/TP5388340",
+    "method": "POST"
+  }
+]

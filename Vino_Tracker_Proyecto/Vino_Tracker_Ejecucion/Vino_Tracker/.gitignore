@@ -1,0 +1,23 @@
+# Entorno virtual
+.venv/
+venv/
+
+# Bytecode de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de datos local
+data/precios.db
+data/*.db-journal
+
+# Archivos de entorno / secretos
+.env
+.env.*
+
+# Archivos del sistema
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log

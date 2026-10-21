@@ -1,0 +1,1196 @@
+[
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "https://www.hipercor.es/supermercado/marcas/canasta/supermercado/bebidas/vinos/vinos-generosos/olorosos/canasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl/8410028030903/p"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "document",
+    "url": "https://www.hipercor.es/supermercado/marcas/canasta/supermercado/bebidas/vinos/vinos-generosos/olorosos/canasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl/8410028030903/p"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/montserrat/montserrat.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/regular.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/light.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "https://www.hipercor.es/akam/challenge/interstitial.html"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/_sec/verify?provider=interstitial"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "document",
+    "url": "https://www.hipercor.es/akam/challenge/interstitial.html"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/_sec/verify?provider=interstitial"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "https://www.hipercor.es/supermercado/marcas/canasta/supermercado/bebidas/vinos/vinos-generosos/olorosos/canasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl/8410028030903/p"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/montserrat/montserrat.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/regular.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/light.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/light.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/light.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 410,
+    "resource_type": "document",
+    "url": "https://www.hipercor.es/supermercado/marcas/canasta/supermercado/bebidas/vinos/vinos-generosos/olorosos/canasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl/8410028030903/p"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/montserrat/montserrat.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/regular.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/light.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/my_account/assets/javascripts/web_components/eci_salesforce_chat/eci-salesforce-chat.umd.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/default_layout.DHIgY0w_.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/light.7DXeCIB-.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/regular.Da-uIwsV.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/medium.DiVDYzbJ.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/moonshine-font.aK-_y_9Q.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/lato-regular-webfont.cvDT1Ewl.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-regular.BHvp4J6l.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-regular.CTZwj4sF.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-bold.D9vcPDYM.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-bold.0s-4OT10.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-italic.XeEIN5Fs.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-italic.CwBbIxcX.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/montserrat.79DQoS3D.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/base_layout.C0ZVG9Bk.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PlacementRender.Bt3Th0nj.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Toast.Bz2QJt_Q.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/pick_up_delivery_small_icon.DpjIU6Ew.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/base_button.BggDXpxS.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/SuperSectionArrowRight.CVq5I1-B.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/offers_icon.Whii8SZV.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PageFooter.BnYToJSO.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/EciIcon.VwHPxpVa.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/oidc.DuufzO5y.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/iframe.CVxHOg1Z.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/loading.CE1aHEHD.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modals_container.zha-jAKb.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/pages/Error.vue.DtXJ59cT.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "stylesheet",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/style.Bkuo7CEm.css"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/translations.DPrOTbVe.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/global-cart-watcher.composable.DdMljqWd.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/MyLists.store.CQXrb4VK.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/index.CNr97dLu.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/adobeAlloyIds.BuD8-U_W.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/cookie_names.store.DgHVuiQ7.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/cross_icon.D_tq3edI.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/_plugin-vue_export-helper.DlAUqK2U.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/loading_modal.B5YCcuWR.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/retail_media.store.BKV6otIM.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/slots_passthrough.BXx0PRz3.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modal.D9aZHRYB.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/arrow_left_icon.e8-qa-Yf.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/supermarket_icon.B8oTxI-U.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/chevron_down_icon.DQU-lfgJ.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/promotional.action.composable.B_ZDlDH2.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://www.hipercor.es/akam/13/58d53328"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/Habituales.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/Alimentacion.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/6W_JbOTJCO.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/n3qRAfbf8m.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/3Idg41K0xs.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/6UJu5n0w-O.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/WHkLs6Gz3k.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/GR-ijW7D3.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/nSwe1-9Srh.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/PF4azj4oim.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/Fc6jJ4rnJU.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/ovu93gAI28.png"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/ECO.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/Gourmet.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/light.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/VSo/vHE5GSxcZ?v=a083b16e-1a1e-cafd-3b6f-03c28a051738"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/regular.Da-uIwsV.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/eci/optimized/regular.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/base_layout.C0ZVG9Bk.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/Toast.Bz2QJt_Q.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/oidc.DuufzO5y.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/base_button.BggDXpxS.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/EciIcon.VwHPxpVa.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/loading.CE1aHEHD.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modals_container.zha-jAKb.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-hipercor-cloud/assets//stylesheets/fonts/montserrat/montserrat.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/light.7DXeCIB-.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/medium.DiVDYzbJ.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/moonshine-font.aK-_y_9Q.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/lato-regular-webfont.cvDT1Ewl.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-regular.BHvp4J6l.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-regular.CTZwj4sF.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-bold.D9vcPDYM.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-bold.0s-4OT10.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-italic.XeEIN5Fs.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/librebaskerville-italic.CwBbIxcX.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/iframe.CVxHOg1Z.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/pick_up_delivery_small_icon.DpjIU6Ew.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/offers_icon.Whii8SZV.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/SuperSectionArrowRight.CVq5I1-B.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/global-cart-watcher.composable.DdMljqWd.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/adobeAlloyIds.BuD8-U_W.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/cross_icon.D_tq3edI.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/cookie_names.store.DgHVuiQ7.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/_plugin-vue_export-helper.DlAUqK2U.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/loading_modal.B5YCcuWR.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/slots_passthrough.BXx0PRz3.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/modal.D9aZHRYB.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/arrow_left_icon.e8-qa-Yf.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/retail_media.store.BKV6otIM.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/chevron_down_icon.DQU-lfgJ.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/MyLists.store.CQXrb4VK.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/promotional.action.composable.B_ZDlDH2.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/supermarket_icon.B8oTxI-U.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/pages/Error.vue.DtXJ59cT.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/index.CNr97dLu.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PlacementRender.Bt3Th0nj.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/default_layout.DHIgY0w_.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/my_account/assets/javascripts/web_components/eci_salesforce_chat/eci-salesforce-chat.umd.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/Habituales.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/Alimentacion.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/translations.DPrOTbVe.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/montserrat.79DQoS3D.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/PageFooter.BnYToJSO.js"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/n3qRAfbf8m.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/6W_JbOTJCO.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "stylesheet",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/style.Bkuo7CEm.css"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/3Idg41K0xs.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://www.hipercor.es/akam/13/58d53328"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "fetch",
+    "url": "https://pagead2.googlesyndication.com/ccm/collect?rcb=8&frm=0&apvc=1&ae=g&en=page_view&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&scrsrc=www.googletagmanager.com&rnd=1489407856.1788253862&navt=n&npa=1&ep.ads_data_redaction=0&_tu=CA&gtm=45He68s1h1v9104845587za200zd9104845587xea&gcs=G101&gcd=13q3v3q2q5l1&dma_cps=-&dma=1&tag_exp=115616986~115938466~115938469~118897920~118897930~119259606~120385422&tft=1788253861758&tfd=1416&fmt=8"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/6UJu5n0w-O.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/WHkLs6Gz3k.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/GR-ijW7D3.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/nSwe1-9Srh.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/PF4azj4oim.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "fetch",
+    "url": "https://pagead2.googlesyndication.com/ccm/collect?rcb=8&frm=0&apvc=1&ae=g&en=page_view&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&scrsrc=www.googletagmanager.com&rnd=1489407856.1788253862&navt=n&npa=1&ep.ads_data_redaction=0&_tu=CA&gtm=45He68s1h1v9104845587za200zd9104845587xea&gcs=G101&gcd=13q3v3q2q5l1&dma_cps=-&dma=1&tag_exp=115616986~115938466~115938469~118897920~118897930~119259606~120385422&tft=1788253861758&tfd=1416&fmt=8"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "https://cuenta.elcorteingles.es/oidc/check-session?origin=https%3A%2F%2Fwww.hipercor.es"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "document",
+    "url": "https://cuenta.elcorteingles.es/oidc/check-session?origin=https%3A%2F%2Fwww.hipercor.es"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cuenta.elcorteingles.es/akam/13/a13ac1"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cuenta.elcorteingles.es/GLCAk5ULxfWVApkAwg/GpY7pJ3D3V/A1YtCSofPw/WmZmJ2w/gLUoY?v=a37281c9-d66b-2f4e-b3d8-77c949c91738"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/Montserrat-Medium.Cf4jV5xm.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/montserrat.79DQoS3D.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/moonshine2-font.BljT0uIO.woff"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/design-system/stylesheets/fonts/Montserrat-VF.woff2"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/design-system/stylesheets/fonts/Montserrat-Italic-VF.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/Fc6jJ4rnJU.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/ECO.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics-front/front-msh3-manager-cloud/contents/images/uploads/2026/07/ovu93gAI28.png"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/public/images/Gourmet.jpg?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/montserrat.79DQoS3D.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cuenta.elcorteingles.es/akam/13/a13ac1"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cuenta.elcorteingles.es/GLCAk5ULxfWVApkAwg/GpY7pJ3D3V/A1YtCSofPw/WmZmJ2w/gLUoY?v=a37281c9-d66b-2f4e-b3d8-77c949c91738"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/Montserrat-Medium.Cf4jV5xm.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/moonshine2-font.BljT0uIO.woff"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/design-system/stylesheets/fonts/Montserrat-VF.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/design-system/stylesheets/fonts/Montserrat-Italic-VF.woff2"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/VSo/vHE5GSxcZ?v=a083b16e-1a1e-cafd-3b6f-03c28a051738"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/es.langs-BGLGsROT.CFQFpC0i.js"
+  },
+  {
+    "tipo": "response",
+    "status": 201,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "script",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/javascripts/chunks/es.langs-BGLGsROT.CFQFpC0i.js"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "image",
+    "url": "https://network-eu-a.bazaarvoice.com/a.gif?loadId=ead69de77656d572b13&BVBRANDID=381c00bd-0c74-46e4-9bf9-b24209049ff6&BVBRANDSID=bab1815a-2591-4327-9359-076becd1f71c&tz=-120&sourceVersion=3.18.4&magpieJsVersion=3.18.4&source=bv-loader&environment=prod&client=ElCorteIngles&dc=4572&host=www.hipercor.es&r_batch=!((bvProduct:bv-loader,bvProductVersion:%2713.34.3%27,cl:Diagnostic,deploymentZone:main_site,elapsedMs:%274.7000%27,endTime:%27812.3000%27,locale:es_ES,name:timeToRunScout,startTime:%27807.6000%27,type:Performance))&_=gvm56i"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/measurement/conversion?random=1788253863231&cv=11&tid=G-XG9L1L3E0D&fst=1788253863231&fmt=8&en=session_start&gtm=45je68s1h1v890883988z89104845587za20gzb9104845587zd9104845587xec&gcs=G101&gcd=13q3vPq2q5l1&dma_cps=-&dma=1&tag_exp=115938466~115938469~118869188~118897920~118897930~119259606~120213116~120385422&u_w=1440&u_h=900&url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&gacid=161447500.1788253863&frm=0&npa=1&pscdl=denied&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&_tu=CA&rcb=14"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-XG9L1L3E0D&gtm=45je68s1h1v890883988z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3vPq2q5l1&npa=1&dma_cps=-&dma=1&_eu=AAAAAGAC&_platinum_request_status=ok&are=1&cid=161447500.1788253863&frm=0&pscdl=denied&rcb=14&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&gaf=2&_s=1&tag_exp=115938466~115938469~118869188~118897920~118897930~119259606~120213116~120385422&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=2&ep.platform=WEB&ep.business_unit=hiper_super&ep.page_hierarchy_0=unknown&ep.page_hierarchy=unknown&ep.page_brand=Multi%20Brand&ep.page_system=&ep.cdp_all_segments=&ep.app_version=WEB&ep.market=espa%C3%B1a&tfd=2940"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "image",
+    "url": "https://network-eu-a.bazaarvoice.com/a.gif?loadId=ead69de77656d572b13&BVBRANDID=381c00bd-0c74-46e4-9bf9-b24209049ff6&BVBRANDSID=bab1815a-2591-4327-9359-076becd1f71c&tz=-120&sourceVersion=3.18.4&magpieJsVersion=3.18.4&source=bv-loader&environment=prod&client=ElCorteIngles&dc=4572&host=www.hipercor.es&r_batch=!((bvProduct:bv-loader,bvProductVersion:%2713.34.3%27,cl:Diagnostic,deploymentZone:main_site,elapsedMs:%274.7000%27,endTime:%27812.3000%27,locale:es_ES,name:timeToRunScout,startTime:%27807.6000%27,type:Performance))&_=gvm56i"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/akam/13/pixel_58d53328"
+  },
+  {
+    "tipo": "response",
+    "status": 204,
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-XG9L1L3E0D&gtm=45je68s1h1v890883988z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3vPq2q5l1&npa=1&dma_cps=-&dma=1&_eu=AAAAAGAC&_platinum_request_status=ok&are=1&cid=161447500.1788253863&frm=0&pscdl=denied&rcb=14&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&gaf=2&_s=1&tag_exp=115938466~115938469~118869188~118897920~118897930~119259606~120213116~120385422&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=2&ep.platform=WEB&ep.business_unit=hiper_super&ep.page_hierarchy_0=unknown&ep.page_hierarchy=unknown&ep.page_brand=Multi%20Brand&ep.page_system=&ep.cdp_all_segments=&ep.app_version=WEB&ep.market=espa%C3%B1a&tfd=2940"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/akam/13/pixel_58d53328"
+  },
+  {
+    "tipo": "response",
+    "status": 204,
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/measurement/conversion?random=1788253863231&cv=11&tid=G-XG9L1L3E0D&fst=1788253863231&fmt=8&en=session_start&gtm=45je68s1h1v890883988z89104845587za20gzb9104845587zd9104845587xec&gcs=G101&gcd=13q3vPq2q5l1&dma_cps=-&dma=1&tag_exp=115938466~115938469~118869188~118897920~118897930~119259606~120213116~120385422&u_w=1440&u_h=900&url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&gacid=161447500.1788253863&frm=0&npa=1&pscdl=denied&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&_tu=CA&rcb=14"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1h1z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=99359964&_fplc=0&are=1&cid=161447500.1788253863&ec_mode=c&frm=0&pscdl=denied&rcb=0&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1489407856.1788253862&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788253909301&sst.lpc=140865579&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=1&tag_exp=115938466~115938468~118897920~118897930~119259606~120385423&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=adwords_page_view&_fv=1&_ss=1&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&ep.user_data._tag_mode=MANUAL&tfd=3204&richsstsse"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1h1z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=99359964&_eu=AAAAAAQ&_fplc=0&are=1&cid=161447500.1788253863&ec_mode=c&frm=0&pscdl=denied&rcb=0&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1489407856.1788253862&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788253909301&sst.lpc=140865579&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=2&tag_exp=115938466~115938468~118897920~118897930~119259606~120385423&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=floodlight_page_view&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&ep.platform=WEB&ep.tx_id=No%20value%20read&ep.page_committed=false&ep.business_unit=hiper_super&ep.products_price_discount=&ep.ga_tracking_code=UA-42384899-11&_et=4&ep.user_data._tag_mode=MANUAL&tfd=3212&richsstsse"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "https://gtms.food.hipercor.es/_/service_worker/68j0/sw_iframe.html?origin=https%3A%2F%2Fwww.hipercor.es&1p=1"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "document",
+    "url": "https://gtms.food.hipercor.es/_/service_worker/68j0/sw_iframe.html?origin=https%3A%2F%2Fwww.hipercor.es&1p=1"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "blob:https://www.hipercor.es/ad0539eb-ede9-4ae8-8a33-4fa1f5008f48"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/akam/13/pixel_a13ac1"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1h1z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=99359964&_fplc=0&are=1&cid=161447500.1788253863&ec_mode=c&frm=0&pscdl=denied&rcb=0&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1489407856.1788253862&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788253909301&sst.lpc=140865579&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=1&tag_exp=115938466~115938468~118897920~118897930~119259606~120385423&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=adwords_page_view&_fv=1&_ss=1&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&ep.user_data._tag_mode=MANUAL&tfd=3204&richsstsse"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "fetch",
+    "url": "https://gtms.food.hipercor.es/g/collect?v=2&tid=G-12345&gtm=45je68s1h1z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3v3q2q5l1&npa=1&dma_cps=-&dma=1&ecid=99359964&_eu=AAAAAAQ&_fplc=0&are=1&cid=161447500.1788253863&ec_mode=c&frm=0&pscdl=denied&rcb=0&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&ur=ES-AN&sst.rnd=1489407856.1788253862&sst.gch=1&sst.etld=google.es&sst.gcsub=region1&sst.tft=1788253909301&sst.lpc=140865579&sst.navt=n&sst.ude=0&sst.sw_exp=1&_s=2&tag_exp=115938466~115938468~118897920~118897930~119259606~120385423&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=DA&en=floodlight_page_view&gap.sstd=5&ep.page_url=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&ep.platform=WEB&ep.tx_id=No%20value%20read&ep.page_committed=false&ep.business_unit=hiper_super&ep.products_price_discount=&ep.ga_tracking_code=UA-42384899-11&_et=4&ep.user_data._tag_mode=MANUAL&tfd=3212&richsstsse"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/akam/13/pixel_a13ac1"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "other",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets//stylesheets/public/favicon.ico?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/Arial.DHXpgMHe.ttf"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "other",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets//stylesheets/public/favicon.ico?_MzE6MDgtMTY6MzI6Mjg"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "blob:https://cuenta.elcorteingles.es/fe593446-ee60-46db-a662-160bb69766bc"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "font",
+    "url": "https://cdn.grupoelcorteingles.es/statics/front-msh3-food-hipercor/assets/stylesheets/app/Arial.DHXpgMHe.ttf"
+  },
+  {
+    "tipo": "request",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "blob:https://www.hipercor.es/ffe18be7-a59e-45c3-a323-483b29bbbc9c"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-XG9L1L3E0D&gtm=45je68s1h1v890883988z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3vPq2q5l1&npa=1&dma_cps=-&dma=1&_eu=AAAAAGQC&are=1&cid=161447500.1788253863&frm=0&pscdl=denied&rcb=14&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&gaf=2&tag_exp=115938466~115938469~118869188~118897920~118897930~119259606~120213116~120385422&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=CA&_s=2&tfd=7972"
+  },
+  {
+    "tipo": "response",
+    "status": 204,
+    "resource_type": "fetch",
+    "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-XG9L1L3E0D&gtm=45je68s1h1v890883988z89104845587za20gzb9104845587zd9104845587&_p=1788253909301&gcs=G101&gcd=13q3vPq2q5l1&npa=1&dma_cps=-&dma=1&_eu=AAAAAGQC&are=1&cid=161447500.1788253863&frm=0&pscdl=denied&rcb=14&sr=1440x900&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=es-es&gaf=2&tag_exp=115938466~115938469~118869188~118897920~118897930~119259606~120213116~120385422&sid=1788253863&sct=1&seg=0&dl=https%3A%2F%2Fwww.hipercor.es%2Fsupermercado%2Fmarcas%2Fcanasta%2Fsupermercado%2Fbebidas%2Fvinos%2Fvinos-generosos%2Folorosos%2Fcanasta-cream-vino-oloroso-dulce-con-d-o-jerez-xeres-sherry-botella-75-cl%2F8410028030903%2Fp&dt=&_tu=CA&_s=2&tfd=7972"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "tipo": "response",
+    "status": 201,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/DO1arL6cp2JtVQSaum/DFxcZFd6PAI/BzE/cdFRwIhkB"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/VSo/vHE5GSxcZ"
+  },
+  {
+    "tipo": "request",
+    "method": "POST",
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/GLCAk5ULxfWVApkAwg/GpY7pJ3D3V/A1YtCSofPw/WmZmJ2w/gLUoY"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://www.hipercor.es/L7cqwsIdB/4mH44D/TiL55x/0oKw28/fw1arLaVc71V/OmliZFd6PAI/VSo/vHE5GSxcZ"
+  },
+  {
+    "tipo": "response",
+    "status": 200,
+    "resource_type": "xhr",
+    "url": "https://cuenta.elcorteingles.es/GLCAk5ULxfWVApkAwg/GpY7pJ3D3V/A1YtCSofPw/WmZmJ2w/gLUoY"
+  }
+]
