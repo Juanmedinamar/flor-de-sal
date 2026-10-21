@@ -1,0 +1,70 @@
+# ============================================================
+# Flor de Sal - Configuración de la salina y del modelo
+# ============================================================
+# Todos los valores son calibrables desde la UI (panel de calibración).
+
+location:
+  name: "Salina Córdoba"
+  latitude: 37.8882
+  longitude: -4.7794
+  timezone: "Europe/Madrid"
+
+water:
+  # Salmuera
+  entrada_calentador_g_l: 225.0     # manantial (agua de partida)
+  entrada_cristalizador_g_l: 300.0  # tras el concentrador (rango 290-300; parte alta → el
+                                     # modelo reproduce la ventana 16-19h del PDF)
+  temperatura_entrada_c: 30.0       # agua caliente que entra del concentrador
+  profundidad_lamina_cm: 7.0        # tiraje del cristalizador (5-10 cm)
+
+  # Sobresaturación / nucleación (Fase 1)
+  umbral_sobresaturacion_g_l: 318.0 # rango 315-320 según temperatura
+  umbral_temp_ref_c: 25.0           # temperatura de referencia del umbral
+  umbral_pendiente_g_l_c: 0.25      # sube ~0.25 g/l por cada °C (empírico, calibrable)
+
+physics:
+  # Ley de Dalton modificada: E(mm/día) = (a + b·V) · VPD[kPa]
+  # E_hora = E_día / 24  (las condiciones ya varían hora a hora)
+  # Nota de calibración: la literatura clásica da a≈0.17, b≈0.87 para láminas
+  # libres; en la lámina somera y oscura del cristalizador la evaporación real es
+  # ~2,5× mayor, por eso los valores por defecto son ese múltiplo. CALIBRABLE con
+  # datos reales (panel de calibración de la UI). Validado contra el escenario del
+  # PDF: ventana 16:00-20:00, óptima 18:00 (cosecha 16-19h del PDF).
+  dalton_a: 0.45       # mm/día por kPa con viento cero
+  dalton_b: 2.30       # mm/día por (kPa·m/s)
+  coef_solar_agua: 5.0 # °C sobre ambiente por cada 1000 W/m² de radiación
+  t_extra_manana_c: 4.0  # sobrecalentamiento de la lámina por entrada caliente (decae a 0 a las 12:00)
+
+simulation:
+  hora_inicio: 6       # simular desde las 06:00
+  hora_fin: 21         # hasta las 21:00 (la noche cierra la ventana)
+  minutos_crecimiento: 120  # espesor suficiente tras la nucleación (1-2 h)
+
+montecarlo:
+  iterations: 1000
+  sigma_temp_c: 1.5     # incertidumbre de la previsión (°C)
+  sigma_rh_pct: 8.0     # incertidumbre de la HR (%)
+  sigma_wind_ms: 0.8    # incertidumbre del viento (m/s)
+  seed: 42              # reproducibilidad (null = aleatorio)
+
+limits:
+  # Reglas del PDF (Fases 0-3 y alertas)
+  viento_seguro_max_ms: 5.0
+  viento_peligro_ms: 5.5        # Fase 3: riesgo de hundimiento de la película
+  hr_ideal_max_pct: 60.0        # por debajo de 50-60% es óptimo
+  hr_cierre_tarde_pct: 45.0     # si la HR vuelve a subir por encima de esto, cierra ventana
+  hr_peligro_pct: 65.0          # película se rehidrata / disuelve
+  temp_activacion_c: 28.0       # temperatura mínima para que "arranque" el proceso
+
+season:
+  # Simulación histórica de temporada (Open-Meteo Archive / ERA5)
+  start_date: "2026-04-01"
+  end_date: "2026-10-15"
+  iterations: 300               # suficiente y rápido (~200 días en pocos segundos)
+  source: "archive"             # archive = ERA5 (datos observados/reanálisis)
+
+markov:
+  # Cadenas de Márkov de los estados de la balsa (PDF pág. 8, §2)
+  estados: ["inactivo", "concentracion_critica", "nucleacion", "ventana", "degradacion"]
+  margen_critico_g_l: 15.0      # "concentración crítica" = a <15 g/l del umbral
+  iterations: 1000              # ensemble con el que se estiman las transiciones

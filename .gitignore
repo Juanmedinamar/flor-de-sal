@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Datos locales (la DB es la fuente de verdad del PC, no se versiona)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Cachés de herramientas
+.ruff_cache/
+.coverage
+htmlcov/

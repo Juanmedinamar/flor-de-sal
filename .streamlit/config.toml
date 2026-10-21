@@ -1,0 +1,21 @@
+# Tema de la app Flor de Sal (verde/teal de la salina) y servidor.
+# Streamlit lo lee al arrancar desde la raíz del proyecto (cwd).
+
+[theme]
+base = "light"
+primaryColor = "#00695C"          # teal de marca: botones, barras y sliders
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#E8F5E9"  # verde muy claro (sidebar, fondos suaves)
+textColor = "#212121"
+linkColor = "#00695C"
+font = "sans serif"               # sans serif se lee bien en móvil
+
+[server]
+headless = true                   # sin pestaña de navegador automática
+runOnSave = false                 # no recalcular al guardar (evita recálculos caros)
+
+[browser]
+gatherUsageStats = false          # sin telemetría
+
+[client]
+toolbarMode = "minimal"           # barra de herramientas discreta
