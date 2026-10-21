@@ -1,12 +1,16 @@
 """Tests de la CLI de simulación de temporada (scripts/season_simulation.py).
 
 Sin red: datos sintéticos + round-trip idempotente de save/get_season_runs en tmp_path,
-y comprobación de los argumentos de la CLI (defaults de config.yaml y opciones).
+comprobación de los argumentos de la CLI (defaults de config.yaml y opciones) y
+del paralelismo (auditoría G7): workers=1 y workers=2 dan EXACTAMENTE los mismos
+resultados, y un pool caído degrada a serie.
 Con red (@pytest.mark.integration): rango real corto de junio de 2026.
 """
 from __future__ import annotations
 
 import importlib.util
+import os
+import sys
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -18,12 +22,15 @@ from src.historical import COLUMNAS
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Carga el script como módulo (scripts/ no es un paquete).
+# Carga el script como módulo (scripts/ no es un paquete) y lo registra en
+# sys.modules para que sus funciones sean picklables en ProcessPoolExecutor (G7):
+# pickle resuelve el nombre de módulo "season_simulation" contra sys.modules.
 _spec = importlib.util.spec_from_file_location("season_simulation",
                                                ROOT / "scripts" / "season_simulation.py")
 assert _spec is not None and _spec.loader is not None
 season_sim = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(season_sim)
+sys.modules["season_simulation"] = season_sim
 
 INICIO = "2026-06-01"
 FIN = "2026-06-05"      # 5 días de junio de 2026
@@ -84,7 +91,7 @@ def fetch_sintetico(monkeypatch: pytest.MonkeyPatch) -> pd.DataFrame:
     llamadas: list[tuple[str, str]] = []
 
     def fake(start_date: str, end_date: str, latitude: float, longitude: float,
-             timezone: str = "Europe/Madrid") -> pd.DataFrame:
+             timezone: str = "Europe/Madrid", **kwargs) -> pd.DataFrame:
         llamadas.append((start_date, end_date))
         return df.copy()
 
@@ -167,6 +174,58 @@ def test_resumen_de_temporada_sintetica(cfg, tmp_path: Path,
 
 
 # ---------------------------------------------------------------------------
+# Sin red: paralelismo (auditoría G7)
+# ---------------------------------------------------------------------------
+def test_resuelve_workers(cfg) -> None:
+    """0 → auto (min(4, CPU)), 1 → serie, N → fijo, None → cfg.season.workers."""
+    assert season_sim._resuelve_workers(1, cfg) == 1
+    assert season_sim._resuelve_workers(3, cfg) == 3
+    assert season_sim._resuelve_workers(0, cfg) == max(1, min(4, os.cpu_count() or 1))
+    assert 1 <= season_sim._resuelve_workers(None, cfg) <= 4   # config: workers: 0 (auto)
+
+
+def test_workers_1_y_2_dan_exactamente_los_mismos_resultados(cfg, tmp_path: Path,
+                                                             fetch_sintetico: pd.DataFrame) -> None:
+    """Determinismo (G7): el paralelismo no cambia NADA (misma seed por día)."""
+    db_serie = Database(tmp_path / "serie.db")
+    db_par = Database(tmp_path / "paralelo.db")
+
+    res_serie = season_sim.run_season(INICIO, FIN, 40, cfg=cfg, db=db_serie, workers=1)
+    res_par = season_sim.run_season(INICIO, FIN, 40, cfg=cfg, db=db_par, workers=2)
+
+    assert res_serie["workers"] == 1
+    assert res_par["workers"] == 2
+    df_serie = db_serie.get_season_runs(INICIO, FIN)
+    df_par = db_par.get_season_runs(INICIO, FIN)
+    pd.testing.assert_frame_equal(
+        df_serie.drop(columns=["computed_at"]), df_par.drop(columns=["computed_at"]))
+    for clave in ("n_dias", "n_guardadas", "n_con_ventana", "optima_mediana",
+                  "optima_min", "optima_max", "optimas_decimales"):
+        assert res_serie[clave] == res_par[clave], clave
+    assert res_serie["prob_media"] == pytest.approx(res_par["prob_media"])
+
+
+def test_pool_caído_degrada_a_serie(cfg, tmp_path: Path,
+                                    fetch_sintetico: pd.DataFrame,
+                                    monkeypatch: pytest.MonkeyPatch) -> None:
+    """Si el pool falla, run_season sigue en serie y guarda el mismo resultado (G7)."""
+    class PoolRoto:
+        """ProcessPoolExecutor imposible: el constructor siempre falla."""
+
+        def __init__(self, *args, **kwargs):
+            raise RuntimeError("pool no disponible")
+
+    monkeypatch.setattr(season_sim, "ProcessPoolExecutor", PoolRoto)
+    db = Database(tmp_path / "degradado.db")
+
+    res = season_sim.run_season(INICIO, FIN, 30, cfg=cfg, db=db, workers=2)
+
+    assert res["n_dias"] == 5
+    assert res["n_con_ventana"] == 4
+    assert len(db.get_season_runs(INICIO, FIN)) == 5
+
+
+# ---------------------------------------------------------------------------
 # Sin red: argumentos de la CLI
 # ---------------------------------------------------------------------------
 def test_cli_sin_argumentos_usa_config(cfg, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -182,6 +241,8 @@ def test_cli_sin_argumentos_usa_config(cfg, monkeypatch: pytest.MonkeyPatch) -> 
     assert capturado["start"] == str(cfg.season.start_date)
     assert capturado["end"] == str(cfg.season.end_date)
     assert capturado["iters"] == int(cfg.season.iterations)
+    # sin --workers se pasa None → dentro se resuelve con cfg.season.workers
+    assert capturado["kwargs"]["workers"] is None
 
 
 def test_cli_con_opciones_explicitas(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -195,6 +256,19 @@ def test_cli_con_opciones_explicitas(monkeypatch: pytest.MonkeyPatch) -> None:
     season_sim.main(["--start", "2026-06-01", "--end", "2026-06-05", "--iters", "42"])
 
     assert capturado == {"start": "2026-06-01", "end": "2026-06-05", "iters": 42}
+
+
+def test_cli_con_workers_explicito(monkeypatch: pytest.MonkeyPatch) -> None:
+    """--workers 2 se traslada tal cual a run_season (G7)."""
+    capturado: dict = {}
+    monkeypatch.setattr(season_sim, "run_season",
+                        lambda s, e, i, **kw: capturado.update(kw) or {"n_dias": 0})
+    monkeypatch.setattr(season_sim, "imprimir_resumen", lambda res: None)
+
+    season_sim.main(["--start", "2026-06-01", "--end", "2026-06-05",
+                     "--iters", "10", "--workers", "2"])
+
+    assert capturado["workers"] == 2
 
 
 def test_cli_fecha_invalida_sale_con_error(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -212,6 +286,15 @@ def test_cli_iters_invalido_sale_con_error(monkeypatch: pytest.MonkeyPatch) -> N
                         lambda *a, **kw: pytest.fail("no debe simularse"))
     with pytest.raises(SystemExit) as exc:
         season_sim.main(["--iters", "0"])
+    assert exc.value.code == 1
+
+
+def test_cli_workers_invalido_sale_con_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    """--workers negativo aborta con exit code 1 sin simular nada."""
+    monkeypatch.setattr(season_sim, "run_season",
+                        lambda *a, **kw: pytest.fail("no debe simularse"))
+    with pytest.raises(SystemExit) as exc:
+        season_sim.main(["--workers", "-1"])
     assert exc.value.code == 1
 
 

@@ -86,13 +86,24 @@ El Monte Carlo está vectorizado (NumPy): 1000 escenarios en <0,1 s.
 - Simulación horaria 06:00–21:00.
 
 ## Mapa de propiedad de archivos (NO toques archivos de otro agente)
+### Auditoría de software (actual) — propiedad por ola
+- **nucleo** (Ola 1): `src/montecarlo.py`, `src/markov.py`, `src/physics.py`,
+  `src/pipeline.py`, `src/alerts.py`, `src/assimilation.py`,
+  `tests/test_montecarlo.py`, `tests/test_markov.py`, `tests/test_physics.py`
+- **infra** (Ola 1): `src/db.py`, `src/weather.py`, `src/historical.py`,
+  `src/errors.py`, `scripts/*.py`, `tests/test_db.py`, `tests/test_weather.py`,
+  `tests/test_historical.py`, `tests/test_season.py`
+- **ui** (Ola 1): `app/**`, `.streamlit/config.toml`, `README.md`, `tests/test_app.py` (nuevo)
+- Coordinador (principal): `config.yaml`, `src/config.py`, `AGENTS.md`, `pyproject.toml`,
+  `requirements.txt`, `tests/conftest.py`, `.gitignore`, `.github/`, `Makefile`,
+  `docs/`, cualquier archivo no asignado. Los subagentes NO hacen commit (lo hace el coordinador).
+
+### Mapa histórico (fases 1-2 del proyecto, referencias de nombre)
 - `temporada`: `src/historical.py`, `scripts/season_simulation.py`, `tests/test_historical.py`
 - `markov`: `src/markov.py`, `tests/test_markov.py`
-- `fisica-sal`: `src/physics.py`, `tests/test_physics.py` (montecarlo/asimilación completados por el coordinador)
+- `fisica-sal`: `src/physics.py`, `tests/test_physics.py`
 - `data-ingest`: `src/weather.py`, `scripts/init_db.py`, `scripts/ingest_forecast.py`, `tests/test_weather.py`, `tests/test_db.py`
 - `ui-streamlit`: `app/streamlit_app.py`, `app/assets/` (logo), `.streamlit/config.toml`, `README.md`
-- Coordinador (principal): `src/config.py`, `src/alerts.py`, `src/pipeline.py`, `src/db.py`,
-  `src/montecarlo.py`, `src/assimilation.py`, `config.yaml`, `tests/conftest.py`, `AGENTS.md`
 
 ## Capa de Márkov (semáforo probabilístico, PDF pág. 8 §2)
 - 5 estados: inactivo, concentración crítica (a <`margen_critico_g_l` del umbral),

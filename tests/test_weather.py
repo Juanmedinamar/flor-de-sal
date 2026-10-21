@@ -1,4 +1,9 @@
-"""Tests del cliente de previsión (src/weather.py) — con red simulada + integración real."""
+"""Tests del cliente de previsión (src/weather.py) — con red simulada + integración real.
+
+Cubre el contrato, los reintentos con backoff exponencial (auditoría G5) y las
+excepciones tipadas (auditoría M7): WeatherNetworkError se reintenta,
+WeatherDataError no.
+"""
 from __future__ import annotations
 
 from datetime import datetime
@@ -9,6 +14,8 @@ import pandas as pd
 import pytest
 import requests
 
+from src.config import load_config
+from src.errors import WeatherDataError, WeatherNetworkError
 from src.weather import API_URL, fetch_forecast
 
 FECHA = "2026-07-15"
@@ -106,33 +113,104 @@ def test_filtrado_de_la_fecha_pedida(mock_get: MagicMock) -> None:
     assert df["hour"].tolist() == list(range(24))
 
 
+@patch("time.sleep")
 @patch("src.weather.requests.get")
-def test_error_http_lanza_runtime_error(mock_get: MagicMock) -> None:
-    """Un error HTTP (p. ej. 429/500) se convierte en RuntimeError con mensaje claro."""
+def test_error_http_lanza_weather_network_error(mock_get: MagicMock, mock_sleep: MagicMock) -> None:
+    """Un error HTTP (p. ej. 429/500) → WeatherNetworkError (reintentable, M7/G5)."""
     resp = MagicMock()
     resp.raise_for_status.side_effect = requests.HTTPError("429 Too Many Requests")
     mock_get.return_value = resp
 
-    with pytest.raises(RuntimeError, match="Open-Meteo"):
-        fetch_forecast(37.8882, -4.7794, FECHA)
+    with pytest.raises(WeatherNetworkError, match="Open-Meteo"):
+        fetch_forecast(37.8882, -4.7794, FECHA, timeout_s=5, retries=2, backoff_base_s=0.0)
+    assert mock_get.call_count == 2       # se reintenta hasta agotar intentos
+    assert mock_sleep.call_count == 1
 
 
+@patch("time.sleep")
 @patch("src.weather.requests.get")
-def test_error_de_red_lanza_runtime_error(mock_get: MagicMock) -> None:
-    """Un fallo de conexión se convierte en RuntimeError con mensaje claro."""
+def test_error_de_red_lanza_weather_network_error(mock_get: MagicMock,
+                                                  mock_sleep: MagicMock) -> None:
+    """Un fallo de conexión → WeatherNetworkError, que sigue siendo RuntimeError (M7)."""
     mock_get.side_effect = requests.ConnectionError("sin conexión")
 
-    with pytest.raises(RuntimeError, match="Open-Meteo"):
-        fetch_forecast(37.8882, -4.7794, FECHA)
+    with pytest.raises(WeatherNetworkError, match="Open-Meteo"):
+        fetch_forecast(37.8882, -4.7794, FECHA, timeout_s=5, retries=3, backoff_base_s=0.0)
+    assert mock_get.call_count == 3
+    # compatibilidad: los llamantes antiguos que capturan RuntimeError siguen funcionando
+    with pytest.raises(RuntimeError):
+        fetch_forecast(37.8882, -4.7794, FECHA, timeout_s=5, retries=1, backoff_base_s=0.0)
+
+
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_respuesta_sin_datos_del_dia_lanza_weather_data_error(mock_get: MagicMock,
+                                                              mock_sleep: MagicMock) -> None:
+    """Una respuesta sin series horarias → WeatherDataError SIN reintentos (M7/G5)."""
+    mock_get.return_value = _respuesta_mock({"reason": "Invalid API request"})
+
+    with pytest.raises(WeatherDataError, match="Open-Meteo"):
+        fetch_forecast(37.8882, -4.7794, FECHA, timeout_s=5, retries=3, backoff_base_s=0.0)
+
+    mock_get.assert_called_once()   # los datos malos NO se reintentan
+    mock_sleep.assert_not_called()
+
+
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_json_invalido_lanza_weather_data_error_sin_reintentos(mock_get: MagicMock,
+                                                               mock_sleep: MagicMock) -> None:
+    """Una respuesta que no es JSON (p. ej. HTML de un proxy) no se reintenta (M7/G5)."""
+    resp = MagicMock()
+    resp.raise_for_status.return_value = None
+    resp.json.side_effect = requests.exceptions.JSONDecodeError("Expecting value", "", 0)
+    mock_get.return_value = resp
+
+    with pytest.raises(WeatherDataError, match="no-JSON"):
+        fetch_forecast(37.8882, -4.7794, FECHA, timeout_s=5, retries=3, backoff_base_s=0.0)
+
+    mock_get.assert_called_once()
+    mock_sleep.assert_not_called()
+
+
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_reintentos_con_backoff_exponencial_hasta_el_exito(mock_get: MagicMock,
+                                                           mock_sleep: MagicMock) -> None:
+    """Falla 2 veces por red y a la 3ª funciona: 3 llamadas y esperas base·2^0, base·2^1."""
+    mock_get.side_effect = [
+        requests.ConnectionError("caída 1"),
+        requests.ConnectionError("caída 2"),
+        _respuesta_mock(_payload_open_meteo()),
+    ]
+
+    df = fetch_forecast(37.8882, -4.7794, FECHA, timeout_s=5, retries=3, backoff_base_s=0.5)
+
+    assert len(df) == 24   # la 3ª petición devuelve datos válidos
+    assert mock_get.call_count == 3
+    assert mock_sleep.call_count == 2
+    esperas = [llamada.args[0] for llamada in mock_sleep.call_args_list]
+    assert 0.5 <= esperas[0] <= 0.7    # base·2^0 + jitter U(0, 0.2)
+    assert 1.0 <= esperas[1] <= 1.2    # base·2^1 + jitter U(0, 0.2)
+    # el timeout usado es el pasado explícito (no el de config)
+    assert mock_get.call_args_list[0].kwargs["timeout"] == 5
 
 
 @patch("src.weather.requests.get")
-def test_respuesta_sin_datos_del_dia_lanza_runtime_error(mock_get: MagicMock) -> None:
-    """Una respuesta sin series horarias (p. ej. error de la API) lanza RuntimeError."""
-    mock_get.return_value = _respuesta_mock({"reason": "Invalid API request"})
+def test_fetch_forecast_usa_los_parametros_de_cfg_network(mock_get: MagicMock) -> None:
+    """Sin kwargs explícitos, timeout/retries/backoff salen de cfg.network (G5)."""
+    cfg_local = load_config()
+    cfg_local.network.timeout_s = 7.0
+    cfg_local.network.retries = 4
+    cfg_local.network.backoff_base_s = 0.0
+    mock_get.side_effect = requests.ConnectionError("sin conexión")
 
-    with pytest.raises(RuntimeError):
-        fetch_forecast(37.8882, -4.7794, FECHA)
+    with patch("time.sleep") as mock_sleep, pytest.raises(WeatherNetworkError):
+        fetch_forecast(37.8882, -4.7794, FECHA, cfg=cfg_local)
+
+    assert mock_get.call_count == 4                    # retries del config
+    assert mock_get.call_args_list[0].kwargs["timeout"] == 7.0
+    assert mock_sleep.call_count == 3
 
 
 def test_fecha_con_formato_invalido_lanza_value_error() -> None:

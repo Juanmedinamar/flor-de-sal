@@ -46,19 +46,26 @@ Esquema sugerido (libre de implementarlo como quieras si respeta las firmas):
     predictions(id, date, computed_at, payload_json)
 
 Notas de implementación (data-ingest):
-- sqlite3 puro, sin ORM. Conexión por operación (cierre garantizado, thread-safe).
+- sqlite3 puro, sin ORM. Conexión por operación (cierre garantizado, thread-safe),
+  con WAL + busy_timeout para lecturas concurrentes (auditoría G4).
 - Fechas en formato "YYYY-MM-DD", horas de lectura "HH:MM" (orden lexicográfico = cronológico).
 - save_forecast reemplaza la previsión previa del día (DELETE + INSERT en transacción).
+- save_season_runs es transaccional (DELETE + INSERT mismo `with conn` → rollback
+  completo ante cualquier fallo a mitad) y valida `rows` antes de tocar la DB (M5).
+- save_prediction sanitiza el payload a JSON estricto: NaN/inf → null (M5).
 """
 from __future__ import annotations
 
 import json
+import math
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
+import numpy as np
 import pandas as pd
 
 from src.config import DB_PATH
@@ -136,6 +143,27 @@ def _ahora() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
+def _sanitizar_json(valor: Any) -> Any:
+    """Convierte `valor` a algo serializable con JSON estricto (auditoría M5).
+
+    - NaN / ±inf → None: ``json.dumps`` por defecto escribiría ``NaN``/`Infinity``,
+      que un parser JSON estricto rechaza.
+    - Escalares numpy (np.float64, np.int64, np.bool_…) → tipos Python nativos.
+    - dict, list y tuple se recorren recursivamente (claves intactas).
+
+    Cualquier otra cosa no serializable la resuelve ``default=str`` en save_prediction.
+    """
+    if isinstance(valor, dict):
+        return {k: _sanitizar_json(v) for k, v in valor.items()}
+    if isinstance(valor, (list, tuple)):
+        return [_sanitizar_json(v) for v in valor]
+    if isinstance(valor, np.generic):
+        valor = valor.item()   # p. ej. np.float64 → float antes del chequeo de finito
+    if isinstance(valor, float) and not math.isfinite(valor):
+        return None
+    return valor
+
+
 class Database:
     """Acceso a la base de datos local SQLite de la salina (una conexión por operación)."""
 
@@ -145,9 +173,23 @@ class Database:
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
-        """Context manager: conexión, commit automático y cierre garantizado."""
-        conn = sqlite3.connect(self.path)
+        """Context manager: conexión con PRAGMAs de concurrencia, commit y cierre.
+
+        PRAGMAs al abrir (auditoría G4 — Streamlit con varios onglets / futuro web):
+
+        - ``journal_mode=WAL``: las lecturas no bloquean al escritor (y viceversa).
+        - ``busy_timeout=5000``: ante una escritura ajena en curso espera hasta 5 s
+          antes de fallar con "database is locked" (además del timeout=5 s de connect).
+        - ``synchronous=NORMAL``: con WAL es seguro y más rápido que FULL.
+
+        ``with conn`` hace commit si todo va bien y rollback si hay excepción
+        (transacción completa para DELETE+INSERT de reemplazos).
+        """
+        conn = sqlite3.connect(self.path, timeout=5.0)
         try:
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("PRAGMA busy_timeout=5000")
+            conn.execute("PRAGMA synchronous=NORMAL")
             with conn:  # hace commit si todo va bien, rollback si hay excepción
                 yield conn
         finally:
@@ -260,7 +302,11 @@ class Database:
     # Predicciones / veredictos
     # ------------------------------------------------------------------
     def save_prediction(self, date: str, computed_at: str, payload: dict) -> int:
-        """Guarda el veredicto del día serializando `payload` a JSON.
+        """Guarda el veredicto del día serializando `payload` a JSON estricto.
+
+        El payload se sanitiza antes (auditoría M5): NaN/±inf → null, escalares
+        numpy → tipos Python nativos, dict/list/tuple recursivos. Así el JSON
+        guardado siempre lo parsea un parser estricto (json.loads lo recupera).
 
         Args:
             date: Día de la predicción "YYYY-MM-DD".
@@ -270,7 +316,7 @@ class Database:
         Returns:
             id de la fila insertada.
         """
-        payload_json = json.dumps(payload, ensure_ascii=False, default=str)
+        payload_json = json.dumps(_sanitizar_json(payload), ensure_ascii=False, default=str)
         with self._connect() as conn:
             cur = conn.execute(
                 "INSERT INTO predictions (date, computed_at, payload_json) VALUES (?, ?, ?)",
@@ -307,10 +353,28 @@ class Database:
         {'date', 'window_start', 'window_end', 'hora_optima', 'ci_low', 'ci_high',
          'prob_ventana', 'prob_riesgo', 'calidad', 'n_iter'}.
 
+        Transaccional (auditoría M5): el DELETE del rango y el INSERT de las filas
+        van en la MISMA transacción; si un insert falla a mitad, el rollback
+        devuelve la tabla a su estado anterior (nunca queda "a medias"). Además
+        valida `rows` ANTES de tocar la DB.
+
+        Raises:
+            ValueError: Si alguna fila no es dict o no tiene el campo 'date'.
+
         Returns: nº de filas guardadas.
         """
         if not rows:
             return 0
+        for i, fila in enumerate(rows):
+            if not isinstance(fila, dict):
+                raise ValueError(
+                    f"save_season_runs: rows[{i}] debe ser un dict "
+                    f"(recibido {type(fila).__name__}).")
+            fecha = fila.get("date")
+            if not isinstance(fecha, str) or not fecha.strip():
+                raise ValueError(
+                    f"save_season_runs: rows[{i}] sin el campo obligatorio "
+                    f"'date' (fecha 'YYYY-MM-DD').")
         ahora = _ahora()
         with self._connect() as conn:
             conn.execute(

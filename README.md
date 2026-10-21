@@ -247,8 +247,15 @@ móvil todo se apila a una columna y se lee cómodamente.
 python3 -m pytest tests/ -q
 ```
 
-Los tests cubren física, Monte Carlo, asimilación, previsión y base de datos
-(fixtures con el día típico de Córdoba del PDF).
+Los tests cubren física, Monte Carlo, asimilación, previsión, base de datos
+(fixtures con el día típico de Córdoba del PDF) y la UI: `tests/test_app.py`
+ejecuta el punto de entrada real con `streamlit.testing.v1.AppTest` y comprueba
+que **Hoy** y **Temporada** se pintan sin excepciones, usando una base de datos
+temporal (`FLOR_DESAL_DB`) y con la red bloqueada.
+
+```bash
+python3 -m pytest tests/ -m "not integration"   # sin pruebas que piden red
+```
 
 ## Estructura del proyecto
 
@@ -261,10 +268,18 @@ flor-de-sal/
 ├── requirements.txt
 ├── .streamlit/config.toml  # tema (verde/teal #00695C) y servidor
 ├── app/
-│   └── streamlit_app.py    # UI: secciones 🌞 Hoy y 📆 Temporada (veredicto,
-│                           #   semáforo Márkov, campana, previsión vs lecturas,
-│                           #   evolución, tabla, formulario, calibración, KPIs y
-│                           #   gráficas de temporada)
+│   ├── streamlit_app.py    # punto de entrada delgado: set_page_config + main()
+│   │                       #   (sigue siendo el fichero de `streamlit run`)
+│   ├── assets/logo.png     # logo de la salina (favicon de la pestaña y cabecera)
+│   └── ui/                 # paquete con toda la interfaz:
+│       ├── constantes.py   #   colores, estados de Márkov, calibración, layout plotly
+│       ├── textos.py       #   textos compartidos en español (pie, leyenda, avisos)
+│       ├── helpers.py      #   formatos, estilos de tabla, gráficos y zona horaria
+│       ├── state.py        #   caché (Monte Carlo del día / season_runs) + session_state
+│       ├── sidebar.py      #   menú lateral: navegación, fecha, descarga, simulación
+│       ├── panel_hoy.py    #   sección 🌞 Hoy (veredicto, semáforo, campana, tabla…)
+│       ├── panel_temporada.py  # sección 📆 Temporada (KPIs y gráficas)
+│       └── main.py         #   cabecera, sección elegida y pie de fuentes
 ├── src/
 │   ├── config.py           # carga de config.yaml
 │   ├── weather.py          # previsión horaria (Open-Meteo)
@@ -281,7 +296,8 @@ flor-de-sal/
 │   ├── init_db.py          # crea el esquema de la DB
 │   ├── ingest_forecast.py  # descarga y guarda la previsión del día
 │   └── season_simulation.py# simula la temporada y guarda en season_runs
-├── tests/                  # pytest
+├── tests/                  # pytest (física, Monte Carlo, DB, temporada y
+│                           #   humo de la UI con streamlit AppTest)
 └── data/flor_desal.db      # SQLite local (se crea sola; no se versiona)
 ```
 
@@ -292,6 +308,11 @@ flor-de-sal/
   Para apuntar la app a otra DB (pruebas), define la variable de entorno
   `FLOR_DESAL_DB=/ruta/otra.db`; si no, se usa la del proyecto.
 - **Rendimiento**: el veredicto se cachea 5 min (`st.cache_data`) y se invalida solo
-  al guardar una lectura, cambiar la calibración o descargar previsión nueva.
+  al guardar una lectura, cambiar la calibración o descargar previsión nueva
+  (la clave ya no incluye la hora del sistema: el `ttl=300` refresca la fase a
+  mitad de día sin recalcular la campana cada hora).
+- **Zona horaria**: la «línea ahora» del semáforo, la fecha por defecto del
+  selector y la hora de las lecturas usan `location.timezone` de `config.yaml`
+  (con *fallback* a la hora local si la zona no existe en el equipo).
 - **Unidades**: presión en hPa (se pasa a kPa a Dalton), evaporación en mm (= L/m²),
   viento m/s, concentración g/l, temperatura °C.

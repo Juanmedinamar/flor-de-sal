@@ -2,6 +2,11 @@
 
 Cubre el contrato de la docstring: parseo con mock, tramos mensuales concatenados,
 iter_days (contrato de un día), calidad_datos y un rango real de integración.
+
+NOTA (auditoría G5): la petición HTTP vive en el helper compartido
+src.weather.get_json_con_reintentos, por eso los mocks se parchean sobre
+`src.weather.requests.get` (requests es un módulo único: el patch afecta a
+cualquier cliente que lo use).
 """
 from __future__ import annotations
 
@@ -12,6 +17,7 @@ import pandas as pd
 import pytest
 import requests
 
+from src.errors import WeatherDataError, WeatherNetworkError
 from src.historical import API_URL, COLUMNAS, COLUMNAS_DIA, calidad_datos, fetch_archive, iter_days
 
 INICIO = "2026-06-01"
@@ -82,7 +88,7 @@ def _rango_fechas(start: str, end: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # fetch_archive — parseo con requests.get simulado
 # ---------------------------------------------------------------------------
-@patch("src.historical.requests.get")
+@patch("src.weather.requests.get")
 def test_parseo_columnas_exactas_tipos_y_multi_dia(mock_get: MagicMock) -> None:
     """El parseo devuelve exactamente las columnas del contrato, tipos correctos y `date`."""
     mock_get.return_value = _respuesta_mock(_payload_rango("2026-06-01", "2026-06-02"))
@@ -109,7 +115,7 @@ def test_parseo_columnas_exactas_tipos_y_multi_dia(mock_get: MagicMock) -> None:
     assert claves == sorted(claves)
 
 
-@patch("src.historical.requests.get")
+@patch("src.weather.requests.get")
 def test_parametros_de_llamada_open_meteo_archive(mock_get: MagicMock) -> None:
     """La llamada HTTP usa el endpoint y los parámetros exactos del contrato."""
     mock_get.return_value = _respuesta_mock(_payload_rango(FECHA, FECHA))
@@ -132,7 +138,7 @@ def test_parametros_de_llamada_open_meteo_archive(mock_get: MagicMock) -> None:
     )
 
 
-@patch("src.historical.requests.get")
+@patch("src.weather.requests.get")
 def test_rango_largo_se_descarga_en_tramos_mensuales(mock_get: MagicMock) -> None:
     """Un rango de varios meses hace UNA petición por mes, con los tramos exactos."""
     def responder(*_args, **kwargs):
@@ -155,7 +161,7 @@ def test_rango_largo_se_descarga_en_tramos_mensuales(mock_get: MagicMock) -> Non
     assert df["date"].iloc[-1] == "2026-06-10"
 
 
-@patch("src.historical.requests.get")
+@patch("src.weather.requests.get")
 def test_tramos_concatenados_sin_duplicados_ni_desorden(mock_get: MagicMock) -> None:
     """Aunque los tramos se solapen (payload repetido), el resultado no duplica ni desordena."""
     # Cada tramo devuelve SIEMPRE el mismo rango amplio → duplicados entre peticiones.
@@ -170,7 +176,7 @@ def test_tramos_concatenados_sin_duplicados_ni_desorden(mock_get: MagicMock) -> 
     assert len(df) == (16 + 10) * 24
 
 
-@patch("src.historical.requests.get")
+@patch("src.weather.requests.get")
 def test_filas_con_variables_todas_nulas_se_excluyen(mock_get: MagicMock) -> None:
     """Las filas con las 5 variables meteorológicas nulas se descartan (contrato)."""
     payload = _payload_rango(FECHA, FECHA)
@@ -189,33 +195,74 @@ def test_filas_con_variables_todas_nulas_se_excluyen(mock_get: MagicMock) -> Non
     assert fila_14["rh_pct"] == pytest.approx(90.0 - 14 * 2.0)
 
 
-@patch("src.historical.requests.get")
-def test_error_http_lanza_runtime_error(mock_get: MagicMock) -> None:
-    """Un error HTTP se convierte en RuntimeError con mensaje claro."""
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_error_http_lanza_weather_network_error(mock_get: MagicMock, mock_sleep: MagicMock) -> None:
+    """Un error HTTP → WeatherNetworkError (reintentable), compatible con RuntimeError."""
     resp = MagicMock()
     resp.raise_for_status.side_effect = requests.HTTPError("500 Internal Server Error")
     mock_get.return_value = resp
 
-    with pytest.raises(RuntimeError, match="Open-Meteo"):
-        fetch_archive(FECHA, FECHA, 37.8882, -4.7794)
+    with pytest.raises(WeatherNetworkError, match="Open-Meteo"):
+        fetch_archive(FECHA, FECHA, 37.8882, -4.7794, timeout_s=5, retries=2, backoff_base_s=0.0)
+    assert mock_get.call_count == 2   # reintentos de red (G5)
+    assert mock_sleep.call_count == 1
 
 
-@patch("src.historical.requests.get")
-def test_error_de_red_lanza_runtime_error(mock_get: MagicMock) -> None:
-    """Un fallo de conexión se convierte en RuntimeError con mensaje claro."""
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_error_de_red_lanza_weather_network_error(mock_get: MagicMock,
+                                                  mock_sleep: MagicMock) -> None:
+    """Un fallo de conexión → WeatherNetworkError tras agotar los reintentos (G5)."""
     mock_get.side_effect = requests.ConnectionError("sin conexión")
 
+    with pytest.raises(WeatherNetworkError, match="Open-Meteo"):
+        fetch_archive(FECHA, FECHA, 37.8882, -4.7794, timeout_s=5, retries=3, backoff_base_s=0.0)
+    assert mock_get.call_count == 3
+    assert mock_sleep.call_count == 2
+    # compatibilidad M7: WeatherNetworkError sigue siendo RuntimeError
     with pytest.raises(RuntimeError, match="Open-Meteo"):
-        fetch_archive(FECHA, FECHA, 37.8882, -4.7794)
+        fetch_archive(FECHA, FECHA, 37.8882, -4.7794, timeout_s=5, retries=1, backoff_base_s=0.0)
 
 
-@patch("src.historical.requests.get")
-def test_respuesta_sin_serie_horaria_lanza_runtime_error(mock_get: MagicMock) -> None:
-    """Una respuesta sin series horarias (p. ej. error de la API) lanza RuntimeError."""
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_reintentos_con_backoff_exponencial_hasta_el_exito(mock_get: MagicMock,
+                                                           mock_sleep: MagicMock) -> None:
+    """Falla 2 veces por red y a la 3ª funciona: 3 llamadas y esperas base·2^0, base·2^1."""
+    def responder_ok(*_args, **_kwargs):
+        return _respuesta_mock(_payload_rango(FECHA, FECHA))
+
+    mock_get.side_effect = [
+        requests.ConnectionError("caída 1"),
+        requests.Timeout("caída 2"),
+        responder_ok(),
+    ]
+
+    df = fetch_archive(FECHA, FECHA, 37.8882, -4.7794, timeout_s=5, retries=3, backoff_base_s=0.5)
+
+    assert len(df) == 24
+    assert mock_get.call_count == 3
+    esperas = [llamada.args[0] for llamada in mock_sleep.call_args_list]
+    assert len(esperas) == 2
+    assert 0.5 <= esperas[0] <= 0.7    # base·2^0 + jitter U(0, 0.2)
+    assert 1.0 <= esperas[1] <= 1.2    # base·2^1 + jitter U(0, 0.2)
+    # el timeout de tramo es el del kwargs (no el de config)
+    assert mock_get.call_args_list[0].kwargs["timeout"] == 5
+
+
+@patch("time.sleep")
+@patch("src.weather.requests.get")
+def test_respuesta_sin_serie_horaria_lanza_weather_data_error(mock_get: MagicMock,
+                                                              mock_sleep: MagicMock) -> None:
+    """Una respuesta sin series horarias → WeatherDataError SIN reintentos (M7/G5)."""
     mock_get.return_value = _respuesta_mock({"reason": "Invalid API request"})
 
-    with pytest.raises(RuntimeError, match="Open-Meteo"):
-        fetch_archive(FECHA, FECHA, 37.8882, -4.7794)
+    with pytest.raises(WeatherDataError, match="Open-Meteo"):
+        fetch_archive(FECHA, FECHA, 37.8882, -4.7794, timeout_s=5, retries=3, backoff_base_s=0.0)
+
+    mock_get.assert_called_once()   # los datos malos NO se reintentan
+    mock_sleep.assert_not_called()
 
 
 def test_fecha_con_formato_invalido_lanza_value_error() -> None:

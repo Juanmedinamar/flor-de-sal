@@ -4,10 +4,11 @@ __pycache__/
 .venv/
 .pytest_cache/
 
-# Datos locales (la DB es la fuente de verdad del PC, no se versiona)
+# Datos locales (la DB es la fuente del PC, no se versiona)
 data/*.db
 data/*.db-journal
 data/*.db-wal
+data/*.db-shm
 
 # Streamlit
 .streamlit/secrets.toml

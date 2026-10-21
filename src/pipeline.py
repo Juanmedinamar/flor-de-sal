@@ -2,10 +2,20 @@
 
     run_daily(db, date)            # usa la previsión (la descarga si no existe)
     recalc_with_field_data(db, date)  # recalcula con las lecturas reales del día
+
+Notas:
+    - Un SOLO ensemble por día (auditoría G8): el Monte Carlo y la curva de
+      Márkov se derivan del mismo EnsembleResult (montecarlo.simulate_ensemble
+      → simulate_day_desde_ensemble + markov.curva_markov_desde_ensemble).
+    - Los tiempos del veredicto (hora_veredicto, computed_at y la hora usada
+      para la fase actual) se expresan en la zona horaria de la salina
+      (cfg.location.timezone, p.ej. Europa/Madrid), no en la del servidor
+      (auditoría M9); si la tz no está disponible, se usa la hora local.
 """
 from __future__ import annotations
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from src import assimilation, markov, montecarlo, weather
 from src.alerts import descripcion_fase, evaluar_riesgos
@@ -42,18 +52,26 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
         max_hours_back=int(cfg.assimilation.max_hours_back))
         if len(readings) else {})
     ajuste = assimilation.apply_bias(forecast, bias) if bias else forecast
-    r = montecarlo.simulate_day(ajuste, cfg, n_iter=n_iter)
 
-    # Curva de estados de Márkov (semáforo probabilístico hora a hora), coherente
-    # con la misma semántica y semilla del Monte Carlo del veredicto.
-    curva = markov.curva_markov(ajuste, cfg, n_iter=n_iter,
-                                seed=cfg.montecarlo.seed)
+    # Un SOLO ensemble por día (auditoría G8): antes el pipeline ejecutaba el
+    # Monte Carlo dos veces (simulate_day + curva_markov, que llama a
+    # simulate_ensemble internamente con los mismos argumentos). Ahora ambas
+    # capas se derivan del mismo EnsembleResult (mismo seed → mismos números).
+    ens = montecarlo.simulate_ensemble(ajuste, cfg, n_iter=n_iter,
+                                       seed=cfg.montecarlo.seed)
+    r = montecarlo.simulate_day_desde_ensemble(ens)
+
+    # Curva de estados de Márkov (semáforo probabilístico hora a hora),
+    # coherente con la misma semántica y el mismo ensemble del veredicto.
+    curva = markov.curva_markov_desde_ensemble(ens, cfg)
     estados = [{k: (round(float(v), 4) if isinstance(v, float) else int(v))
                 for k, v in fila.items()}
                for fila in curva.to_dict("records")]
 
-    hora_actual = datetime.now().strftime("%H:%M")
-    fase_actual, fase_txt = _fase_actual(ajuste, cfg, readings)
+    # Tiempos del veredicto en la zona horaria de la SALINA (auditoría M9).
+    ahora = _ahora_salina(cfg)
+    hora_actual = ahora.strftime("%H:%M")
+    fase_actual, fase_txt = _fase_actual(ajuste, cfg, readings, ahora.hour)
     veredicto = {
         "fecha": date,
         "fase_actual": fase_actual,
@@ -68,7 +86,7 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
         "alertas": evaluar_riesgos(*_ultimo_meteo(ajuste, readings), cfg),
         "bias": bias,
         "n_iter": r.n_iter,
-        "computed_at": datetime.now().isoformat(timespec="seconds"),
+        "computed_at": ahora.isoformat(timespec="seconds"),
         "hora_veredicto": hora_actual,
     }
     db.save_prediction(date, veredicto["computed_at"], veredicto)
@@ -82,6 +100,20 @@ def recalc_with_field_data(db: Database, date: str, cfg: Config | None = None,
 
 
 # ---------------------------------------------------------------- helpers
+
+def _ahora_salina(cfg: Config) -> datetime:
+    """Hora actual en la zona horaria de la salina (cfg.location.timezone).
+
+    Auditoría M9: el veredicto debe "pensar" en la hora local de la salina
+    (p.ej. Europa/Madrid), no en la del servidor. Si la tz no está disponible
+    (nombre inválido o sin tzdata en el sistema), se cae a la hora local.
+    """
+    try:
+        tz = ZoneInfo(str(cfg.location.timezone))
+    except (KeyError, ValueError):   # tz inexistente / mal formada / sin tzdata
+        return datetime.now()
+    return datetime.now(tz)
+
 
 def _hhmm(x: float | None) -> str | None:
     """Decimal horario → 'HH:MM' (17.25 → '17:15'); NaN → None."""
@@ -106,11 +138,16 @@ def _ultimo_meteo(forecast, readings) -> tuple[float, float, float]:
     return float(f["temp_c"]), float(f["rh_pct"]), float(f["wind_ms"])
 
 
-def _fase_actual(forecast, cfg: Config, readings) -> tuple[int, str]:
-    """Fase del momento según el modelo del día (o lecturas recientes)."""
+def _fase_actual(forecast, cfg: Config, readings,
+                 hora_veredicto: int) -> tuple[int, str]:
+    """Fase del momento según el modelo del día (o lecturas recientes).
+
+    `hora_veredicto` es la hora (0-23) en la zona horaria de la SALINA
+    (auditoría M9): la fila de fase que se muestra es la de la salina, no la
+    del servidor.
+    """
     from src import physics
     sim = physics.concentrations_over_day(forecast, cfg)
-    hora_veredicto = datetime.now().hour
     fila = sim[sim["hour"] <= hora_veredicto]
     fila = fila.iloc[-1] if len(fila) else sim.iloc[-1]
     fase = int(fila["fase"])

@@ -47,6 +47,7 @@ def main() -> None:
         longitude=float(cfg.location.longitude),
         date=fecha,
         timezone=tz,
+        cfg=cfg,   # reintentos/timeout de cfg.network (auditoría G5)
     )
     n = db.save_forecast(fecha, df)
 

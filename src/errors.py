@@ -24,8 +24,12 @@ class ConfigError(FlorDeSalError):
     """config.yaml ausente, con claves faltantes o valores fuera de rango."""
 
 
-class WeatherError(FlorDeSalError):
-    """Base de los fallos al obtener datos meteorológicos."""
+class WeatherError(RuntimeError, FlorDeSalError):
+    """Base de los fallos al obtener datos meteorológicos.
+
+    Hereda también de RuntimeError por compatibilidad con los llamantes
+    preexistentes que capturan RuntimeError (auditoría M7 sin romper contratos).
+    """
 
 
 class WeatherNetworkError(WeatherError):

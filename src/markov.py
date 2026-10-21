@@ -40,6 +40,11 @@ CONTRATO — a implementar por el agente `markov`. Firmas exactas:
         # Comodín para la UI: columnas hour + P_<estado> por cada estado (0-1),
         # más P_ventana = P_ventana (columna 'P_ventana' para conveniencia).
 
+    Variantes sobre un ensemble YA simulado (auditoría G8 — un solo Monte Carlo
+    por día en el pipeline; las públicas de arriba delegan en estas):
+        estimar_matrices_desde_ensemble(ens, cfg) -> (hours, matrices)
+        curva_markov_desde_ensemble(ens, cfg)     -> pd.DataFrame
+
 Tests (tests/test_markov.py):
   - estados_por_escenario: caso sintético conocido → ids esperados (umbral−margen, etc.).
   - matrices: shape correcto, filas suman 1, no hay NaN.
@@ -112,27 +117,25 @@ def _normalizar(conteos: np.ndarray) -> np.ndarray:
     return matriz / np.where(totales == 0.0, 1.0, totales)
 
 
-def estimar_matrices(forecast_df: pd.DataFrame, cfg: Config,
-                     bias: dict | None = None, n_iter: int | None = None,
-                     seed: int | None = None) -> tuple[np.ndarray, np.ndarray]:
-    """Estima las matrices de transición hora→hora a partir del ensemble.
+def estimar_matrices_desde_ensemble(ens: EnsembleResult, cfg: Config
+                                    ) -> tuple[np.ndarray, np.ndarray]:
+    """Estima las matrices de transición a partir de un ensemble YA simulado.
 
-    Ejecuta ``montecarlo.simulate_ensemble(forecast_df, cfg, bias, n_iter,
-    seed)`` (con ``n_iter`` por defecto ``cfg.markov.iterations``), convierte
-    cada escenario/hora a estado con :func:`estados_por_escenario` y CUENTA los
-    saltos entre horas consecutivas de los n escenarios, vectorizado con
-    ``np.add.at`` (sin bucles por escenario):
+    Convierte cada escenario/hora a estado con :func:`estados_por_escenario` y
+    CUENTA los saltos entre horas consecutivas de los n escenarios, vectorizado
+    con ``np.add.at`` (sin bucles por escenario):
 
         T[k, i, j] = #(escenarios en estado i a hours[k] y en j a hours[k+1])
-                     / #(escenarios en estado i a hours[k]]
+                     / #(escenarios en estado i a hours[k])
 
     Devuelve ``(hours (h,), matrices (h-1, 5, 5))``; ``matrices[k]`` transiciona
     de ``hours[k]`` a ``hours[k+1]``. Filas que suman 1; una fila sin
     observaciones queda como distribución unitaria en su propio estado.
+
+    Variante sin recálculo del Monte Carlo (auditoría G8): el pipeline ejecuta
+    ``montecarlo.simulate_ensemble`` una sola vez y deriva de ese ensemble tanto
+    el veredicto (``montecarlo.simulate_day_desde_ensemble``) como esta curva.
     """
-    n = cfg.markov.iterations if n_iter is None else int(n_iter)
-    ens = montecarlo.simulate_ensemble(forecast_df, cfg, bias=bias,
-                                       n_iter=n, seed=seed)
     estados = estados_por_escenario(ens, cfg)
     hours = np.asarray(ens.hours)
     h = hours.size
@@ -143,6 +146,22 @@ def estimar_matrices(forecast_df: pd.DataFrame, cfg: Config,
         k = np.broadcast_to(np.arange(h - 1, dtype=np.intp)[None, :], origen.shape)
         np.add.at(conteos, (k, origen, destino), 1.0)     # conteos[k, i, j] += 1
     return hours, _normalizar(conteos)
+
+
+def estimar_matrices(forecast_df: pd.DataFrame, cfg: Config,
+                     bias: dict | None = None, n_iter: int | None = None,
+                     seed: int | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """Estima las matrices de transición hora→hora a partir del ensemble.
+
+    Ejecuta ``montecarlo.simulate_ensemble(forecast_df, cfg, bias, n_iter,
+    seed)`` (con ``n_iter`` por defecto ``cfg.markov.iterations``) y delega el
+    conteo de saltos en :func:`estimar_matrices_desde_ensemble`. Devuelve
+    ``(hours (h,), matrices (h-1, 5, 5))`` con filas que suman 1.
+    """
+    n = cfg.markov.iterations if n_iter is None else int(n_iter)
+    ens = montecarlo.simulate_ensemble(forecast_df, cfg, bias=bias,
+                                       n_iter=n, seed=seed)
+    return estimar_matrices_desde_ensemble(ens, cfg)
 
 
 def propagar(matrices: np.ndarray, n_horas: int, estado_inicial: int = 0) -> np.ndarray:
@@ -169,21 +188,35 @@ def propagar(matrices: np.ndarray, n_horas: int, estado_inicial: int = 0) -> np.
     return pi
 
 
-def curva_markov(forecast_df: pd.DataFrame, cfg: Config,
-                 bias: dict | None = None, n_iter: int | None = None,
-                 seed: int | None = None) -> pd.DataFrame:
-    """Semáforo probabilístico hora a hora (comodín para la UI).
+def curva_markov_desde_ensemble(ens: EnsembleResult, cfg: Config) -> pd.DataFrame:
+    """Semáforo probabilístico a partir de un ensemble YA simulado (auditoría G8).
 
-    Combina :func:`estimar_matrices` + :func:`propagar` y devuelve un DataFrame
-    con exactamente las columnas ``hour`` y ``P_<estado>`` por cada uno de los
-    5 estados (valores 0-1): ``P_inactivo``, ``P_concentracion_critica``,
-    ``P_nucleacion``, ``P_ventana``, ``P_degradacion``. Cada fila (hora) suma 1.
-    Se recalcula al instante con cada dato real nuevo (bias).
+    Mismas columnas que :func:`curva_markov` (``hour`` + ``P_<estado>``), pero
+    sin repetir el Monte Carlo: combina :func:`estimar_matrices_desde_ensemble`
+    + :func:`propagar` sobre las matrices derivadas del ensemble recibido.
     """
-    hours, matrices = estimar_matrices(forecast_df, cfg, bias=bias,
-                                       n_iter=n_iter, seed=seed)
+    hours, matrices = estimar_matrices_desde_ensemble(ens, cfg)
     pi = propagar(matrices, hours.size)
     datos: dict[str, np.ndarray] = {"hour": hours}
     for i, estado in enumerate(ESTADOS):
         datos[f"P_{estado}"] = pi[:, i]
     return pd.DataFrame(datos)
+
+
+def curva_markov(forecast_df: pd.DataFrame, cfg: Config,
+                 bias: dict | None = None, n_iter: int | None = None,
+                 seed: int | None = None) -> pd.DataFrame:
+    """Semáforo probabilístico hora a hora (comodín para la UI).
+
+    Ejecuta ``montecarlo.simulate_ensemble`` (con ``n_iter`` por defecto
+    ``cfg.markov.iterations``) y devuelve un DataFrame con exactamente las
+    columnas ``hour`` y ``P_<estado>`` por cada uno de los 5 estados (valores
+    0-1): ``P_inactivo``, ``P_concentracion_critica``, ``P_nucleacion``,
+    ``P_ventana``, ``P_degradacion``. Cada fila (hora) suma 1. Se recalcula al
+    instante con cada dato real nuevo (bias). El detalle del cálculo está en
+    :func:`curva_markov_desde_ensemble` (al que delega).
+    """
+    n = cfg.markov.iterations if n_iter is None else int(n_iter)
+    ens = montecarlo.simulate_ensemble(forecast_df, cfg, bias=bias,
+                                       n_iter=n, seed=seed)
+    return curva_markov_desde_ensemble(ens, cfg)

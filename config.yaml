@@ -61,12 +61,20 @@ assimilation:
   # últimas `max_hours_back` horas con lecturas (auditoría M3: era 6 hardcodeado).
   max_hours_back: 6
 
+network:
+  # Cliente HTTP de Open-Meteo (auditoría G5/M7): reintentos con backoff exponencial.
+  timeout_s: 30              # petición de previsión (1 día)
+  archive_timeout_s: 60      # tramo mensual del archivo ERA5
+  retries: 3                 # intentos totales (solo fallos de red; los datos no se reintentan)
+  backoff_base_s: 0.5        # espera = base · 2^intento (+ jitter)
+
 season:
   # Simulación histórica de temporada (Open-Meteo Archive / ERA5)
   start_date: "2026-04-01"
   end_date: "2026-10-15"
   iterations: 300               # suficiente y rápido (~200 días en pocos segundos)
   source: "archive"             # archive = ERA5 (datos observados/reanálisis)
+  workers: 0                    # 0 = auto (min(4, CPU)); 1 = serie; >1 = nº fijo (auditoría G7)
 
 markov:
   # Cadenas de Márkov de los estados de la balsa (PDF pág. 8, §2)

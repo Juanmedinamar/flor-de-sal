@@ -1,8 +1,16 @@
-"""Tests de la capa de datos (src/db.py) sobre SQLite en tmp_path."""
+"""Tests de la capa de datos (src/db.py) sobre SQLite en tmp_path.
+
+Cubre el contrato más las auditorías: conexiones con WAL/busy_timeout (G4),
+JSON estricto en predicciones (NaN/inf/numpy → null) y season_runs transaccional
+con validación previa y rollback completo (M5).
+"""
 from __future__ import annotations
 
+import json
+import sqlite3
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -21,8 +29,6 @@ def db(tmp_path: Path) -> Database:
 
 
 def _tabla_existe(db: Database, nombre: str) -> bool:
-    import sqlite3
-
     with sqlite3.connect(db.path) as conn:
         fila = conn.execute(
             "SELECT name FROM sqlite_master WHERE type='table' AND name=?", (nombre,)
@@ -44,6 +50,24 @@ def test_init_schema_es_idempotente(db: Database) -> None:
 def test_ruta_por_defecto_es_db_path(cfg) -> None:
     """Database() sin argumentos usa DB_PATH de la config (sin tocar el archivo)."""
     assert Database().path == DB_PATH
+
+
+# ---------------------------------------------------------------------------
+# Concurrencia SQLite (auditoría G4)
+# ---------------------------------------------------------------------------
+def test_conexiones_abren_con_wal_busy_timeout_y_synchronous(db: Database) -> None:
+    """Cada conexión aplica los PRAGMAs de concurrencia antes de usar la DB."""
+    with db._connect() as conn:
+        assert conn.execute("PRAGMA journal_mode").fetchone()[0].lower() == "wal"
+        assert conn.execute("PRAGMA busy_timeout").fetchone()[0] == 5000
+        assert conn.execute("PRAGMA synchronous").fetchone()[0] == 1   # NORMAL
+
+
+def test_journal_mode_wal_persiste_en_el_fichero(db: Database) -> None:
+    """Tras init_schema el fichero queda en WAL: lecturas sin bloquear al escritor."""
+    with sqlite3.connect(db.path) as conn:
+        modo = conn.execute("PRAGMA journal_mode").fetchone()[0]
+    assert modo.lower() == "wal"
 
 
 # ---------------------------------------------------------------------------
@@ -162,3 +186,73 @@ def test_predictions_sin_datos_devuelve_vacio(db: Database) -> None:
     df = db.get_predictions("1999-01-01")
     assert df.empty
     assert list(df.columns) == ["id", "date", "computed_at", "payload"]
+
+
+def test_predictions_json_estricto_nan_inf_y_numpy(db: Database) -> None:
+    """NaN/inf → null y escalares numpy → Python nativo: el JSON guardado es estricto (M5)."""
+    payload = {
+        "prob_ventana": float("nan"),
+        "ic95": [float("inf"), -float("inf")],
+        "hora_optima": np.float64(17.5),
+        "n_iter": np.int64(1000),
+        "ok": 1.0,
+        "anidado": {"v": [np.float32(2.5), float("nan")]},
+    }
+
+    db.save_prediction(FECHA, "2026-07-15T06:05:00", payload)
+
+    with sqlite3.connect(db.path) as conn:
+        crudo = conn.execute("SELECT payload_json FROM predictions").fetchone()[0]
+    assert "NaN" not in crudo and "Infinity" not in crudo   # ni NaN ni ±Infinity
+    decodificado = json.loads(crudo)   # parser JSON estricto: no lanza
+
+    df = db.get_predictions(FECHA)
+    got = df.loc[0, "payload"]
+    assert got["prob_ventana"] is None
+    assert got["ic95"] == [None, None]
+    assert type(got["hora_optima"]) is float and got["hora_optima"] == 17.5
+    assert type(got["n_iter"]) is int and got["n_iter"] == 1000
+    assert got["anidado"]["v"] == [2.5, None]
+    assert decodificado == got
+
+
+# ---------------------------------------------------------------------------
+# Simulación de temporada (auditoría M5): validación + transacción
+# ---------------------------------------------------------------------------
+def _fila_season(fecha: str) -> dict:
+    """Fila válida para save_season_runs."""
+    return {"date": fecha, "window_start": "16:00", "window_end": "19:30",
+            "hora_optima": "17:45", "ci_low": "16:30", "ci_high": "18:30",
+            "prob_ventana": 0.9, "prob_riesgo": 0.05, "calidad": "completo",
+            "n_iter": 100}
+
+
+def test_save_season_runs_valida_filas_antes_de_tocar_la_db(db: Database) -> None:
+    """Sin 'date' (o sin dicts) → ValueError claro y la tabla NO cambia."""
+    db.save_season_runs("2026-06-01", "2026-06-03", [_fila_season("2026-06-01")])
+
+    with pytest.raises(ValueError, match="date"):
+        db.save_season_runs("2026-06-01", "2026-06-03", [{"window_start": "16:00"}])
+    with pytest.raises(ValueError, match=r"rows\[1\]"):
+        db.save_season_runs("2026-06-01", "2026-06-03",
+                            [_fila_season("2026-06-01"), "no-soy-un-dict"])
+
+    assert db.get_season_runs("2026-06-01", "2026-06-03")["date"].tolist() == ["2026-06-01"]
+
+
+def test_save_season_runs_rollback_completo_si_falla_a_mitad(db: Database) -> None:
+    """Un valor no serializable a mitad de INSERT → rollback total (DELETE incluido)."""
+    previas = [_fila_season("2026-06-01"), _fila_season("2026-06-02")]
+    db.save_season_runs("2026-06-01", "2026-06-03", previas)
+
+    filas_malas = [
+        _fila_season("2026-06-01"),
+        _fila_season("2026-06-02"),
+        {**_fila_season("2026-06-03"), "prob_ventana": {1, 2}},   # set: no serializable
+    ]
+    with pytest.raises(sqlite3.Error):
+        db.save_season_runs("2026-06-01", "2026-06-03", filas_malas)
+
+    df = db.get_season_runs("2026-06-01", "2026-06-03")
+    assert df["date"].tolist() == ["2026-06-01", "2026-06-02"]   # estado previo intacto
+    assert df["prob_ventana"].tolist() == [0.9, 0.9]

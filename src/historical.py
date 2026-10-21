@@ -13,8 +13,16 @@ CONTRATO — a implementar por el agente `temporada`. Firmas exactas:
         #   date (str "YYYY-MM-DD"), hour (int 0-23), temp_c, rh_pct, wind_ms,
         #   wind_dir_deg, radiation_w_m2
         # Excluye filas con todas las variables meteorológicas nulas.
-        # Errores de red/HTTP → RuntimeError. (Verificado en Fase 0: el archivo tiene
-        # datos desde al menos 2026-04-01 hasta 2026-10-21 para Córdoba.)
+        # Errores de red/HTTP → WeatherNetworkError (reintentable, reintentos con
+        # backoff según cfg.network — auditoría G5); respuesta sin serie horaria →
+        # WeatherDataError (sin reintentos — auditoría M7). Ambas siguen heredando
+        # de RuntimeError (contrato compatible).
+        # (Verificado en Fase 0: el archivo tiene datos desde al menos 2026-04-01
+        # hasta 2026-10-21 para Córdoba.)
+
+    Nota de auditoría G5: desde la implementación fetch_archive admite, además,
+    kwargs opcionales sin romper el contrato (por defecto toman cfg.network):
+        *, cfg=None, timeout_s=None, retries=None, backoff_base_s=None
 
     def iter_days(df: pd.DataFrame, start_date: str | None = None,
                   end_date: str | None = None) -> Iterator[tuple[str, pd.DataFrame]]
@@ -47,7 +55,10 @@ from collections.abc import Iterator
 from datetime import date, datetime, timedelta
 
 import pandas as pd
-import requests
+
+from src.config import Config
+from src.errors import WeatherDataError
+from src.weather import get_json_con_reintentos, resuelve_red
 
 API_URL = "https://archive-api.open-meteo.com/v1/archive"
 
@@ -98,11 +109,20 @@ def _vacio() -> pd.DataFrame:
 
 
 def _descargar_tramo(start_date: str, end_date: str, latitude: float, longitude: float,
-                     timezone: str) -> list[dict]:
+                     timezone: str, *,
+                     cfg: Config | None = None,
+                     timeout_s: float | None = None,
+                     retries: int | None = None,
+                     backoff_base_s: float | None = None) -> list[dict]:
     """Descarga UN tramo [start_date, end_date] del archivo y devuelve filas (dict).
 
+    Los parámetros de red (timeout de tramo, reintentos, backoff) salen de
+    cfg.network (auditoría G5) salvo que se pasen explícitos; solo se reintenta
+    :class:`WeatherNetworkError` — :class:`WeatherDataError` sale al primer intento.
+
     Raises:
-        RuntimeError: Error de red/HTTP o respuesta sin serie horaria utilizable.
+        WeatherNetworkError: Error de red/HTTP tras agotar los reintentos.
+        WeatherDataError: Respuesta sin serie horaria utilizable (sin reintentos).
     """
     params = {
         "latitude": latitude,
@@ -113,23 +133,18 @@ def _descargar_tramo(start_date: str, end_date: str, latitude: float, longitude:
         "start_date": start_date,
         "end_date": end_date,
     }
-    try:
-        resp = requests.get(API_URL, params=params, timeout=60)
-        resp.raise_for_status()
-        datos = resp.json()
-    except requests.RequestException as exc:
-        raise RuntimeError(
-            f"Error de red/HTTP descargando el archivo Open-Meteo (ERA5) "
-            f"{start_date}..{end_date}: {exc}"
-        ) from exc
-    except ValueError as exc:  # respuesta no es JSON válido
-        raise RuntimeError(
-            f"Respuesta no-JSON de Open-Meteo Archive {start_date}..{end_date}: {exc}"
-        ) from exc
+    red = resuelve_red(cfg, "archive_timeout_s", 60.0, timeout_s, retries, backoff_base_s)
+    datos = get_json_con_reintentos(
+        API_URL, params, red=red,
+        contexto=f"Open-Meteo Archive (ERA5) {start_date}..{end_date}")
 
+    if not isinstance(datos, dict):
+        raise WeatherDataError(
+            f"Open-Meteo Archive no devolvió un objeto JSON para {start_date}..{end_date}."
+        )
     hourly = datos.get("hourly")
     if not isinstance(hourly, dict) or not hourly.get("time"):
-        raise RuntimeError(
+        raise WeatherDataError(
             f"Open-Meteo Archive no devolvió serie horaria para {start_date}..{end_date}."
         )
 
@@ -150,11 +165,16 @@ def _descargar_tramo(start_date: str, end_date: str, latitude: float, longitude:
 
 
 def fetch_archive(start_date: str, end_date: str, latitude: float, longitude: float,
-                  timezone: str = "Europe/Madrid") -> pd.DataFrame:
+                  timezone: str = "Europe/Madrid", *,
+                  cfg: Config | None = None,
+                  timeout_s: float | None = None,
+                  retries: int | None = None,
+                  backoff_base_s: float | None = None) -> pd.DataFrame:
     """Descarga el rango [start_date, end_date] del archivo ERA5 de Open-Meteo.
 
     Parte el rango en tramos mensuales (una petición por mes) y los concatena
-    sin duplicados y ordenados por (date, hour).
+    sin duplicados y ordenados por (date, hour). Cada tramo usa los reintentos
+    con backoff de cfg.network (auditoría G5).
 
     Args:
         start_date: Inicio del rango "YYYY-MM-DD" (inclusivo).
@@ -162,6 +182,11 @@ def fetch_archive(start_date: str, end_date: str, latitude: float, longitude: fl
         latitude: Latitud en grados decimales.
         longitude: Longitud en grados decimales.
         timezone: Zona horaria IANA (por defecto "Europe/Madrid").
+        cfg: Configuración (por defecto load_config()); de ahí salen los parámetros
+            de red de cfg.network.
+        timeout_s: Timeout explícito por tramo (prioridad sobre cfg.network).
+        retries: Intentos totales por tramo (prioridad sobre cfg.network).
+        backoff_base_s: Base del backoff (prioridad sobre cfg.network).
 
     Returns:
         DataFrame con columnas EXACTAS: date (str), hour (int 0-23), temp_c, rh_pct,
@@ -170,7 +195,9 @@ def fetch_archive(start_date: str, end_date: str, latitude: float, longitude: fl
 
     Raises:
         ValueError: Fechas mal formadas o inicio posterior a fin.
-        RuntimeError: Error de red/HTTP o respuesta sin serie horaria.
+        ConfigError: Si cfg es None y config.yaml no es válido.
+        WeatherNetworkError: Red/HTTP tras agotar los reintentos de un tramo.
+        WeatherDataError: Respuesta sin serie horaria (sin reintentos).
     """
     inicio = _parse_fecha(start_date, "start_date")
     fin = _parse_fecha(end_date, "end_date")
@@ -181,7 +208,9 @@ def fetch_archive(start_date: str, end_date: str, latitude: float, longitude: fl
 
     filas: list[dict] = []
     for tramo_inicio, tramo_fin in _tramos_mensuales(inicio, fin):
-        filas.extend(_descargar_tramo(tramo_inicio, tramo_fin, latitude, longitude, timezone))
+        filas.extend(_descargar_tramo(
+            tramo_inicio, tramo_fin, latitude, longitude, timezone,
+            cfg=cfg, timeout_s=timeout_s, retries=retries, backoff_base_s=backoff_base_s))
 
     if not filas:
         return _vacio()

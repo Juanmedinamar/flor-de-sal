@@ -75,11 +75,16 @@ _ESPEC: list[tuple[str, str, type | tuple[type, ...], float | None, float | None
     ("season", "iterations", int, 1, 1_000_000),
     ("markov", "margen_critico_g_l", (int, float), 0.0, None),
     ("assimilation", "max_hours_back", int, 1, 24),
+    ("network", "timeout_s", (int, float), 1.0, None),
+    ("network", "archive_timeout_s", (int, float), 1.0, None),
+    ("network", "retries", int, 1, 10),
+    ("network", "backoff_base_s", (int, float), 0.0, None),
+    ("season", "workers", int, 0, 64),
 ]
 
 _SECCIONES_REQUERIDAS = ("location", "water", "physics", "simulation",
-                         "montecarlo", "limits", "season", "markov",
-                         "assimilation")
+                         "montecarlo", "limits", "assimilation",
+                         "network", "season", "markov")
 
 
 def validar_config(data: dict[str, Any]) -> None:

@@ -22,7 +22,15 @@ Capas públicas:
   - simulate_ensemble(...)  → EnsembleResult (matrices crudas por escenario/hora;
                               la usa la capa de Márkov, src/markov.py).
   - simulate_day(...)       → DayResult (veredicto resumido del día).
+  - simulate_day_desde_ensemble(ens) → DayResult a partir de un ensemble YA
+                               simulado (evita el doble Monte Carlo, auditoría G8).
   - simulate_day_referenciaEscalar(...) → ruta de referencia para tests.
+
+El núcleo (_run_ensemble) está partido en tres funciones puras y testables
+(auditoría G2), con la misma semántica numérica (mismo seed → mismo ensemble):
+  - _muestrear(...)          → (t_air, rh, wind) con ruido gausiano truncado.
+  - _fisica_vectorizada(...) → (c_g_l, umbral) — T_agua, VPD, Dalton, ΣE.
+  - _estados_y_ventanas(...) → EnsembleResult (nucleación, fases, ventana).
 
 `prob_fase3` solo cuenta los cierres por condición DURA de riesgo (viento >
 viento_peligro_ms o HR > hr_peligro_pct); el cierre natural por repunte de HR de la
@@ -70,30 +78,52 @@ class EnsembleResult:
     n_iter: int
 
 
-def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
-                  n_iter: int, seed: int | None) -> EnsembleResult:
-    """Núcleo vectorizado: muestrea el día n veces y devuelve matrices crudas."""
+def _muestrear(base: pd.DataFrame, cfg: Config, bias: dict,
+               n_iter: int, seed: int | None) -> tuple[np.ndarray, np.ndarray,
+                                                        np.ndarray]:
+    """Muestrea T, HR y V con ruido gausiano truncado (corregido por sesgo si hay).
+
+    Para cada variable: X ~ N(previsto + bias, σ) y truncado físico
+    (T en [-20, 60] °C, HR en [5, 99] %, V >= 0 m/s). El orden de los draws
+    gausianos (T, HR, V) es fijo para que un mismo seed dé siempre el mismo
+    ensemble (reproducibilidad).
+
+    Devuelve (t_air, rh, wind), cada uno un ndarray (n_escenarios, h_horas).
+    """
     rng = np.random.default_rng(seed)
     m = cfg.montecarlo
-    _h0, h1 = float(cfg.simulation.hora_inicio), float(cfg.simulation.hora_fin)
+    n_horas = len(base)
 
     # Muestreo: T, HR y V con ruido gausiano truncado (corrigido por sesgo si hay)
     t_air = (base["temp_c"].to_numpy(float)[None, :]
              + bias.get("temp_c", 0.0)
-             + rng.normal(0.0, m.sigma_temp_c, (n_iter, len(base))))
+             + rng.normal(0.0, m.sigma_temp_c, (n_iter, n_horas)))
     rh = (base["rh_pct"].to_numpy(float)[None, :]
           + bias.get("rh_pct", 0.0)
-          + rng.normal(0.0, m.sigma_rh_pct, (n_iter, len(base))))
+          + rng.normal(0.0, m.sigma_rh_pct, (n_iter, n_horas)))
     wind = (base["wind_ms"].to_numpy(float)[None, :]
             + bias.get("wind_ms", 0.0)
-            + rng.normal(0.0, m.sigma_wind_ms, (n_iter, len(base))))
+            + rng.normal(0.0, m.sigma_wind_ms, (n_iter, n_horas)))
     t_air = np.clip(t_air, -20.0, 60.0)
     rh = np.clip(rh, 5.0, 99.0)
     wind = np.clip(wind, 0.0, None)
-    hours = base["hour"].to_numpy(float)
-    rad = base["radiation_w_m2"].to_numpy(float)[None, :]
+    return t_air, rh, wind
 
-    # Física vectorizada (idéntica a physics.* escalar)
+
+def _fisica_vectorizada(t_air: np.ndarray, rh: np.ndarray, wind: np.ndarray,
+                        hours: np.ndarray, rad: np.ndarray, cfg: Config
+                        ) -> tuple[np.ndarray, np.ndarray]:
+    """Física vectorizada del día (idéntica a las funciones escalares de physics).
+
+    Por escenario/hora calcula, con las mismas ecuaciones de src/physics.py:
+      T_agua = max(T_amb + coef_solar·(rad/1000) + extra_mañana(h), 15)  [°C]
+      VPD    = max((Psat(T_agua) − HR/100·Psat(T_amb)) / 10, 0)          [kPa]
+      E_hora = (a + b·V) · VPD / 24                                       [mm/h]
+      C_t    = C0 / (1 − ΣE/h_mm)     (inf si ΣE >= h; "masa", ver physics)
+      umbral = C_umbral_ref + pend·(T_agua − T_ref)                      [g/l]
+
+    Devuelve (c_g_l, umbral), ndarray (n_escenarios, h_horas).
+    """
     extra = np.where(hours < 12.0,
                      cfg.physics.t_extra_manana_c
                      * np.clip((12.0 - hours) / (12.0 - float(cfg.simulation.hora_inicio)),
@@ -113,6 +143,26 @@ def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
     umbral = (float(cfg.water.umbral_sobresaturacion_g_l)
               + float(cfg.water.umbral_pendiente_g_l_c)
               * (t_water - float(cfg.water.umbral_temp_ref_c)))
+    return c_g_l, umbral
+
+
+def _estados_y_ventanas(c_g_l: np.ndarray, umbral: np.ndarray, rh: np.ndarray,
+                        wind: np.ndarray, hours: np.ndarray, cfg: Config
+                        ) -> EnsembleResult:
+    """Nucleación, fases y ventana de cosecha por escenario (semántica = alerts).
+
+    Reglas (por escenario, idénticas a alerts.evaluar_fase):
+      - nucleación:  primera hora con C >= umbral(T_agua)
+      - Fase 3 dura: viento > viento_peligro_ms o HR > hr_peligro_pct
+      - repunte:     HR >= hr_cierre_tarde_pct y > mínimo del día + 3, tras
+                     nucleación + minutos_crecimiento (cierre natural)
+      - apertura = nucleación + crecimiento; cierre = primera Fase 3 >= apertura
+        (si no, fin de simulación); óptima = centro de la ventana.
+
+    Devuelve el EnsembleResult con las matrices crudas (n escenarios × h horas).
+    """
+    n_iter = int(c_g_l.shape[0])
+    h1 = float(cfg.simulation.hora_fin)
 
     # Nucleación: primera hora con C >= umbral
     mascara_nuc = c_g_l >= umbral
@@ -160,6 +210,20 @@ def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
                           valid=valid, riesgo_duro=riesgo, n_iter=n_iter)
 
 
+def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
+                  n_iter: int, seed: int | None) -> EnsembleResult:
+    """Núcleo vectorizado: muestrea el día n veces y devuelve matrices crudas.
+
+    Compone las tres fases puras del núcleo (auditoría G2):
+    _muestrear → _fisica_vectorizada → _estados_y_ventanas.
+    """
+    hours = base["hour"].to_numpy(float)
+    rad = base["radiation_w_m2"].to_numpy(float)[None, :]
+    t_air, rh, wind = _muestrear(base, cfg, bias, n_iter, seed)
+    c_g_l, umbral = _fisica_vectorizada(t_air, rh, wind, hours, rad, cfg)
+    return _estados_y_ventanas(c_g_l, umbral, rh, wind, hours, cfg)
+
+
 def simulate_ensemble(forecast_df: pd.DataFrame, cfg: Config,
                       bias: dict | None = None,
                       n_iter: int | None = None,
@@ -187,10 +251,23 @@ def simulate_day(forecast_df: pd.DataFrame, cfg: Config,
 
     `bias` desplaza la media de la previsión (corrección por sesgo, ver
     src/assimilation.py). `seed` (default cfg.montecarlo.seed) hace reproducible
-    la simulación. Percentiles 5/50/95 sobre las horas óptimas de los escenarios
-    con ventana; si ningún escenario tiene ventana, horas en NaN y histograma vacío.
+    la simulación. El resumen (percentiles 5/50/95, histograma, prob. ventana/
+    riesgo) lo hace :func:`simulate_day_desde_ensemble` sobre el ensemble.
     """
     ens = simulate_ensemble(forecast_df, cfg, bias=bias, n_iter=n_iter, seed=seed)
+    return simulate_day_desde_ensemble(ens)
+
+
+def simulate_day_desde_ensemble(ens: EnsembleResult) -> DayResult:
+    """Veredicto resumido a partir de un EnsembleResult YA simulado.
+
+    Extrae la parte de simulate_day que resume el ensemble (percentiles,
+    histograma, prob. ventana/riesgo), de modo que el pipeline puede obtener el
+    DayResult y la curva de Márkov del MISMO ensemble sin repetir el Monte
+    Carlo (auditoría G8). Percentiles 5/50/95 sobre las horas óptimas de los
+    escenarios con ventana; si ningún escenario tiene ventana, horas en NaN y
+    histograma vacío.
+    """
     n_iter = ens.n_iter
     if ens.hours.size == 0 or not ens.valid.any():
         prob_fase3 = float(ens.riesgo_duro[ens.valid].mean()) if ens.valid.any() else 0.0
