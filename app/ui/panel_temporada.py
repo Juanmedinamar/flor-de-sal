@@ -27,6 +27,7 @@ from app.ui.state import (
     _rev_temporada,
 )
 from app.ui.textos import SIN_DIAS_CON_VENTANA
+from src.db import Database
 from src.pipeline import _hhmm
 
 
@@ -55,6 +56,7 @@ def _seccion_temporada() -> None:
     _box_temporada(df)
     _barras_temporada(df)
     _tabla_top10(df)
+    _cosecha_temporada(df, start, end)
 
 
 def _kpi_temporada(df: pd.DataFrame) -> None:
@@ -328,3 +330,59 @@ def _tabla_top10(df: pd.DataFrame) -> None:
     })
     st.dataframe(tabla, width="stretch", hide_index=True, row_height=34)
     st.caption("Ordenado por probabilidad de ventana (de mayor a menor).")
+
+
+def _cosecha_temporada(df: pd.DataFrame, start: str, end: str) -> None:
+    """Serie temporal: kg cosechados vs predicción (días con ventana)."""
+    st.subheader("🌾 Cosecha real vs predicción")
+    db = Database(DB_RUTA)
+    hdf = db.get_harvests(start, end, zone_id="default")
+    if hdf is None or hdf.empty:
+        st.info("No hay cosechas registradas para este rango. Usa el formulario "
+                "«🌾 Cosecha del día» en la pestaña 🌞 Hoy para registrarlas.")
+        return
+
+    # Merge cosechas con días que tuvieron ventana
+    con = df[df["ventana"]].copy()
+    if con.empty:
+        st.info("La simulación no produjo días con ventana en este rango.")
+        return
+
+    hdf["date"] = pd.to_datetime(hdf["date"])
+    con["date"] = pd.to_datetime(con["date"])
+    merged = con.merge(hdf[["date", "kg"]], on="date", how="inner")
+
+    if merged.empty:
+        st.info("Hay cosechas registradas pero no coinciden con días que tuvieron "
+                "ventana en la simulación.")
+        return
+
+    st.subheader("📈 Kg cosechados vs probabilidad de ventana")
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=merged["date"], y=merged["kg"], mode="markers+lines", name="Kg cosechados",
+        marker={"color": TEAL, "size": 8}, line={"width": 2},
+        customdata=[f"{_hhmm(float(r['hora_dec']))} · {r['prob_ventana']:.0%}"
+                    for _, r in merged.iterrows()],
+        hovertemplate="%{x|%Y-%m-%d}<br>%{y:.1f} kg<br>Óptima %{customdata}<extra></extra>",
+    ))
+    fig.update_xaxes(gridcolor="#E0E0E0", zeroline=False)
+    fig.update_yaxes(title="Kg cosechados", gridcolor="#E0E0E0", zeroline=False)
+    fig.update_layout(height=350, margin={"l": 10, "r": 10, "t": 10, "b": 10},
+                      **LAYOUT_BASE)
+    _mostrar_grafico(fig)
+    st.caption(f"{len(merged)} días con cosecha registrada y ventana simulada. "
+               "Pasa el cursor para ver hora óptima y probabilidad.")
+
+    # Tabla resumen
+    st.subheader("📋 Detalle cosechas vs predicción")
+    tabla = merged[["date", "kg", "hora_dec", "prob_ventana", "window_start", "window_end"]].copy()
+    tabla["Fecha"] = tabla["date"].dt.strftime("%Y-%m-%d")
+    tabla["Hora óptima"] = tabla["hora_dec"].apply(lambda x: _hhmm(float(x)))
+    tabla["Prob. ventana"] = tabla["prob_ventana"].apply(lambda p: f"{float(p):.0%}")
+    tabla["Ventana predicha"] = tabla["window_start"] + " – " + tabla["window_end"]
+    mostrar = tabla[["Fecha", "Kg", "Hora óptima", "Prob. ventana", "Ventana predicha"]].rename(
+        columns={"kg": "Kg"})
+    st.dataframe(mostrar, width="stretch", hide_index=True, row_height=34,
+                 column_config={"Kg": st.column_config.NumberColumn("Kg", format="%.1f")})
+    st.caption("Solo días donde hubo cosecha registrada Y la simulación predijo ventana.")

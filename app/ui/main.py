@@ -9,6 +9,7 @@ from app.ui.constantes import LOGO_BYTES, LOGO_PATH
 from app.ui.panel_hoy import (
     _panel_calibracion,
     _panel_campana,
+    _panel_cosecha,
     _panel_evolucion,
     _panel_formulario,
     _panel_lecturas,
@@ -94,5 +95,6 @@ def main() -> None:
     st.divider()
     _panel_formulario(db, fecha_s)
     _panel_lecturas(db, fecha_s, (datos["veredicto"].get("bias") if datos else {}) or {})
+    _panel_cosecha(db, fecha_s)
     _panel_calibracion()
     _pie(datos)

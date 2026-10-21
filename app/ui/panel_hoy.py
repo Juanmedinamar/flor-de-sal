@@ -458,6 +458,35 @@ def _panel_lecturas(db: Database, fecha_s: str, bias: dict) -> None:
                    "con Tª ambiente, HR o viento.")
 
 
+def _panel_cosecha(db: Database, fecha_s: str) -> None:
+    """Formulario para registrar kg de flor de sal cosechados."""
+    st.subheader("🌾 Cosecha del día")
+    st.caption("Registra los kg de flor de sal recolectados hoy. Se guarda en la BD "
+               "para comparar con la predicción y validar el modelo.")
+    with st.form("form_cosecha", clear_on_submit=True, width="stretch"):
+        f1 = st.columns(3)
+        kg = f1[0].number_input("Kg cosechados", min_value=0.0, max_value=10000.0,
+                                value=None, step=0.5, format="%.1f", placeholder="—",
+                                help="Kilogramos de flor de sal recolectados hoy.")
+        zone_id = f1[1].text_input("Zona", value="default", max_chars=20,
+                                   placeholder="default", help="Identificador de zona "
+                                   "(para futuro multi-zona).")
+        notas = f1[2].text_input("Notas", placeholder="p. ej. «cosecha completa zona A»")
+        enviado = st.form_submit_button("💾 Guardar cosecha", type="primary",
+                                        width="stretch")
+
+    if not enviado:
+        return
+    if kg is None or kg <= 0:
+        st.warning("Introduce un valor positivo de kg.")
+        return
+    db.save_harvest(fecha_s, float(kg), zone_id=zone_id or "default", notes=notas or "")
+    st.session_state["rev"] = int(st.session_state.get("rev", 0)) + 1
+    st.session_state["aviso"] = ("ok",
+                                 f"Cosecha de {kg:.1f} kg guardada para {fecha_s}.")
+    st.rerun()
+
+
 def _panel_calibracion() -> None:
     """Overrides de config.yaml sobre una copia del Config, con recálculo al vuelo."""
     with st.expander("⚙️ Panel de calibración del modelo", expanded=False):

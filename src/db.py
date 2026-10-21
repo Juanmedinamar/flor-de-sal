@@ -131,10 +131,20 @@ CREATE TABLE IF NOT EXISTS season_runs (
     computed_at TEXT,
     UNIQUE (start_date, end_date, date)
 );
+CREATE TABLE IF NOT EXISTS harvests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    kg REAL NOT NULL,
+    zone_id TEXT DEFAULT 'default',
+    notes TEXT DEFAULT '',
+    created_at TEXT,
+    UNIQUE (date, zone_id)
+);
 CREATE INDEX IF NOT EXISTS idx_forecast_date ON forecast (date);
 CREATE INDEX IF NOT EXISTS idx_readings_date ON readings (date);
 CREATE INDEX IF NOT EXISTS idx_predictions_date ON predictions (date);
 CREATE INDEX IF NOT EXISTS idx_season_rango ON season_runs (start_date, end_date, date);
+CREATE INDEX IF NOT EXISTS idx_harvests_date ON harvests (date);
 """
 
 
@@ -410,3 +420,54 @@ class Database:
                 (start_date, end_date),
             ).fetchall()
         return pd.DataFrame(filas, columns=cols)
+
+    # ------------------------------------------------ Cosecha (kg/día)
+    def save_harvest(self, date: str, kg: float, zone_id: str = "default",
+                     notes: str = "") -> int:
+        """Guarda o actualiza la cosecha del día.
+
+        Args:
+            date: "YYYY-MM-DD"
+            kg: kilogramos de flor de sal recolectados ese día
+            zone_id: identificador de zona (por defecto "default")
+            notes: observaciones opcionales
+
+        Returns: id de la fila guardada.
+        """
+        if kg < 0:
+            raise ValueError("kg no puede ser negativo")
+        with self._connect() as conn:
+            cur = conn.execute(
+                "INSERT INTO harvests (date, kg, zone_id, notes, created_at)"
+                " VALUES (?, ?, ?, ?, ?)"
+                " ON CONFLICT(date, zone_id) DO UPDATE SET kg=excluded.kg,"
+                " notes=excluded.notes, created_at=excluded.created_at",
+                (date, float(kg), zone_id, notes or "", _ahora()),
+            )
+            return int(cur.lastrowid)  # type: ignore[arg-type]
+
+    def get_harvests(self, start_date: str | None = None,
+                     end_date: str | None = None,
+                     zone_id: str = "default") -> pd.DataFrame:
+        """Devuelve las cosechas en el rango [start_date, end_date] (inclusive).
+
+        Args:
+            start_date: "YYYY-MM-DD" (inclusive), None = sin límite inferior
+            end_date: "YYYY-MM-DD" (inclusive), None = sin límite superior
+            zone_id: filtrar por zona
+
+        Returns: DataFrame con columnas date, kg, zone_id, notes, created_at.
+        """
+        sql = ("SELECT date, kg, zone_id, notes, created_at FROM harvests"
+               " WHERE zone_id = ?")
+        params: list[Any] = [zone_id]
+        if start_date is not None:
+            sql += " AND date >= ?"
+            params.append(start_date)
+        if end_date is not None:
+            sql += " AND date <= ?"
+            params.append(end_date)
+        sql += " ORDER BY date"
+        with self._connect() as conn:
+            filas = conn.execute(sql, params).fetchall()
+        return pd.DataFrame(filas, columns=["date", "kg", "zone_id", "notes", "created_at"])

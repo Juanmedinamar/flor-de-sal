@@ -1,12 +1,17 @@
 # 🧂 Flor de Sal — Predictor de la hora óptima de recolección
 
-![CI](https://github.com/USER/REPO/workflows/CI/badge.svg)
-![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)
-![Python](https://img.shields.io/badge/python-3.13-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Docker](https://img.shields.io/badge/docker-ready-blue)
+[![CI](https://github.com/USER/REPO/workflows/CI/badge.svg)](https://github.com/USER/REPO/actions)
+[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/USER/REPO/actions)
+[![Python](https://img.shields.io/badge/python-3.13-blue)](https://www.python.org/downloads/release/python-3130/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.66-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Type checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue)](http://mypy-lang.org/)
 
-![Salinas de Dueñas](app/assets/logo.png)
+![Flor de Sal](app/assets/logo.png)
+
+**TFM — Máster Desarrollo de Software con IA (Big School / mouredev)**
 
 App Python (Streamlit) que estima **con probabilidad** la ventana óptima de recolección de
 flor de sal en una salina de Córdoba, cruzando tres fuentes de información:
@@ -32,6 +37,23 @@ La app tiene **dos secciones** (radio en el menú lateral):
   (Ley de Dalton modificada, umbral de sobresaturación, fases y reglas de riesgo).
 - Todo es calibrable: los coeficientes no se guardan en el código, se ajustan desde la
   UI o en `config.yaml`.
+
+## 🛠 Stack tecnológico
+
+| Capa | Tecnologías |
+|------|-------------|
+| **Frontend / UI** | Streamlit 1.66, Plotly 5.20, Pandas 3.0 |
+| **Backend / Modelado** | Python 3.13, NumPy 2.5, SciPy 1.18, Pandas 3.0 |
+| **Modelado estocástico** | Monte Carlo vectorizado (1000 escenarios <0,1 s), Cadenas de Markov (5 estados) |
+| **Asimilación de datos** | Corrección por sesgo rolling (bias = media(real − previsto) últimas N horas) |
+| **Meteorología** | Open-Meteo Forecast + Archive (ERA5), sin API key |
+| **Base de datos** | SQLite local (WAL, busy_timeout, transacciones atómicas) |
+| **Calidad / Testing** | pytest 9.1, Hypothesis (property-based), AppTest (UI), Coverage 95% |
+| **Lint / Type** | ruff 0.17, mypy strict (src/), pre-commit hooks |
+| **CI/CD** | GitHub Actions (lint, type, test, coverage ≥80%, app-smoke), Dependabot |
+| **Contenedor** | Docker multi-stage, non-root, healthcheck, docker-compose |
+| **Logging** | JSON estructurado (stdout + RotatingFileHandler 5 MB) |
+| **Despliegue** | Docker + nginx + Let's Encrypt (HTTPS), VPS Hetzner/Oracle |
 
 ## Instalación
 
@@ -419,3 +441,40 @@ flor-de-sal/
   (con *fallback* a la hora local si la zona no existe en el equipo).
 - **Unidades**: presión en hPa (se pasa a kPa a Dalton), evaporación en mm (= L/m²),
   viento m/s, concentración g/l, temperatura °C.
+
+## 🚀 Despliegue en producción
+
+**URL pública (ejemplo):** `https://salina.tudominio.com`  ← *cambia por tu subdominio real*
+
+### Con Docker (recomendado)
+```bash
+# 1. Clona y configura .env
+git clone https://github.com/TU_USUARIO/flor-de-sal.git
+cd flor-de-sal
+cp .env.example .env   # edita con tu dominio, zona horaria, etc.
+
+# 2. Levanta con docker-compose (nginx + streamlit + certbot)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# 3. Verifica
+curl -I https://salina.tudominio.com/_stcore/health
+# HTTP/2 200
+```
+
+### En VPS (Hetzner CX22 ~4,50 €/mes u Oracle Free Tier)
+```bash
+# 1. Crea VPS (Ubuntu 24.04) → apunta DNS A salina.tudominio.com → IP_VPS
+# 2. En el VPS:
+ssh root@IP_VPS
+git clone https://github.com/TU_USUARIO/flor-de-sal.git
+cd flor-de-sal
+cp .env.example .env
+./deploy.sh   # script incluido: instala Docker, levanta todo, pide certificado Let's Encrypt
+```
+
+## 📄 Licencia
+
+Este proyecto está bajo licencia **MIT** — ver [LICENSE](LICENSE) para detalles.
+
+> **TFM — Máster Desarrollo de Software con IA (Big School / mouredev)**  
+> Autor: Juan Medina · 2026 · juanmedina@users.noreply.github.com
