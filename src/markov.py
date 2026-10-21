@@ -18,11 +18,11 @@ CONTRATO — a implementar por el agente `markov`. Firmas exactas:
 
     ESTADOS: tuple[str, ...]   # = tuple(cfg.markov.estados)
 
-    def estados_por_escenario(ens: EnsembleResult, cfg: Config) -> np.ndarray
+    def estados_por_escenario(ens: EnsembleResult, cfg: ConfigProto) -> np.ndarray
         # (n, h) de ids 0-4 derivados de ens.fase, ens.c_g_l y ens.umbral según la
         # leyenda de arriba (fase0 → 0 u 1 según margen_critico_g_l; 1→2; 2→3; 3→4).
 
-    def estimar_matrices(forecast_df: pd.DataFrame, cfg: Config,
+    def estimar_matrices(forecast_df: pd.DataFrame, cfg: ConfigProto,
                          bias: dict | None = None, n_iter: int | None = None,
                          seed: int | None = None) -> tuple[np.ndarray, np.ndarray]
         # Ejecuta montecarlo.simulate_ensemble con los mismos argumentos, convierte a
@@ -34,7 +34,7 @@ CONTRATO — a implementar por el agente `markov`. Firmas exactas:
         # (n_horas, 5): π(0) = unitaria en estado_inicial; π(k+1) = π(k)·matrices[k].
         # Cada fila suma 1 (conservación de probabilidad).
 
-    def curva_markov(forecast_df: pd.DataFrame, cfg: Config,
+    def curva_markov(forecast_df: pd.DataFrame, cfg: ConfigProto,
                      bias: dict | None = None, n_iter: int | None = None,
                      seed: int | None = None) -> pd.DataFrame
         # Comodín para la UI: columnas hour + P_<estado> por cada estado (0-1),
@@ -63,7 +63,7 @@ import numpy as np
 import pandas as pd
 
 from src import montecarlo
-from src.config import Config
+from src.config import ConfigProto
 
 if TYPE_CHECKING:
     from src.montecarlo import EnsembleResult
@@ -74,7 +74,7 @@ ESTADOS: tuple[str, ...] = ("inactivo", "concentracion_critica", "nucleacion",
 _N_ESTADOS = 5
 
 
-def estados_por_escenario(ens: EnsembleResult, cfg: Config) -> np.ndarray:
+def estados_por_escenario(ens: EnsembleResult, cfg: ConfigProto) -> np.ndarray:
     """Convierte las fases del ensemble en ids de estado de la cadena (0-4).
 
     Reglas (una por fase de alerts.evaluar_fase):
@@ -117,7 +117,7 @@ def _normalizar(conteos: np.ndarray) -> np.ndarray:
     return matriz / np.where(totales == 0.0, 1.0, totales)
 
 
-def estimar_matrices_desde_ensemble(ens: EnsembleResult, cfg: Config
+def estimar_matrices_desde_ensemble(ens: EnsembleResult, cfg: ConfigProto
                                     ) -> tuple[np.ndarray, np.ndarray]:
     """Estima las matrices de transición a partir de un ensemble YA simulado.
 
@@ -148,7 +148,7 @@ def estimar_matrices_desde_ensemble(ens: EnsembleResult, cfg: Config
     return hours, _normalizar(conteos)
 
 
-def estimar_matrices(forecast_df: pd.DataFrame, cfg: Config,
+def estimar_matrices(forecast_df: pd.DataFrame, cfg: ConfigProto,
                      bias: dict | None = None, n_iter: int | None = None,
                      seed: int | None = None) -> tuple[np.ndarray, np.ndarray]:
     """Estima las matrices de transición hora→hora a partir del ensemble.
@@ -188,7 +188,7 @@ def propagar(matrices: np.ndarray, n_horas: int, estado_inicial: int = 0) -> np.
     return pi
 
 
-def curva_markov_desde_ensemble(ens: EnsembleResult, cfg: Config) -> pd.DataFrame:
+def curva_markov_desde_ensemble(ens: EnsembleResult, cfg: ConfigProto) -> pd.DataFrame:
     """Semáforo probabilístico a partir de un ensemble YA simulado (auditoría G8).
 
     Mismas columnas que :func:`curva_markov` (``hour`` + ``P_<estado>``), pero
@@ -203,7 +203,7 @@ def curva_markov_desde_ensemble(ens: EnsembleResult, cfg: Config) -> pd.DataFram
     return pd.DataFrame(datos)
 
 
-def curva_markov(forecast_df: pd.DataFrame, cfg: Config,
+def curva_markov(forecast_df: pd.DataFrame, cfg: ConfigProto,
                  bias: dict | None = None, n_iter: int | None = None,
                  seed: int | None = None) -> pd.DataFrame:
     """Semáforo probabilístico hora a hora (comodín para la UI).

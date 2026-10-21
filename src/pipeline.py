@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 from src import assimilation, markov, montecarlo, weather
 from src.alerts import descripcion_fase, evaluar_riesgos
-from src.config import Config, load_config
+from src.config import ConfigProto, load_config
 from src.db import Database
 from src.log_config import get_logger
 
@@ -27,7 +27,7 @@ from src.log_config import get_logger
 log = get_logger(__name__)
 
 
-def _ensure_forecast(db: Database, date: str, cfg: Config):
+def _ensure_forecast(db: Database, date: str, cfg: ConfigProto):
     """Devuelve la previsión del día; si no está en la DB, la descarga y la guarda."""
     df = db.get_forecast(date)
     if df is None or df.empty:
@@ -37,7 +37,7 @@ def _ensure_forecast(db: Database, date: str, cfg: Config):
     return df
 
 
-def run_daily(db: Database, date: str, cfg: Config | None = None,
+def run_daily(db: Database, date: str, cfg: ConfigProto | None = None,
               n_iter: int | None = None) -> dict:
     """Veredicto del día: descarga previsión (si falta), simula y guarda el resultado.
 
@@ -97,7 +97,7 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
         "computed_at": ahora.isoformat(timespec="seconds"),
         "hora_veredicto": hora_actual,
     }
-    db.save_prediction(date, veredicto["computed_at"], veredicto)
+    db.save_prediction(date, veredicto["computed_at"], veredicto)  # type: ignore[arg-type]
 
     log.info("run_daily end", extra={
         "date": date,
@@ -111,7 +111,7 @@ def run_daily(db: Database, date: str, cfg: Config | None = None,
     return veredicto
 
 
-def recalc_with_field_data(db: Database, date: str, cfg: Config | None = None,
+def recalc_with_field_data(db: Database, date: str, cfg: ConfigProto | None = None,
                            n_iter: int | None = None) -> dict:
     """Recalcula el veredicto priorizando las lecturas reales del día (bias)."""
     return run_daily(db, date, cfg=cfg, n_iter=n_iter)
@@ -119,7 +119,7 @@ def recalc_with_field_data(db: Database, date: str, cfg: Config | None = None,
 
 # ---------------------------------------------------------------- helpers
 
-def _ahora_salina(cfg: Config) -> datetime:
+def _ahora_salina(cfg: ConfigProto) -> datetime:
     """Hora actual en la zona horaria de la salina (cfg.location.timezone).
 
     Auditoría M9: el veredicto debe "pensar" en la hora local de la salina
@@ -156,7 +156,7 @@ def _ultimo_meteo(forecast, readings) -> tuple[float, float, float]:
     return float(f["temp_c"]), float(f["rh_pct"]), float(f["wind_ms"])
 
 
-def _fase_actual(forecast, cfg: Config, readings,
+def _fase_actual(forecast, cfg: ConfigProto, readings,
                  hora_veredicto: int) -> tuple[int, str]:
     """Fase del momento según el modelo del día (o lecturas recientes).
 
@@ -166,7 +166,7 @@ def _fase_actual(forecast, cfg: Config, readings,
     """
     from src import physics
     sim = physics.concentrations_over_day(forecast, cfg)
-    fila = sim[sim["hour"] <= hora_veredicto]
-    fila = fila.iloc[-1] if len(fila) else sim.iloc[-1]
+    candidatas = sim[sim["hour"] <= hora_veredicto]
+    fila = candidatas.iloc[-1] if len(candidatas) else sim.iloc[-1]
     fase = int(fila["fase"])
     return fase, descripcion_fase(fase)

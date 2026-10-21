@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 
 from src import alerts
-from src.config import Config
+from src.config import ConfigProto
 
 # Mínimo físico de la temperatura de la lámina (no se enfría por debajo de esto).
 _TEMP_AGUA_MIN_C = 15.0
@@ -48,7 +48,7 @@ def vpd_kpa(t_c: float, rh_pct: float) -> float:
 
 
 def water_temperature_c(t_air_c: float, radiation_w_m2: float, hour: int,
-                        cfg: Config) -> float:
+                        cfg: ConfigProto) -> float:
     """Temperatura de la lámina de agua.
 
     T_agua = T_amb + cfg.physics.coef_solar_agua·(rad/1000) + extra_mañana(h)
@@ -69,7 +69,7 @@ def water_temperature_c(t_air_c: float, radiation_w_m2: float, hour: int,
 
 
 def evaporation_mm_h(t_air_c: float, rh_pct: float, wind_ms: float,
-                     t_water_c: float, cfg: Config) -> float:
+                     t_water_c: float, cfg: ConfigProto) -> float:
     """Evaporación horaria — ley de Dalton modificada.
 
     E_hora[mm/h] = (a + b·V) · VPD_kPa / 24, con
@@ -83,7 +83,7 @@ def evaporation_mm_h(t_air_c: float, rh_pct: float, wind_ms: float,
     return max(e_dia / 24.0, 0.0)
 
 
-def solubility_threshold_g_l(t_water_c: float, cfg: Config) -> float:
+def solubility_threshold_g_l(t_water_c: float, cfg: ConfigProto) -> float:
     """Umbral de sobresaturación (nucleación).
 
     umbral(T_agua) = cfg.water.umbral_sobresaturacion_g_l
@@ -116,7 +116,7 @@ def concentration_g_l(c0_g_l: float, evap_accum_mm: float, depth_cm: float,
     return c0_g_l * (1.0 + frac)
 
 
-def simulate_hourly(row: pd.Series | dict, cfg: Config,
+def simulate_hourly(row: pd.Series | dict, cfg: ConfigProto,
                     c0_g_l: float | None = None) -> pd.Series:
     """Física de una fila horaria, con la concentración acumulada hasta esa hora.
 
@@ -145,7 +145,7 @@ def simulate_hourly(row: pd.Series | dict, cfg: Config,
     return out
 
 
-def concentrations_over_day(df: pd.DataFrame, cfg: Config,
+def concentrations_over_day(df: pd.DataFrame, cfg: ConfigProto,
                             c0_g_l: float | None = None) -> pd.DataFrame:
     """Concentración y fase hora a hora a lo largo del día.
 

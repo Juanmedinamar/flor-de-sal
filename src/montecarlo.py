@@ -44,7 +44,7 @@ import numpy as np
 import pandas as pd
 
 from src import physics
-from src.config import Config
+from src.config import ConfigProto
 
 _BINSIZE_H = 0.25
 
@@ -78,7 +78,7 @@ class EnsembleResult:
     n_iter: int
 
 
-def _muestrear(base: pd.DataFrame, cfg: Config, bias: dict,
+def _muestrear(base: pd.DataFrame, cfg: ConfigProto, bias: dict,
                n_iter: int, seed: int | None) -> tuple[np.ndarray, np.ndarray,
                                                         np.ndarray]:
     """Muestrea T, HR y V con ruido gausiano truncado (corregido por sesgo si hay).
@@ -111,7 +111,7 @@ def _muestrear(base: pd.DataFrame, cfg: Config, bias: dict,
 
 
 def _fisica_vectorizada(t_air: np.ndarray, rh: np.ndarray, wind: np.ndarray,
-                        hours: np.ndarray, rad: np.ndarray, cfg: Config
+                        hours: np.ndarray, rad: np.ndarray, cfg: ConfigProto
                         ) -> tuple[np.ndarray, np.ndarray]:
     """Física vectorizada del día (idéntica a las funciones escalares de physics).
 
@@ -147,7 +147,7 @@ def _fisica_vectorizada(t_air: np.ndarray, rh: np.ndarray, wind: np.ndarray,
 
 
 def _estados_y_ventanas(c_g_l: np.ndarray, umbral: np.ndarray, rh: np.ndarray,
-                        wind: np.ndarray, hours: np.ndarray, cfg: Config
+                        wind: np.ndarray, hours: np.ndarray, cfg: ConfigProto
                         ) -> EnsembleResult:
     """Nucleación, fases y ventana de cosecha por escenario (semántica = alerts).
 
@@ -210,7 +210,7 @@ def _estados_y_ventanas(c_g_l: np.ndarray, umbral: np.ndarray, rh: np.ndarray,
                           valid=valid, riesgo_duro=riesgo, n_iter=n_iter)
 
 
-def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
+def _run_ensemble(base: pd.DataFrame, cfg: ConfigProto, bias: dict,
                   n_iter: int, seed: int | None) -> EnsembleResult:
     """Núcleo vectorizado: muestrea el día n veces y devuelve matrices crudas.
 
@@ -224,7 +224,7 @@ def _run_ensemble(base: pd.DataFrame, cfg: Config, bias: dict,
     return _estados_y_ventanas(c_g_l, umbral, rh, wind, hours, cfg)
 
 
-def simulate_ensemble(forecast_df: pd.DataFrame, cfg: Config,
+def simulate_ensemble(forecast_df: pd.DataFrame, cfg: ConfigProto,
                       bias: dict | None = None,
                       n_iter: int | None = None,
                       seed: int | None = None) -> EnsembleResult:
@@ -243,7 +243,7 @@ def simulate_ensemble(forecast_df: pd.DataFrame, cfg: Config,
     return _run_ensemble(base, cfg, bias, n_iter, seed)
 
 
-def simulate_day(forecast_df: pd.DataFrame, cfg: Config,
+def simulate_day(forecast_df: pd.DataFrame, cfg: ConfigProto,
                  bias: dict | None = None,
                  n_iter: int | None = None,
                  seed: int | None = None) -> DayResult:
@@ -295,7 +295,7 @@ def simulate_day_desde_ensemble(ens: EnsembleResult) -> DayResult:
     )
 
 
-def simulate_day_referenciaEscalar(forecast_df: pd.DataFrame, cfg: Config,
+def simulate_day_referenciaEscalar(forecast_df: pd.DataFrame, cfg: ConfigProto,
                                    n_iter: int = 200, seed: int | None = None) -> DayResult:
     """Ruta escalar de referencia (usa physics.concentrations_over_day + alerts).
 

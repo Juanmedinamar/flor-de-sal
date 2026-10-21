@@ -13,7 +13,7 @@ YAML falla aquí, no en tiempo de simulación lejano).
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 import yaml
 
@@ -23,6 +23,95 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "config.yaml"
 DATA_DIR = ROOT / "data"
 DB_PATH = DATA_DIR / "flor_desal.db"
+
+
+# ------------------------------------------------------------------- tipado estático
+# Protocol para que mypy entienda cfg.location, cfg.water, cfg.physics, etc.
+# (Config es dinámico vía Section; el Protocol no se usa en runtime, solo type-check).
+class _LocationProto(Protocol):
+    name: str
+    latitude: float
+    longitude: float
+    timezone: str
+
+
+class _WaterProto(Protocol):
+    entrada_cristalizador_g_l: float
+    profundidad_lamina_cm: float
+    umbral_sobresaturacion_g_l: float
+    umbral_temp_ref_c: float
+    umbral_pendiente_g_l_c: float
+
+
+class _PhysicsProto(Protocol):
+    dalton_a: float
+    dalton_b: float
+    coef_solar_agua: float
+    t_extra_manana_c: float
+
+
+class _SimulationProto(Protocol):
+    hora_inicio: int
+    hora_fin: int
+    minutos_crecimiento: int
+
+
+class _MonteCarloProto(Protocol):
+    iterations: int
+    sigma_temp_c: float
+    sigma_rh_pct: float
+    sigma_wind_ms: float
+    seed: int | None
+
+
+class _LimitsProto(Protocol):
+    viento_peligro_ms: float
+    viento_seguro_max_ms: float
+    hr_peligro_pct: float
+    hr_ideal_max_pct: float
+    hr_cierre_tarde_pct: float
+    hr_rehidratacion_pct: float
+    temp_activacion_c: float
+
+
+class _SeasonProto(Protocol):
+    start_date: str
+    end_date: str
+    iterations: int
+    source: str
+    workers: int
+
+
+class _MarkovProto(Protocol):
+    estados: list[str]
+    margen_critico_g_l: float
+    iterations: int
+
+
+class _AssimilationProto(Protocol):
+    max_hours_back: int
+
+
+class _NetworkProto(Protocol):
+    timeout_s: float
+    archive_timeout_s: float
+    retries: int
+    backoff_base_s: float
+
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
+class ConfigProto(Protocol):
+    location: _LocationProto
+    water: _WaterProto
+    physics: _PhysicsProto
+    simulation: _SimulationProto
+    montecarlo: _MonteCarloProto
+    limits: _LimitsProto
+    season: _SeasonProto
+    markov: _MarkovProto
+    assimilation: _AssimilationProto
+    network: _NetworkProto
 
 
 class Section:
@@ -127,7 +216,7 @@ def validar_config(data: dict[str, Any]) -> None:
             f"season.end_date ({fin}).")
 
 
-def load_config(path: str | Path | None = None) -> Config:
+def load_config(path: str | Path | None = None) -> ConfigProto:
     """Carga y valida config.yaml. ConfigError si falta o es inválido."""
     p = Path(path) if path else CONFIG_PATH
     try:
@@ -138,4 +227,4 @@ def load_config(path: str | Path | None = None) -> Config:
     if not isinstance(data, dict):
         raise ConfigError(f"{p}: el contenido no es un mapa YAML.")
     validar_config(data)
-    return Config(data)
+    return Config(data)  # type: ignore[return-value]  # Config implementa ConfigProto en runtime

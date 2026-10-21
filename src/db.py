@@ -222,12 +222,12 @@ class Database:
         registros = [
             (
                 date,
-                int(row.hour),
-                float(row.temp_c),
-                float(row.rh_pct),
-                float(row.wind_ms),
-                float(row.wind_dir_deg),
-                float(row.radiation_w_m2),
+                int(row.hour),  # type: ignore[arg-type]
+                float(row.temp_c),  # type: ignore[arg-type]
+                float(row.rh_pct),  # type: ignore[arg-type]
+                float(row.wind_ms),  # type: ignore[arg-type]
+                float(row.wind_dir_deg),  # type: ignore[arg-type]
+                float(row.radiation_w_m2),  # type: ignore[arg-type]
                 source,
                 _ahora(),
             )
@@ -281,7 +281,7 @@ class Database:
                 (date, reading_time, t_calentador_c, t_cristalizador_c,
                  concentration_g_l, t_ambiente_c, rh_pct, wind_ms, notes, _ahora()),
             )
-            return int(cur.lastrowid)
+            return int(cur.lastrowid)  # type: ignore[arg-type]
 
     def get_readings(self, date: str) -> pd.DataFrame:
         """Devuelve las lecturas reales de `date` ordenadas por reading_time.
@@ -322,7 +322,7 @@ class Database:
                 "INSERT INTO predictions (date, computed_at, payload_json) VALUES (?, ?, ?)",
                 (date, computed_at, payload_json),
             )
-            return int(cur.lastrowid)
+            return int(cur.lastrowid)  # type: ignore[arg-type]
 
     def get_predictions(self, date: str) -> pd.DataFrame:
         """Devuelve las predicciones de `date` con el payload ya decodificado.

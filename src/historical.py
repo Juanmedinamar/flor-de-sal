@@ -56,7 +56,7 @@ from datetime import date, datetime, timedelta
 
 import pandas as pd
 
-from src.config import Config
+from src.config import ConfigProto
 from src.errors import WeatherDataError
 from src.weather import get_json_con_reintentos, resuelve_red
 
@@ -110,7 +110,7 @@ def _vacio() -> pd.DataFrame:
 
 def _descargar_tramo(start_date: str, end_date: str, latitude: float, longitude: float,
                      timezone: str, *,
-                     cfg: Config | None = None,
+                     cfg: ConfigProto | None = None,
                      timeout_s: float | None = None,
                      retries: int | None = None,
                      backoff_base_s: float | None = None) -> list[dict]:
@@ -166,7 +166,7 @@ def _descargar_tramo(start_date: str, end_date: str, latitude: float, longitude:
 
 def fetch_archive(start_date: str, end_date: str, latitude: float, longitude: float,
                   timezone: str = "Europe/Madrid", *,
-                  cfg: Config | None = None,
+                  cfg: ConfigProto | None = None,
                   timeout_s: float | None = None,
                   retries: int | None = None,
                   backoff_base_s: float | None = None) -> pd.DataFrame:

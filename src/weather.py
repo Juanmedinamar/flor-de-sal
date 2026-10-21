@@ -36,7 +36,7 @@ from typing import Any, NamedTuple
 import pandas as pd
 import requests
 
-from src.config import Config, load_config
+from src.config import ConfigProto, load_config
 from src.errors import WeatherDataError, WeatherNetworkError
 
 API_URL = "https://api.open-meteo.com/v1/forecast"
@@ -64,7 +64,7 @@ class RedCfg(NamedTuple):
     backoff_base_s: float
 
 
-def resuelve_red(cfg: Config | None, timeout_attr: str, timeout_defecto: float,
+def resuelve_red(cfg: ConfigProto | None, timeout_attr: str, timeout_defecto: float,
                  timeout_s: float | None = None, retries: int | None = None,
                  backoff_base_s: float | None = None) -> RedCfg:
     """Resuelve los parámetros de red: kwargs explícitos > cfg.network > load_config().
@@ -145,7 +145,7 @@ def get_json_con_reintentos(url: str, params: dict[str, Any], *, red: RedCfg,
 
 def fetch_forecast(latitude: float, longitude: float, date: str,
                    timezone: str = "Europe/Madrid", *,
-                   cfg: Config | None = None,
+                   cfg: ConfigProto | None = None,
                    timeout_s: float | None = None,
                    retries: int | None = None,
                    backoff_base_s: float | None = None) -> pd.DataFrame:

@@ -9,7 +9,7 @@ Fases:
 """
 from __future__ import annotations
 
-from src.config import Config
+from src.config import ConfigProto
 
 FASES = {
     0: "Inactividad (la salmuera aún no está sobresaturada)",
@@ -21,7 +21,7 @@ FASES = {
 
 def evaluar_fase(c_g_l: float, umbral_g_l: float, hour: float,
                  hora_nucleacion: float | None, viento_ms: float, hr_pct: float,
-                 hr_min_hasta_ahora: float, cfg: Config) -> int:
+                 hr_min_hasta_ahora: float, cfg: ConfigProto) -> int:
     """Devuelve la fase (0-3) para una hora dada del escenario.
 
     Reglas (cfg.limits):
@@ -48,7 +48,7 @@ def evaluar_fase(c_g_l: float, umbral_g_l: float, hour: float,
     return 0
 
 
-def evaluar_riesgos(temp_c: float, rh_pct: float, wind_ms: float, cfg: Config) -> list[dict]:
+def evaluar_riesgos(temp_c: float, rh_pct: float, wind_ms: float, cfg: ConfigProto) -> list[dict]:
     """Alertas del momento actual. Devuelve lista de {'nivel', 'codigo', 'mensaje'}.
 
     nivel: 'rojo' (no cosechar / peligro), 'amarillo' (precaución), 'verde' (todo bien).
