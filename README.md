@@ -1,0 +1,480 @@
+# 🧂 Flor de Sal — Predictor de la hora óptima de recolección
+
+[![CI](https://github.com/USER/REPO/workflows/CI/badge.svg)](https://github.com/USER/REPO/actions)
+[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/USER/REPO/actions)
+[![Python](https://img.shields.io/badge/python-3.13-blue)](https://www.python.org/downloads/release/python-3130/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.66-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Type checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue)](http://mypy-lang.org/)
+
+![Flor de Sal](app/assets/logo.png)
+
+**TFM — Máster Desarrollo de Software con IA (Big School / mouredev)**
+
+App Python (Streamlit) que estima **con probabilidad** la ventana óptima de recolección de
+flor de sal en una salina de Córdoba, cruzando tres fuentes de información:
+
+1. **Previsión meteorológica horaria** de [Open-Meteo](https://open-meteo.com/) (sin API key).
+2. **Datos reales de campo** que introduces a lo largo del día (Tª del calentador y del
+   cristalizador, concentración g/l, Tª ambiente, HR y viento).
+3. **Modelo físico + Monte Carlo** (1000 escenarios, <0,1 s) con **corrección por sesgo**
+   (asimilación de las lecturas reales sobre la previsión).
+
+Salen el **semáforo de fases** (0 inactividad · 1 nucleación · 2 ventana óptima ·
+3 cierre/riesgo), la **ventana más probable**, la **hora óptima con su IC 95 %**, la
+**probabilidad de ventana** y de **riesgo**, y las **alertas** del momento.
+
+La app tiene **dos secciones** (radio en el menú lateral):
+
+- **🌞 Hoy** — veredicto, semáforo probabilístico, campana, gráficas del día,
+  formulario de datos reales y panel de calibración.
+- **📆 Temporada** — simulación histórica de la temporada con meteorología
+  observada (ERA5): KPIs, calendario de horas óptimas y mejores días.
+
+- Modelo físico y memoria del proyecto: `AGENTS.md` y `../Modelo flor de sal.pdf`
+  (Ley de Dalton modificada, umbral de sobresaturación, fases y reglas de riesgo).
+- Todo es calibrable: los coeficientes no se guardan en el código, se ajustan desde la
+  UI o en `config.yaml`.
+
+## 🛠 Stack tecnológico
+
+| Capa | Tecnologías |
+|------|-------------|
+| **Frontend / UI** | Streamlit 1.66, Plotly 5.20, Pandas 3.0 |
+| **Backend / Modelado** | Python 3.13, NumPy 2.5, SciPy 1.18, Pandas 3.0 |
+| **Modelado estocástico** | Monte Carlo vectorizado (1000 escenarios <0,1 s), Cadenas de Markov (5 estados) |
+| **Asimilación de datos** | Corrección por sesgo rolling (bias = media(real − previsto) últimas N horas) |
+| **Meteorología** | Open-Meteo Forecast + Archive (ERA5), sin API key |
+| **Base de datos** | SQLite local (WAL, busy_timeout, transacciones atómicas) |
+| **Calidad / Testing** | pytest 9.1, Hypothesis (property-based), AppTest (UI), Coverage 95% |
+| **Lint / Type** | ruff 0.17, mypy strict (src/), pre-commit hooks |
+| **CI/CD** | GitHub Actions (lint, type, test, coverage ≥80%, app-smoke), Dependabot |
+| **Contenedor** | Docker multi-stage, non-root, healthcheck, docker-compose |
+| **Logging** | JSON estructurado (stdout + RotatingFileHandler 5 MB) |
+| **Despliegue** | Docker + nginx + Let's Encrypt (HTTPS), VPS Hetzner/Oracle |
+
+## Instalación
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 scripts/init_db.py        # crea data/flor_desal.db (idempotente)
+```
+
+## Uso diario
+
+```bash
+# 1) Descargar la previsión del día (a las 06:00 o a demanda)
+python3 scripts/ingest_forecast.py            # hoy
+python3 scripts/ingest_forecast.py 2026-07-15 # fecha concreta (YYYY-MM-DD)
+
+# 2) Lanzar la app
+python3 -m streamlit run app/streamlit_app.py
+```
+
+> La app también descarga la previsión sola: si la fecha seleccionada no tiene datos,
+> usa el botón **«⬇️ Descargar/guardar previsión del día»** del menú lateral (o el
+> pipeline la descarga al calcular el veredicto).
+
+Durante el día:
+
+1. Abre la app (por defecto, la fecha de **hoy**) y lee el **veredicto**: fase actual,
+   ventana, hora óptima con IC 95 % y alertas.
+2. Cada 1–2 horas registra una lectura en **«📐 Datos reales de campo»**
+   (hora, Tª, HR, viento, concentración…). Al guardarla, el veredicto **se recalcula
+   solo** aplicando la corrección por sesgo (media de *real − previsto*) y la campana
+   de probabilidad se estrecha.
+3. Consulta la **campana** y la **tabla horaria** (Tª del agua, evaporación,
+   concentración y fase hora a hora).
+4. Si el modelo se desvía de lo que ves en la salina, ajusta los parámetros en el
+   **panel de calibración** (Dalton a/b, sigmas, umbral, profundidad, minutos de
+   crecimiento). Los cambios recalculan al instante y **no escriben** en `config.yaml`
+   (botón **«↺ Restablecer valores»** para volver a los de fichero).
+5. Cambia el radio del menú lateral a **«📆 Temporada»** para ver el calendario de
+   horas óptimas, la probabilidad de ventana día a día y los mejores días del año
+   (y **«🔄 (Re)simular temporada»** si acabas de cambiar el rango de `config.yaml`).
+
+## La app, pantalla por pantalla (captura lógica del panel)
+
+Así queda el panel al abrirlo (ejemplo con los valores de un día fresco y húmedo):
+
+```
+┌─ MENÚ LATERAL ─────────────────────┐
+│ ## 🧂 Flor de Sal                  │
+│ 📂 Sección: (🌞 Hoy)(📆 Temporada) │  ← radio de navegación
+│ 📅 Fecha del veredicto   [hoy     ]│
+│ [⬇️ Descargar/guardar previsión]   │
+│ ─────────────────────────────────  │
+│ Semáforo de fases                  │
+│ ⬜ Fase 0 — Inactividad            │
+│ 🟧 Fase 1 — Nucleación             │
+│ 🟩 Fase 2 — Ventana óptima         │
+│ 🟥 Fase 3 — Cierre/riesgo          │
+│ Salina Córdoba · 37.89, -4.78      │
+└────────────────────────────────────┘
+ (en 📆 Temporada el bloque de fecha se sustituye por
+  [🔄 (Re)simular temporada] + última salida de la CLI)
+
+🧂 Flor de Sal — Hora óptima de recolección
+Salina Córdoba · 37.8882, -4.7794 · día 2026-10-21
+
+🚦 Veredicto del día
+┌──────────────────────────────────────────────────────────────────────┐
+│ ⬜ Fase 0 — Inactividad (la salmuera aún no está sobresaturada)      │  ← caja GRIS
+│  (si fuera naranja → st.warning "Fase 1", verde → st.success        │
+│   "Fase 2", rojo → st.error "Fase 3")                               │
+├────────────────┬───────────────────┬────────────────┬────────────────┤
+│ 🌀 Ventana     │ 🎯 Hora óptima    │ 📈 Prob. de    │ ⚠️ Prob. de    │
+│ Sin ventana hoy│ —                 │ ventana  0%    │ riesgo     0%  │
+│                │ sin estimación    │                │                │
+├────────────────┴───────────────────┴────────────────┴────────────────┤
+│ Probabilidad de ventana óptima      Probabilidad de riesgo (Fase 3)   │
+│ ▓▓▓▓▓▓░░░░░░░░░░ 0% de los 1000     ░░░░░░░░░░░░░░░░ 0% cierran por  │
+│                    escenarios abren               riesgo             │
+├──────────────────────────────────────────────────────────────────────┤
+│ 🔔 Alertas del momento                                               │
+│ 🟥 Humedad relativa 67% > 65%: la flor de sal se rehidrata…          │
+│ 🟨 Temperatura 15.2 °C: proceso lento, la ventana se retrasa.        │
+└──────────────────────────────────────────────────────────────────────┘
+
+🚦 Semáforo probabilístico de la balsa (Márkov)
+ (áreas APILADAS hora a hora con los 5 estados, eje Y en %:
+  gris #9E9E9E inactivo · ámbar #FFC107 concentración crítica ·
+  naranja #FF9800 nucleación · verde #2E7D32 ventana ·
+  rojo #C62828 degradación · línea vertical punteada «ahora» ·
+  guía: «¿A qué hora es más probable que esté la ventana? 19h: 79%»)
+
+🔔 Campana de probabilidad de la hora óptima
+ (plotly) barras teal de densidad · sombreado verde = IC 95 % ·
+ línea roja discontinua = mediana (hora óptima) · eje X en HH:MM
+ (sin ventana → aviso informativo en lugar del gráfico)
+
+🌤️ Previsión vs lecturas reales
+ (3 mini-gráficos T / HR / V: línea teal = previsión horaria
+  —con el sesgo aplicado en el subtítulo— y puntos rojos = lecturas
+  del formulario; solo se muestra si ya hay lecturas)
+
+📈 Evolución de la predicción del día
+ (hora óptima de cada cálculo + banda IC 95 %, con línea discontinua
+  en el último cálculo · <2 cálculos → texto explicativo)
+
+📋 Tabla horaria del día
+ Hora    T aire  HR  Viento  T agua  Evap.mm/h  Concentración  Fase
+ 06:00    12,4   88   0,6     16,8     0,031        300,0      ⬜ 0 · Inactividad
+ …        …      …    …       …        …            …          🟧 1 · Nucleación
+ 14:00    24,1   49   2,4     31,2     0,114        318,6      🟩 2 · Ventana óptima
+ 18:00    22,8   55   1,9     26,4     0,072        342,1      🟥 3 · Cierre/riesgo
+ (cada celda de la columna «Fase» lleva su badge de color)
+
+📐 Datos reales de campo
+ [Hora] [Tª calentador] [Tª cristalizador] [Concentración]
+ [Tª ambiente] [HR] [Viento] [Notas]
+ [💾 Guardar lectura]   → guarda y recalcula con corrección por sesgo
+
+📔 Lecturas del día y sesgo aplicado
+ tabla con las lecturas guardadas + "Corrección por sesgo aplicada
+ a la previsión: temperatura +1,8 °C, HR −6 %, viento +0,4 m/s"
+
+⚙️ Panel de calibración del modelo   (expander)
+ [Dalton a] [Dalton b] [σ T] [σ HR] [σ viento]
+ [umbral 300-340] [profundidad 5-10 cm] [minutos crecimiento 30-240]
+ [↺ Restablecer valores]
+
+──────────────────────────────────────────────────────────────────────
+Fuente del modelo: «Modelo flor de sal.pdf» · Previsión: Open-Meteo ·
+Simulación: Monte Carlo con corrección por sesgo.
+⚠️ La predicción es una estimación probabilística, no una garantía: los
+coeficientes se calibran con datos reales de campo.
+```
+
+## 🚦 Semáforo probabilístico (Márkov)
+
+Gráfico de **áreas apiladas hora a hora** (06:00–21:00) con los 5 estados de la
+capa de Márkov del PDF (pág. 8 §2), construido con `plotly go.Scatter` y
+`stackgroup` (no `st.line_chart`, que no admite apilado ni anotaciones):
+
+| Estado | Color | Significado |
+|---|---|---|
+| Inactivo | gris `#9E9E9E` | C por debajo del umbral |
+| Concentración crítica | ámbar `#FFC107` | a <15 g/l del umbral |
+| Nucleación | naranja `#FF9800` | C ≥ umbral: crecen microcristales |
+| **Ventana** | verde `#2E7D32` | película cosechable |
+| Degradación | rojo `#C62828` | rehidratación / cierre |
+
+Eje Y en **%** (las cinco suman 100 % en cada hora), línea vertical punteada
+**«ahora»** cuando la fecha es la de hoy, y texto guía con la hora más probable
+de ventana (*p. ej. «19h: 79%»*). Es la lectura rápida de «¿a qué hora ir a la
+salina?»: la franja verde que engorda marca el momento de salir con la rastrilla.
+
+## 📆 Pestaña Temporada
+
+Se abre con el radio **«📆 Temporada»** del menú lateral. Muestra la simulación
+histórica de `scripts/season_simulation.py` (Open-Meteo Archive / ERA5, sin API
+key) sobre el rango de `config.yaml` (`season.start_date → season.end_date`,
+198 días de 2026-04-01 a 2026-10-15, 300 iteraciones Monte Carlo por día, sin
+corrección por sesgo porque no hay lecturas de campo de esa temporada):
+
+1. **KPIs** (`st.metric` en columnas): días simulados, **% de días con
+   ventana**, **hora óptima mediana** de la temporada y **mes más productivo**.
+2. **🗓️ Mapa de calor calendario** (`go.Heatmap`): Y = mes (abr…oct), X = día
+   1-31, color = hora óptima con escala **YlOrRd** y barra de color en HH:MM;
+   celdas de días **sin ventana** o **no simulados** en gris `#EEEEEE` y los días
+   inexistentes (31 abr…) como hueco. Hover: fecha, ventana, hora óptima y
+   probabilidad.
+3. **📈 Probabilidad de ventana día a día** (área con `fill="tozeroy"`): de 0 a 1
+   con umbral punteado al **50 %**; un día sin ventana vale 0.
+4. **🕰️ Distribución de horas óptimas + cobertura por hora**: histograma con
+   **bines de 30 min** y curva «en qué % de días la ventana cubre cada hora»
+   (cuenta los días con `window_start ≤ h ≤ window_end`), con el pico marcado.
+5. **📦 Box plot de la hora óptima por mes** (puntos dispersados, `jitter`).
+6. **📊 Barras mensuales**: días con ventana vs total de días simulados, con la
+   etiqueta «con ventana / total · %».
+7. **🏆 Top-10 mejores días**: fecha, hora óptima, ventana y probabilidad de
+   ventana (de mayor a menor).
+
+Y en el menú lateral: **«🔄 (Re)simular temporada»**. Si la tabla `season_runs`
+está vacía para el rango, la app **lo ofrece automáticamente**; el botón ejecuta
+`python3 scripts/season_simulation.py` (≈15 s, `subprocess` con spinner y captura
+de la salida, visible en «📤 Última salida»), limpia la caché de `st.cache_data`
+y refresca la pantalla. Re-ejecutar es idempotente: la CLI reemplaza los
+resultados del mismo rango.
+
+## Desde el móvil
+
+La interfaz es **responsive**: en escritorio usa layout ancho con columnas; en el
+móvil todo se apila a una columna y se lee cómodamente.
+
+1. Lanza la app escuchando en la red local:
+
+   ```bash
+   python3 -m streamlit run app/streamlit_app.py --server.address 0.0.0.0 --server.port 8501
+   ```
+
+2. Desde el navegador del móvil (misma Wi‑Fi que el PC) abre
+   `http://IP-del-PC:8501`. Streamlit muestra la IP en la consola al arrancar
+   (*Network URL*).
+
+3. **Si el PC trabaja en WSL2** (como este proyecto, en `/mnt/c/...`): Windows
+   reenvía `localhost` a WSL automáticamente, pero para llegar desde el móvil usa la
+   **IP de Windows** y abre el puerto en el firewall:
+
+   ```powershell
+   netsh advfirewall firewall add rule name="Streamlit 8501" dir=in action=allow protocol=TCP localport=8501
+   ```
+
+4. Con la página abierta, elige **«Añadir a pantalla de inicio»** del navegador: queda
+   como una app con icono propio, lista para registrar lecturas en la salina.
+
+> Consejo: el formulario guarda la hora del momento; ajústala con `time_input` si
+> transcribes lecturas al final del día. Cada guardado recalcula el veredicto.
+
+## Desarrollo — Makefile
+
+Todos los comandos habituales están en `Makefile`:
+
+```bash
+make init          # instala en modo editable con deps de dev (pytest, ruff, mypy…)
+make test          # tests rápidos (sin integración)
+make test-all      # todos los tests
+make cov           # cobertura ≥80% (excluye integración)
+make lint          # ruff check src/ tests/ scripts/ app/
+make fmt           # ruff fix + unsafe-fixes (idempotente)
+make type          # mypy src/ (Ola 3: strict progresivo)
+make run           # streamlit run app/streamlit_app.py
+make season        # python3 scripts/season_simulation.py (opcional START= END= ITERS= WORKERS=)
+make ingest        # python3 scripts/ingest_forecast.py (opcional DATE=YYYY-MM-DD)
+make db-init       # python3 scripts/init_db.py
+make health        # python3 scripts/healthcheck.py
+make backup        # python3 scripts/backup_db.py (opcional KEEP=N)
+make docker-build  # docker build -t flor-de-sal .
+make docker-up     # docker compose up -d
+make docker-down   # docker compose down
+make help          # lista todos los targets
+```
+
+## Docker (producción)
+
+```bash
+# Build multi-stage (builder → runtime, usuario no-root, healthcheck)
+docker build -t flor-de-sal .
+
+# Run con persistencia de BD y backups
+docker run -d \
+  -p 8501:8501 \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/backups:/app/backups \
+  --env-file .env \
+  --restart unless-stopped \
+  flor-de-sal
+
+# O con docker-compose (dev + prod override)
+docker compose up -d
+docker compose logs -f app
+```
+
+**Healthcheck** incluido: `GET /_stcore/health` cada 30s (timeout 10s). Ver `scripts/healthcheck.py`.
+
+## Logging estructurado
+
+- `src/log_config.py`: JSON lines en stdout + opcional `RotatingFileHandler` (5 MB, 3 backups).
+- Campos: `timestamp` (ISO UTC), `level`, `logger`, `message`, `module`, `funcName`, `lineno`, `extra...`.
+- Integrado en `scripts/season_simulation.py`, `scripts/ingest_forecast.py`, `src/pipeline.py`.
+- NO en UI (Streamlit gestiona su propio logging).
+
+```python
+from src.log_config import setup_logging, get_logger
+setup_logging(level="INFO", json=True, log_file="logs/app.log")
+log = get_logger(__name__)
+log.info("run_daily start", extra={"date": "2026-07-15", "n_iter": 1000})
+```
+
+## Backup de la BD
+
+```bash
+# Backup único
+python3 scripts/backup_db.py
+# → backups/flor_desal_20261021_061234.db
+
+# Conserva solo los 10 más recientes (ideal para cron)
+python3 scripts/backup_db.py --keep 10
+```
+
+Cron sugerido (diario 02:00, conserva 30 días):
+```
+0 2 * * * /usr/bin/python3 /ruta/proyecto/scripts/backup_db.py --keep 30
+```
+
+## CI/CD (GitHub Actions)
+
+- **Lint** (ruff), **Type-check** (mypy), **Tests** (pytest + coverage ≥80%), **App smoke test** (AppTest 30s).
+- Artefactos: `coverage.xml`, `test-results.xml`.
+- **Dependabot** semanal (pip + github-actions), PRs agrupados por `dev-tools` / `runtime`.
+
+## Tests
+
+```bash
+python3 -m pytest tests/ -q
+```
+
+Los tests cubren física, Monte Carlo, asimilación, previsión, base de datos
+(fixtures con el día típico de Córdoba del PDF) y la UI: `tests/test_app.py`
+ejecuta el punto de entrada real con `streamlit.testing.v1.AppTest` y comprueba
+que **Hoy** y **Temporada** se pintan sin excepciones, usando una base de datos
+temporal (`FLOR_DESAL_DB`) y con la red bloqueada.
+
+```bash
+python3 -m pytest tests/ -m "not integration"   # sin pruebas que piden red
+```
+
+## Estructura del proyecto
+
+```
+flor-de-sal/
+├── AGENTS.md                    # memoria del proyecto (modelo, decisiones, convenciones)
+├── README.md                    # este archivo
+├── CHANGELOG.md                 # Keep a Changelog + semver
+├── config.yaml                  # constantes de la salina y del modelo (calibrables)
+│                                #   sección season: rango e iteraciones de la temporada
+├── requirements.txt
+├── pyproject.toml               # build, deps, ruff, mypy, pytest config
+├── Makefile                     # targets: init, test, lint, fmt, type, run, season, ingest, docker…
+├── .pre-commit-config.yaml      # ruff, mypy, pytest (staged), yaml, whitespace
+├── .dockerignore
+├── Dockerfile                   # multi-stage builder → runtime, healthcheck, non-root
+├── docker-compose.yml           # dev + prod override, volumes data/ backups/
+├── .github/
+│   ├── workflows/ci.yml         # lint, type, test (cov≥80%), app-smoke
+│   └── dependabot.yml           # weekly pip + github-actions
+├── .streamlit/config.toml       # tema (verde/teal #00695C) y servidor
+├── app/
+│   ├── streamlit_app.py         # punto de entrada delgado: set_page_config + main()
+│   │                            #   (sigue siendo el fichero de `streamlit run`)
+│   ├── assets/logo.png          # logo de la salina (favicon de la pestaña y cabecera)
+│   └── ui/                      # paquete con toda la interfaz:
+│       ├── constantes.py        #   colores, estados de Márkov, calibración, layout plotly
+│       ├── textos.py            #   textos compartidos en español (pie, leyenda, avisos)
+│       ├── helpers.py           #   formatos, estilos de tabla, gráficos y zona horaria
+│       ├── state.py             #   caché (Monte Carlo del día / season_runs) + session_state
+│       ├── sidebar.py           #   menú lateral: navegación, fecha, descarga, simulación
+│       ├── panel_hoy.py         #   sección 🌞 Hoy (veredicto, semáforo, campana, tabla…)
+│       ├── panel_temporada.py   #   sección 📆 Temporada (KPIs y gráficas)
+│       └── main.py              #   cabecera, sección elegida y pie de fuentes
+├── src/
+│   ├── config.py                # carga de config.yaml
+│   ├── weather.py               # previsión horaria (Open-Meteo)
+│   ├── historical.py            # meteorología observada (Open-Meteo Archive / ERA5)
+│   ├── db.py                    # SQLite local (previsión, lecturas, predicciones,
+│   │                            #   season_runs)
+│   ├── physics.py               # evaporación, T del agua, concentración y fases
+│   ├── montecarlo.py            # 1000 escenarios → distribución de la hora óptima
+│   ├── markov.py                # cadena de Márkov → curva de estados por hora
+│   ├── assimilation.py          # corrección por sesgo (real − previsto)
+│   ├── alerts.py                # semáforo de fases y alertas
+│   ├── pipeline.py              # run_daily / recalc_with_field_data → veredicto
+│   ├── log_config.py            # logging JSON + rotación (sin deps externas)
+│   └── errors.py                # jerarquía de excepciones
+├── scripts/
+│   ├── init_db.py               # crea el esquema de la DB
+│   ├── ingest_forecast.py       # descarga y guarda la previsión del día
+│   ├── season_simulation.py     # simula la temporada y guarda en season_runs
+│   ├── healthcheck.py           # HTTP GET /_stcore/health (Docker HEALTHCHECK)
+│   └── backup_db.py             # sqlite3 backup → backups/flor_desal_YYYYMMDD_HHMMSS.db
+├── tests/                       # pytest (física, Monte Carlo, DB, temporada y
+│                                #   humo de la UI con streamlit AppTest)
+├── data/flor_desal.db           # SQLite local (se crea sola; no se versiona)
+└── backups/                     # backups de la BD (no se versionan; .gitignore)
+```
+
+## Notas
+
+- **Base de datos**: `data/flor_desal.db` es la fuente de verdad del PC (previsión,
+  lecturas de campo y veredictos históricos). No se versiona (`.gitignore`).
+  Para apuntar la app a otra DB (pruebas), define la variable de entorno
+  `FLOR_DESAL_DB=/ruta/otra.db`; si no, se usa la del proyecto.
+- **Rendimiento**: el veredicto se cachea 5 min (`st.cache_data`) y se invalida solo
+  al guardar una lectura, cambiar la calibración o descargar previsión nueva
+  (la clave ya no incluye la hora del sistema: el `ttl=300` refresca la fase a
+  mitad de día sin recalcular la campana cada hora).
+- **Zona horaria**: la «línea ahora» del semáforo, la fecha por defecto del
+  selector y la hora de las lecturas usan `location.timezone` de `config.yaml`
+  (con *fallback* a la hora local si la zona no existe en el equipo).
+- **Unidades**: presión en hPa (se pasa a kPa a Dalton), evaporación en mm (= L/m²),
+  viento m/s, concentración g/l, temperatura °C.
+
+## 🚀 Despliegue en producción
+
+**URL pública (ejemplo):** `https://salina.tudominio.com`  ← *cambia por tu subdominio real*
+
+### Con Docker (recomendado)
+```bash
+# 1. Clona y configura .env
+git clone https://github.com/TU_USUARIO/flor-de-sal.git
+cd flor-de-sal
+cp .env.example .env   # edita con tu dominio, zona horaria, etc.
+
+# 2. Levanta con docker-compose (nginx + streamlit + certbot)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# 3. Verifica
+curl -I https://salina.tudominio.com/_stcore/health
+# HTTP/2 200
+```
+
+### En VPS (Hetzner CX22 ~4,50 €/mes u Oracle Free Tier)
+```bash
+# 1. Crea VPS (Ubuntu 24.04) → apunta DNS A salina.tudominio.com → IP_VPS
+# 2. En el VPS:
+ssh root@IP_VPS
+git clone https://github.com/TU_USUARIO/flor-de-sal.git
+cd flor-de-sal
+cp .env.example .env
+./deploy.sh   # script incluido: instala Docker, levanta todo, pide certificado Let's Encrypt
+```
+
+## 📄 Licencia
+
+Este proyecto está bajo licencia **MIT** — ver [LICENSE](LICENSE) para detalles.
+
+> **TFM — Máster Desarrollo de Software con IA (Big School / mouredev)**  
+> Autor: Juan Medina · 2026 · juanmedina@users.noreply.github.com

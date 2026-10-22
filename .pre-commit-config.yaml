@@ -1,0 +1,83 @@
+# Flor de Sal — pre-commit hooks
+# Instalación: pip install pre-commit && pre-commit install
+# Ejecución manual: pre-commit run --all-files
+
+repos:
+  # ----------------------------------------------------------------------
+  # Ruff — lint + format (reemplaza flake8, isort, black)
+  # ----------------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.7
+    hooks:
+      - id: ruff
+        name: ruff (lint)
+        args: [--fix, --unsafe-fixes]
+        types: [python]
+        # Solo archivos staged
+        stages: [commit]
+      - id: ruff-format
+        name: ruff (format)
+        types: [python]
+        stages: [commit]
+
+  # ----------------------------------------------------------------------
+  # mypy — comprobación de tipos (solo .py staged en src/)
+  # ----------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        name: mypy (src/)
+        entry: mypy src/
+        types: [python]
+        stages: [commit]
+        additional_dependencies: [types-requests, types-pyyaml]
+        # Solo pasa si hay .py staged en src/
+        verbose: true
+
+  # ----------------------------------------------------------------------
+  # pytest rápido — tests unitarios (sin integración) al tocar src/ o tests/
+  # ----------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: pytest-unit
+        name: pytest (unit, no integration)
+        entry: pytest -m "not integration" -q --tb=short
+        language: system
+        types: [python]
+        stages: [commit]
+        # Solo ejecuta si hay cambios en tests/ o src/
+        files: ^(src/|tests/)
+        pass_filenames: false
+        always_run: false
+
+  # ----------------------------------------------------------------------
+  # Hooks genéricos de calidad (YAML, EOF, trailing whitespace)
+  # ----------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        name: check-yaml
+        stages: [commit]
+      - id: end-of-file-fixer
+        name: end-of-file-fixer
+        stages: [commit]
+      - id: trailing-whitespace
+        name: trailing-whitespace
+        stages: [commit]
+      - id: check-added-large-files
+        name: check-added-large-files
+        args: [--maxkb=500]
+        stages: [commit]
+
+  # ----------------------------------------------------------------------
+  # Opcional: detectar secrets (no bloquea, solo avisa)
+  # ----------------------------------------------------------------------
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.0
+    hooks:
+      - id: gitleaks
+        name: gitleaks (secrets scan)
+        stages: [commit]
+        verbose: true

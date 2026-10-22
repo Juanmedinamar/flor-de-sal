@@ -1,35 +1,41 @@
-# Entorno virtual
-.venv/
-venv/
-
-# Bytecode de Python
+# Python
 __pycache__/
 *.pyc
-*.pyo
+.venv/
+.pytest_cache/
 
-# Base de datos local
-data/
-*.db
-*.db-journal
+# Datos locales (la DB es la fuente del PC, no se versiona)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
 
-# Archivos de entorno / secretos
-.env
-.env.*
-
-# Archivos del sistema
-Thumbs.db
-Desktop.ini
+# Backups de BD (generados por scripts/backup_db.py)
+backups/
 
 # Logs
+logs/
 *.log
 
-# Archivos de prueba y capturas
-*.png
-*.html
-*.txt
-!LEEME.txt
+# Streamlit
+.streamlit/secrets.toml
 
-# Carpetas de desarrollo y pruebas
-Vino_Tracker_Trabajo/Vino_Tracker_Desarrollo/
-Vino_Tracker_Trabajo/Pruebas_Archivo/
-Vino_Tracker_Trabajo/data/
+# Cachés de herramientas
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
