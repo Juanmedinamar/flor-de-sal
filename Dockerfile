@@ -63,6 +63,7 @@ COPY --chown=appuser:appuser app/ ./app/
 COPY --chown=appuser:appuser scripts/ ./scripts/
 COPY --chown=appuser:appuser config.yaml ./
 COPY --chown=appuser:appuser pyproject.toml ./
+COPY --chown=appuser:appuser .streamlit/ ./.streamlit/
 
 # Crea directorio de datos y backups con permisos correctos
 RUN mkdir -p /app/data /app/backups && chown -R appuser:appuser /app/data /app/backups

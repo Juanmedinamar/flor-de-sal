@@ -37,7 +37,7 @@ physics:
 
 simulation:
   hora_inicio: 6       # simular desde las 06:00
-  hora_fin: 21         # hasta las 21:00 (la noche cierra la ventana)
+  hora_fin: 22         # hasta las 22:00 (la noche cierra la ventana)
   minutos_crecimiento: 120  # espesor suficiente tras la nucleación (1-2 h)
 
 montecarlo:
