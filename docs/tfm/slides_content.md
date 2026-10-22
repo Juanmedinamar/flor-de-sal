@@ -9,8 +9,8 @@
 **Subtítulo:** TFM — Máster Desarrollo de Software con IA (Big School / mouredev)
 **Autor:** Juan Medina
 **Fecha:** 2026
-**Enlace repo:** `https://github.com/TU_USUARIO/flor-de-sal`
-**Despliegue:** `https://salina.tudominio.com`
+**Enlace repo:** `https://github.com/juanmedinamar/flor-de-sal`
+**Despliegue:** `https://ubuntu-4gb-hel1-2.tail4744dd.ts.net/`
 
 ---
 
@@ -126,12 +126,13 @@
 
 ---
 
-### Slide 12: Integración estación meteorológica real
-- **Hardware:** Davis Vantage Vue + Meteobridge Pro2 (a 500 m)
-- **Datos automáticos:** HTTP POST cada 5 min → endpoint FastAPI → BD
-- **Variables:** Tª aire, HR, viento, radiación, lluvia
-- **Lecturas manuales:** Formulario en app (Tª calentador/cristalizador, conc. g/l)
-- **Bias correction:** Combina auto (estación) + manual (proceso) → veredicto calibrado
+### Slide 12: Integración estación meteorológica real (en proceso)
+- **Hardware disponible:** Davis Vantage Vue + Meteobridge Pro2 (a 500 m)
+- **Integración en desarrollo:** endpoint FastAPI listo para recibir HTTP POST cada 5 min
+- **Variables a integrar:** Tª aire, HR, viento, radiación, lluvia
+- **Lecturas manuales:** Formulario en app (Tª calentador/cristalizador, conc. g/l) — ya operativo
+- **Bias correction:** Preparada para combinar auto (estación) + manual (proceso) → veredicto calibrado
+- **Estado:** Infraestructura lista, pendiente instalación física y pruebas de integración
 
 ---
 
@@ -176,8 +177,8 @@
 ### Slide 16: Cierre / Contacto
 **Flor de Sal — Predictor probabilístico de recolección óptima**
 
-**Repo:** `https://github.com/TU_USUARIO/flor-de-sal`  
-**Despliegue:** `https://salina.tudominio.com`  
+**Repo:** `https://github.com/Juanmedinamar/flor-de-sal`  
+**Despliegue:** `https://ubuntu-4gb-hel1-2.tail4744dd.ts.net/`  
 **Email:** juanmedina@users.noreply.github.com  
 **TFM — Máster Desarrollo de Software con IA (Big School / mouredev)**
 
